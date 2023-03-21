@@ -17,6 +17,13 @@ class KStaticConfig {
   static const mainMa2 = 10;
   static const mainMa3 = 20;
 
+  ///boll参数
+  static const bollN = 20;
+  static const bollK = 2;
+
+  ///cci参数
+  static const cciCount = 14;
+
   /// kdj参数
   static const kdjK = 9;
   static const kdjD = 1;

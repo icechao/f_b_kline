@@ -1,22 +1,26 @@
 import 'dart:math';
 
 import 'package:f_b_kline/entity/k_line_entity.dart';
+import 'package:f_b_kline/k_static_config.dart';
 
 class DataUtil {
   static calculate(List<KLineEntity> dataList,
-      [int firParam = 5,
-      int senParam = 10,
-      int thrParam = 20,
-      int n = 20,
-      k = 2]) {
-    calcMA(dataList, 5, 10, 20);
+      [int firParam = KStaticConfig.mainMa1,
+      int senParam = KStaticConfig.mainMa2,
+      int thrParam = KStaticConfig.mainMa3,
+      int volMa1 = KStaticConfig.volMa1,
+      int volMa2 = KStaticConfig.volMa2,
+      int n = KStaticConfig.bollN,
+      k = KStaticConfig.bollK]) {
+    calcMA(dataList, firParam, senParam, thrParam);
     calcBOLL(dataList, n, k);
-    calcVolumeMA(dataList);
+    calcVolumeMA(dataList, volMa1, volMa2);
     calcKDJ(dataList);
-    calcMACD(dataList);
-    calcRSI(dataList);
-    calcWR(dataList);
-    calcCCI(dataList);
+    calcMACD(dataList, KStaticConfig.macdS, KStaticConfig.macdL,
+        KStaticConfig.macdM);
+    calcRSI(dataList, KStaticConfig.rsiOne);
+    calcWR(dataList, KStaticConfig.wrOne);
+    calcCCI(dataList, KStaticConfig.cciCount);
   }
 
   static calcMA(
@@ -26,18 +30,21 @@ class DataUtil {
       for (int i = 0; i < dataList.length; i++) {
         KLineEntity entity = dataList[i];
 
-        if ((i - firParam) >= 0) {
-          fir -= dataList[i - firParam].close;
+        var temp = i - firParam;
+        if (temp >= 0) {
+          fir -= dataList[temp].close;
         }
         fir += entity.close;
 
-        if ((i - senParam) >= 0) {
-          sen -= dataList[i - senParam].close;
+        temp = i - senParam;
+        if (temp >= 0) {
+          sen -= dataList[temp].close;
         }
         sen += entity.close;
 
-        if ((i - thrParam) >= 0) {
-          thi -= dataList[i - thrParam].close;
+        temp = i - thrParam;
+        if (temp >= 0) {
+          thi -= dataList[temp].close;
         }
         thi += entity.close;
         if (i >= firParam) {
@@ -90,9 +97,11 @@ class DataUtil {
     }
   }
 
-  static void calcMACD(List<KLineEntity> dataList) {
-    double ema12 = 0;
-    double ema26 = 0;
+  /// 12 26 9
+  static void calcMACD(
+      List<KLineEntity> dataList, int ma1, ma2, int diffParam) {
+    double ema1 = 0;
+    double ema2 = 0;
     double dif = 0.0;
     double dea = 0.0;
     double macd = 0.0;
@@ -101,19 +110,19 @@ class DataUtil {
       KLineEntity entity = dataList[i];
       final closePrice = entity.close;
       if (i == 0) {
-        ema12 = closePrice;
-        ema26 = closePrice;
+        ema1 = closePrice;
+        ema2 = closePrice;
       } else {
         // EMA（12） = 前一日EMA（12） X 11/13 + 今日收盘价 X 2/13
-        ema12 = ema12 * 11 / 13 + closePrice * 2 / 13;
+        ema1 = ema1 * (ma1 - 1) / (ma1 + 1) + closePrice * 2 / (ma1 + 1);
         // EMA（26） = 前一日EMA（26） X 25/27 + 今日收盘价 X 2/27
-        ema26 = ema26 * 25 / 27 + closePrice * 2 / 27;
+        ema2 = ema2 * (ma2 - 1) / (ma2 + 1) + closePrice * 2 / (ma2 + 1);
       }
       // DIF = EMA（12） - EMA（26） 。
       // 今日DEA = （前一日DEA X 8/10 + 今日DIF X 2/10）
       // 用（DIF-DEA）*2即为MACD柱状图。
-      dif = ema12 - ema26;
-      dea = dea * 8 / 10 + dif * 2 / 10;
+      dif = ema1 - ema2;
+      dea = dea * (diffParam - 1) / (diffParam + 1) + dif * 2 / (diffParam + 1);
       macd = (dif - dea) * 2;
       entity.dif = dif;
       entity.dea = dea;
@@ -121,37 +130,33 @@ class DataUtil {
     }
   }
 
-  static void calcVolumeMA(List<KLineEntity> dataList) {
-    double volumeMa5 = 0;
-    double volumeMa10 = 0;
+  static void calcVolumeMA(List<KLineEntity> dataList, int volMa1, int volMa2) {
+    double volumeMa1 = 0.0;
+    double volumeMa2 = 0.0;
 
     for (int i = 0; i < dataList.length; i++) {
-      KLineEntity entry = dataList[i];
+      KLineEntity entity = dataList[i];
 
-      volumeMa5 += entry.vol;
-      volumeMa10 += entry.vol;
-
-      if (i == 4) {
-        entry.maVolume1 = (volumeMa5 / 5);
-      } else if (i > 4) {
-        volumeMa5 -= dataList[i - 5].vol;
-        entry.maVolume1 = volumeMa5 / 5;
-      } else {
-        entry.maVolume1 = null;
+      var temp = i - volMa1;
+      if ((temp) >= 0) {
+        volumeMa1 -= dataList[temp].close;
       }
-
-      if (i == 9) {
-        entry.maVolume2 = volumeMa10 / 10;
-      } else if (i > 9) {
-        volumeMa10 -= dataList[i - 10].vol;
-        entry.maVolume2 = volumeMa10 / 10;
-      } else {
-        entry.maVolume2 = null;
+      volumeMa1 += entity.vol;
+      temp = i - volMa2;
+      if (temp >= 0) {
+        volumeMa1 -= dataList[temp].close;
+      }
+      volumeMa2 += entity.vol;
+      if (i >= volMa1) {
+        entity.maVolume1 = volumeMa1 / volMa1.toDouble();
+      }
+      if (i >= volMa2) {
+        entity.maVolume2 = volumeMa2 / volMa2.toDouble();
       }
     }
   }
 
-  static void calcRSI(List<KLineEntity> dataList) {
+  static void calcRSI(List<KLineEntity> dataList, int rsiParsm) {
     double? rsi;
     double rsiABSEma = 0;
     double rsiMaxEma = 0;
@@ -166,16 +171,16 @@ class DataUtil {
         double rMax = max(0, closePrice - dataList[i - 1].close.toDouble());
         double rAbs = (closePrice - dataList[i - 1].close.toDouble()).abs();
 
-        rsiMaxEma = (rMax + (14 - 1) * rsiMaxEma) / 14;
-        rsiABSEma = (rAbs + (14 - 1) * rsiABSEma) / 14;
+        rsiMaxEma = (rMax + (rsiParsm - 1) * rsiMaxEma) / rsiParsm;
+        rsiABSEma = (rAbs + (rsiParsm - 1) * rsiABSEma) / rsiParsm;
         rsi = (rsiMaxEma / rsiABSEma) * 100;
       }
-      if (i < 13) rsi = null;
+      if (i < (rsiParsm - 1)) rsi = null;
       entity.rsi = rsi;
     }
   }
 
-  static void calcKDJ(List<KLineEntity> dataList) {
+  static void calcKDJ(List<KLineEntity> dataList, int n, int m1, int m2) {
     var preK = 50.0;
     var preD = 50.0;
     final tmp = dataList.first;
@@ -184,10 +189,10 @@ class DataUtil {
     tmp.j = 50.0;
     for (int i = 1; i < dataList.length; i++) {
       final entity = dataList[i];
-      final n = max(0, i - 8);
+      final temp = max(0, i - n + 1);
       var low = entity.low;
       var high = entity.high;
-      for (int j = n; j < i; j++) {
+      for (int j = temp; j < i; j++) {
         final t = dataList[j];
         if (t.low < low) {
           low = t.low;
@@ -199,8 +204,8 @@ class DataUtil {
       final cur = entity.close;
       var rsv = (cur - low) * 100.0 / (high - low);
       rsv = rsv.isNaN ? 0 : rsv;
-      final k = (2 * preK + rsv) / 3.0;
-      final d = (2 * preD + k) / 3.0;
+      final k = ((m1 - 1) * preK + rsv) / m1;
+      final d = ((m2 - 1) * preD + k) / m2;
       final j = 3 * k - 2 * d;
       preK = k;
       preD = d;
@@ -210,32 +215,31 @@ class DataUtil {
     }
   }
 
-  static void calcWR(List<KLineEntity> dataList) {
+  static void calcWR(List<KLineEntity> dataList, int wrParam) {
     double r;
     for (int i = 0; i < dataList.length; i++) {
       KLineEntity entity = dataList[i];
-      int startIndex = i - 14;
+      int startIndex = i - wrParam;
       if (startIndex < 0) {
         startIndex = 0;
       }
-      double max14 = 0.0;
-      double min14 = double.maxFinite;
+      double tempMax = 0.0;
+      double tempMin = double.maxFinite;
       for (int index = startIndex; index <= i; index++) {
-        max14 = max(max14, dataList[index].high);
-        min14 = min(min14, dataList[index].low);
+        tempMax = max(tempMax, dataList[index].high);
+        tempMin = min(tempMin, dataList[index].low);
       }
-      if (i < 13) {
+      if (i < (wrParam - 1)) {
         entity.r = -10;
       } else {
-        r = -100 * (max14 - dataList[i].close) / (max14 - min14);
+        r = -100 * (tempMax - dataList[i].close) / (tempMax - tempMin);
         entity.r = r;
       }
     }
   }
 
-  static void calcCCI(List<KLineEntity> dataList) {
+  static void calcCCI(List<KLineEntity> dataList, int count) {
     final size = dataList.length;
-    const count = 14;
     for (int i = 0; i < size; i++) {
       final kline = dataList[i];
       final tp = (kline.high + kline.low + kline.close) / 3;
