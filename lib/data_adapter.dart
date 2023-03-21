@@ -54,7 +54,7 @@ class DataAdapter {
 
   late SendPort sendPort;
 
-  DataAdapter({this.test}) {
+  DataAdapter() {
     initReceive();
   }
 
@@ -69,9 +69,6 @@ class DataAdapter {
           ..addAll(message);
         debugPrint(runtimeType.toString());
         dataController.add(1);
-        // if (resetTranslate) {
-        //   changeTranslate(0);
-        // }
       }
     });
     isolate ??= await Isolate.spawn(
@@ -83,8 +80,6 @@ class DataAdapter {
   void dispose() {
     isolate?.kill();
   }
-
-  String? test;
 }
 
 isolateFuture(SendPort sendPort) {

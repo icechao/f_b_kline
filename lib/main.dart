@@ -9,17 +9,17 @@ import 'package:f_b_kline/k_chart_widget.dart';
 import 'package:f_b_kline/k_run_config.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+
+  DataAdapter? adapter = DataAdapter();
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final DataAdapter adapter = DataAdapter(test: '123123123');
-
     Future.delayed(const Duration(seconds: 5), () {
       List<KLineEntity> data = [];
       var decode = json.decode(jsonString);
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
           ..vol = double.parse('${item[5]}'));
       }
 
-      adapter.resetData(data);
+      adapter!.resetData(data);
     });
 
     return MaterialApp(
@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
           width: double.maxFinite,
           height: 400,
           child: KChartWidget(
-            adapter,
+            adapter!,
             config: KRunConfig(
               dateFormatter: (int? value) {
                 return formatDate(
