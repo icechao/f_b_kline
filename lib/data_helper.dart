@@ -15,7 +15,8 @@ class DataUtil {
     calcMA(dataList, firParam, senParam, thrParam);
     calcBOLL(dataList, n, k);
     calcVolumeMA(dataList, volMa1, volMa2);
-    calcKDJ(dataList);
+    calcKDJ(
+        dataList, KStaticConfig.kdjN, KStaticConfig.kdjM1, KStaticConfig.kdjM2);
     calcMACD(dataList, KStaticConfig.macdS, KStaticConfig.macdL,
         KStaticConfig.macdM);
     calcRSI(dataList, KStaticConfig.rsiOne);

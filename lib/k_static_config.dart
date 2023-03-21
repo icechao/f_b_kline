@@ -25,9 +25,9 @@ class KStaticConfig {
   static const cciCount = 14;
 
   /// kdj参数
-  static const kdjK = 9;
-  static const kdjD = 1;
-  static const kdjJ = 3;
+  static const kdjN = 9;
+  static const kdjM1 = 3;
+  static const kdjM2 = 3;
 
   ///成交量ma
   static const volMa1 = 5;
