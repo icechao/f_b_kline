@@ -134,12 +134,12 @@ class DataUtil {
 
       var temp = i - volMa1;
       if ((temp) >= 0) {
-        volumeMa1 -= dataList[temp].close;
+        volumeMa1 -= dataList[temp].vol;
       }
       volumeMa1 += entity.vol;
       temp = i - volMa2;
-      if (temp >= 0) {
-        volumeMa1 -= dataList[temp].close;
+      if (temp > 0) {
+        volumeMa2 -= dataList[temp].vol;
       }
       volumeMa2 += entity.vol;
       if (i >= volMa1) {

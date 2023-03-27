@@ -19,17 +19,10 @@ class MainRender extends IRender {
     crossLineVerticalPaint
       ..color = Colors.white
       ..shader = ui.Gradient.linear(
-          const Offset(0, 0), Offset(0, config.height), [
-        Colors.transparent,
-        Colors.white30,
-        Colors.white30,
-        Colors.transparent
-      ], [
-        0.1,
-        0.3,
-        0.7,
-        0.9
-      ]);
+          const Offset(0, 0),
+          Offset(0, config.height),
+          KStaticConfig().crossColors,
+          KStaticConfig().colorStops);
   }
 
   @override
@@ -59,8 +52,11 @@ class MainRender extends IRender {
 
     switch (config.chartDisplayType) {
       case ChartDisplayType.kline:
-        canvas.drawLine(Offset(x, open), Offset(x, close),
-            paint..strokeWidth = itemWidth - KStaticConfig().candleItemSpace * 2);
+        canvas.drawLine(
+            Offset(x, open),
+            Offset(x, close),
+            paint
+              ..strokeWidth = itemWidth - KStaticConfig().candleItemSpace * 2);
 
         canvas.drawLine(Offset(x, high), Offset(x, low),
             paint..strokeWidth = KStaticConfig().lineWidth);

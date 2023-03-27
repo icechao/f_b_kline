@@ -1,3 +1,7 @@
+import 'package:f_b_kline/renders/sen/cci_render.dart';
+import 'package:f_b_kline/renders/sen/kdj_render.dart';
+import 'package:f_b_kline/renders/sen/rsi_render.dart';
+import 'package:f_b_kline/renders/sen/wr_render.dart';
 import 'package:flutter/material.dart';
 import 'package:f_b_kline/data_adapter.dart';
 import 'package:f_b_kline/entity/index.dart';
@@ -22,7 +26,6 @@ class KRunConfig {
 
   late double height, width;
   Rect? mainRect, volRect, senRect;
-  ChartGroupType? type;
 
   double translateX = double.nan;
   double scaleX = 1, scaleY = 1;
@@ -35,9 +38,10 @@ class KRunConfig {
   IRender? senRender;
   late int screenLeft, screenRight;
 
-  ChartDisplayType chartDisplayType = ChartDisplayType.timeLine;
+  ChartGroupType? type;
+  ChartDisplayType chartDisplayType = ChartDisplayType.kline;
   MainDisplayType mainDisplayType = MainDisplayType.boll;
-  ChartSenType chartSenType = ChartSenType.macd;
+  ChartSenType chartSenType = ChartSenType.kdj;
 
   late Color chartColor;
 
@@ -60,13 +64,10 @@ class KRunConfig {
   }
 
   void initRect(ChartGroupType? type, DataAdapter adapter) {
-    type ??= ChartGroupType.withVolSen;
+    type ??= ChartGroupType.withVol;
     if (this.type == type) {
       return;
     }
-
-    senRender = MacdRender(this, adapter);
-
     var padding = KStaticConfig().topPadding;
     this.type = type;
     var rowCount = KStaticConfig().gridRowCount;
@@ -81,20 +82,21 @@ class KRunConfig {
           mainRender.axisPainter.add(KTextPainter(width, padding + item * i));
         }
         volBaseY = mainRect!.bottom;
-        volRect = Rect.fromLTRB(item * (rowCount - 2), mainRect!.bottom, width,
-            item * (rowCount - 1) + padding);
+        volRect = Rect.fromLTRB(
+            0, mainRect!.bottom, width, item * (rowCount - 1) + padding);
         volRender = VolRender(this, adapter)
           ..axisPainter.addAll([
             KTextPainter(width, padding + item * (rowCount - 2)),
             KTextPainter(width, padding + item * (rowCount - 1)),
           ]);
         senBaseY = volRect!.bottom;
-        senRect = Rect.fromLTRB(item * (rowCount - 1), volRect!.bottom, width,
-            item * rowCount + padding);
-        senRender?.axisPainter.addAll([
-          KTextPainter(width, padding + item * (rowCount - 1)),
-          KTextPainter(width, padding + item * rowCount),
-        ]);
+        senRect =
+            Rect.fromLTRB(0, volRect!.bottom, width, item * rowCount + padding);
+        senRender = getSenRender(adapter)
+          ..axisPainter.addAll([
+            KTextPainter(width, padding + item * (rowCount - 1)),
+            KTextPainter(width, padding + item * rowCount),
+          ]);
         break;
       case ChartGroupType.withSen:
         mainRect =
@@ -102,14 +104,17 @@ class KRunConfig {
         for (int i = 1; i < rowCount; i++) {
           mainRender.axisPainter.add(KTextPainter(width, padding + item * i));
         }
+
         volRect = null;
+        volRender = null;
         senBaseY = mainRect!.bottom;
-        senRect = Rect.fromLTRB(item * (rowCount - 1), mainRect!.bottom, width,
-            item * rowCount + padding);
-        senRender?.axisPainter.addAll([
-          KTextPainter(width, padding + item * (rowCount - 1)),
-          KTextPainter(width, padding + item * rowCount),
-        ]);
+        senRect = Rect.fromLTRB(
+            0, mainRect!.bottom, width, item * rowCount + padding);
+        senRender = getSenRender(adapter)
+          ..axisPainter.addAll([
+            KTextPainter(width, padding + item * (rowCount - 1)),
+            KTextPainter(width, padding + item * rowCount),
+          ]);
         break;
       case ChartGroupType.withNone:
         mainRect = Rect.fromLTRB(0, padding, width, item * 5 + padding);
@@ -117,7 +122,9 @@ class KRunConfig {
           mainRender.axisPainter.add(KTextPainter(width, padding + item * i));
         }
         volRect = null;
+        volRender = null;
         senRect = null;
+        senRender = null;
         break;
       case ChartGroupType.withVol:
         mainRect =
@@ -126,14 +133,16 @@ class KRunConfig {
           mainRender.axisPainter.add(KTextPainter(width, padding + item * i));
         }
         volBaseY = mainRect!.bottom;
-        volRect = Rect.fromLTRB(item * (rowCount - 1), mainRect!.bottom, width,
-            item * rowCount + padding);
+        volRect = Rect.fromLTRB(
+            0, mainRect!.bottom, width, item * rowCount + padding);
         volRender = VolRender(this, adapter)
           ..axisPainter.addAll([
             KTextPainter(width, padding + item * (rowCount - 1)),
             KTextPainter(width, padding + item * rowCount),
           ]);
+
         senRect = null;
+        senRender = null;
         break;
     }
 
@@ -414,7 +423,10 @@ class KRunConfig {
       ..renderText(canvas);
   }
 
-  void updateSelectedX(double dx) {
+  void updateSelectedX(double? dx) {
+    if (dx == null) {
+      selectedIndex = null;
+    }
     selectedX = dx;
   }
 
@@ -428,5 +440,23 @@ class KRunConfig {
       ..['low'] = mainValueFormatter.call(data.low)
       ..['close'] = mainValueFormatter.call(data.close)
       ..['vol'] = mainValueFormatter.call(data.vol);
+  }
+
+  IRender getSenRender(DataAdapter adapter) {
+    switch (chartSenType) {
+      case ChartSenType.macd:
+        return MacdRender(this, adapter);
+
+      case ChartSenType.kdj:
+        return KdjRender(this, adapter);
+      case ChartSenType.wr:
+        return WrRender(this, adapter);
+
+      case ChartSenType.rsi:
+        return RsiRender(this, adapter);
+
+      case ChartSenType.cci:
+        return CciRender(this, adapter);
+    }
   }
 }

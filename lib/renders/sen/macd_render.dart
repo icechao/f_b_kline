@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:f_b_kline/k_text_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:f_b_kline/entity/k_line_entity.dart';
 import 'package:f_b_kline/i_render.dart';
@@ -8,6 +9,9 @@ import 'package:f_b_kline/k_static_config.dart';
 
 class MacdRender extends IRender {
   MacdRender(super.config, super.adapter);
+
+  final Path difPath = Path();
+  final Path deaPath = Path();
 
   @override
   void renderChart(Canvas canvas, List<double> c, List<double> l,
@@ -32,34 +36,57 @@ class MacdRender extends IRender {
     } else {
       macd += 1;
     }
-    canvas.drawLine(
-        Offset(x + halfWidth, zero), Offset(x + halfWidth, macd), paint);
-    double lX = l[0];
-    if (lX.isInfinite) {
-      return;
+    if (!macd.isInfinite) {
+      canvas.drawLine(
+          Offset(x + halfWidth, zero), Offset(x + halfWidth, macd), paint);
     }
-    canvas.drawLine(
-        Offset(lX + halfWidth, lastDif),
-        Offset(x + halfWidth, dif),
-        paint
-          ..color = KStaticConfig().chartColors['dif']!
-          ..strokeWidth = KStaticConfig().lineWidth);
-    canvas.drawLine(
-        Offset(lX + halfWidth, lastDea),
-        Offset(x + halfWidth, dea),
-        paint
-          ..color = KStaticConfig().chartColors['dea']!
-          ..strokeWidth = KStaticConfig().lineWidth);
+    if (lastDif.isInfinite && !dif.isInfinite) {
+      difPath
+        ..reset()
+        ..moveTo(x + halfWidth, dif);
+      deaPath
+        ..reset()
+        ..moveTo(x + halfWidth, dea);
+    } else if (!lastDif.isInfinite && !dif.isInfinite) {
+      difPath.lineTo(x + halfWidth, dif);
+      deaPath.lineTo(x + halfWidth, dea);
+    }
   }
 
   @override
   void renderLine(Canvas canvas) {
-    // TODO: implement renderLine
+    canvas
+      ..drawPath(
+          difPath,
+          paint
+            ..color = KStaticConfig().chartColors['dif']!
+            ..strokeWidth = KStaticConfig().lineWidth
+            ..style = PaintingStyle.stroke)
+      ..drawPath(deaPath, paint..color = KStaticConfig().chartColors['dea']!);
   }
 
   @override
   void renderText(Canvas canvas) {
-    // TODO: implement renderText
+    KLineEntity data =
+        adapter.data[config.selectedIndex ?? adapter.dataLength - 1];
+
+    List<InlineSpan> text = [
+      buildTextSpan(
+          'MACD(${KStaticConfig().macdS},${KStaticConfig().macdL},${KStaticConfig().macdL}):${data.macd?.toStringAsFixed(2)}',
+          color: KStaticConfig().chartColors['text'])
+    ];
+
+    if (data.dif != null) {
+      text.add(buildTextSpan('  DIF :${data.dif!.toStringAsFixed(2)}',
+          color: KStaticConfig().chartColors['dif']));
+    }
+
+    if (data.dea != null) {
+      text.add(buildTextSpan('  DEA :${data.dea!.toStringAsFixed(2)}',
+          color: KStaticConfig().chartColors['dea']));
+    }
+    KTextPainter(config.senRect!.left, config.senRect!.top)
+        .renderText(canvas, TextSpan(children: text), align: KTextAlign.right);
   }
 
   @override

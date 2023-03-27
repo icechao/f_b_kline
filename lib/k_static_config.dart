@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 enum ChartGroupType { withVol, withVolSen, withSen, withNone }
 
-enum ChartSenType { macd, kdj, wr, rsi, cci, none }
+enum ChartSenType { macd, kdj, wr, rsi, cci }
 
 enum ChartDisplayType { kline, timeLine }
 
@@ -80,6 +80,15 @@ class KStaticConfig {
   double infoWindowItemHeight = 20.0;
   double lineWidth = 1.0;
   ChartGroupType defaultChartType = ChartGroupType.withVol;
+
+  List<Color> crossColors = [
+    Colors.transparent,
+    Colors.white30,
+    Colors.white30,
+    Colors.transparent
+  ];
+
+  List<double>? colorStops = [0.1, 0.3, 0.7, 0.9];
 
   final chartColors = {
     ///默认文本颜色

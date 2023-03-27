@@ -1,46 +1,80 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:f_b_kline/k_text_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:f_b_kline/entity/k_line_entity.dart';
 import 'package:f_b_kline/i_render.dart';
 import 'package:f_b_kline/k_static_config.dart';
 
 class KdjRender extends IRender {
-  KdjRender(super.config, super.adapter);
+  KdjRender(super.config, super.adapter) {
+    paint
+      ..strokeWidth = KStaticConfig().lineWidth
+      ..style = PaintingStyle.stroke;
+  }
+
+  final Path kPath = Path();
+  final Path dPath = Path();
+  final Path jPath = Path();
 
   @override
   void renderChart(Canvas canvas, List<double> c, List<double> l,
       double itemWidth, int index) {
     double lX = l[0];
-    if (lX.isInfinite) {
-      return;
-    }
-    double halfWidth = itemWidth / 2;
-    double x = c[0];
+
+    double x = c[0] + itemWidth / 2;
     double k = c[SenIndex.k * 3 + 1];
     double d = c[SenIndex.d * 3 + 1];
     double j = c[SenIndex.j * 3 + 1];
-    double lastK = l[SenIndex.k * 3 + 1];
-    double lastD = l[SenIndex.d * 3 + 1];
-    double lastJ = l[SenIndex.j * 3 + 1];
 
-    canvas.drawLine(Offset(lX + halfWidth, lastK), Offset(x + halfWidth, k),
-        paint..color = KStaticConfig().chartColors['k']!);
-    canvas.drawLine(Offset(lX + halfWidth, lastD), Offset(x + halfWidth, d),
-        paint..color = KStaticConfig().chartColors['d']!);
-    canvas.drawLine(Offset(lX + halfWidth, lastJ), Offset(x + halfWidth, j),
-        paint..color = KStaticConfig().chartColors['j']!);
+    if (lX.isInfinite) {
+      kPath
+        ..reset()
+        ..moveTo(x, k);
+      dPath
+        ..reset()
+        ..moveTo(x, d);
+      jPath
+        ..reset()
+        ..moveTo(x, j);
+    } else {
+      kPath.lineTo(x, k);
+      dPath.lineTo(x, d);
+      jPath.lineTo(x, j);
+    }
   }
 
   @override
   void renderLine(Canvas canvas) {
-    // TODO: implement renderLine
+    canvas
+      ..drawPath(kPath, paint..color = KStaticConfig().chartColors['k']!)
+      ..drawPath(dPath, paint..color = KStaticConfig().chartColors['d']!)
+      ..drawPath(jPath, paint..color = KStaticConfig().chartColors['j']!);
   }
 
   @override
   void renderText(Canvas canvas) {
-    // TODO: implement renderText
+    KLineEntity data =
+        adapter.data[config.selectedIndex ?? adapter.dataLength - 1];
+
+    List<InlineSpan> text = [
+      buildTextSpan(
+          'KDJ (${KStaticConfig().kdjN},${KStaticConfig().kdjM1},${KStaticConfig().kdjM2})}',
+          color: KStaticConfig().chartColors['text'])
+    ];
+
+    text.add(buildTextSpan('  K :${data.k?.toStringAsFixed(2)}',
+        color: KStaticConfig().chartColors['k']));
+
+    text.add(buildTextSpan('  D :${data.d?.toStringAsFixed(2)}',
+        color: KStaticConfig().chartColors['d']));
+
+    text.add(buildTextSpan('  J :${data.j?.toStringAsFixed(2)}',
+        color: KStaticConfig().chartColors['j']));
+
+    KTextPainter(config.senRect!.left, config.senRect!.top)
+        .renderText(canvas, TextSpan(children: text), align: KTextAlign.right);
   }
 
   @override

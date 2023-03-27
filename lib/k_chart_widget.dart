@@ -158,7 +158,7 @@ class KChartWidgetState extends State<KChartWidget>
 
         if (dataLength > 0) {
           if (widget.config.selectedX != null) {
-            widget.config.selectedX = null;
+            widget.config.updateSelectedX(null);
           } else {
             widget.config.updateSelectedX(details.globalPosition.dx);
           }
@@ -194,7 +194,7 @@ class KChartWidgetState extends State<KChartWidget>
       child: CustomPaint(
         painter: BackgroundPainter(),
         foregroundPainter: ChartPainter(
-            widget.config.type ?? ChartGroupType.withVol,
+            widget.config.type ?? ChartGroupType.withVolSen,
             widget.adapter,
             widget.config,
             repaint),
