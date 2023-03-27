@@ -46,7 +46,7 @@ class WrRender extends IRender {
 
     if (data.rsi != null) {
       var text = buildTextSpan(
-          'WR (${KStaticConfig().wrOne}):${data.r!.toStringAsFixed(2)}',
+          'WR(${KStaticConfig().wrOne}):${data.r!.toStringAsFixed(2)}',
           color: KStaticConfig().chartColors['wr']);
       KTextPainter(config.volRect!.left, config.volRect!.top)
           .renderText(canvas, text);

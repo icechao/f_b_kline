@@ -44,7 +44,7 @@ class CciRender extends IRender {
 
     if (data.rsi != null) {
       var text = buildTextSpan(
-          'CCI (${KStaticConfig().cciCount}):${data.cci!.toStringAsFixed(2)}',
+          'CCI(${KStaticConfig().cciCount}):${data.cci!.toStringAsFixed(2)}',
           color: KStaticConfig().chartColors['cci']);
       KTextPainter(config.volRect!.left, config.volRect!.top)
           .renderText(canvas, text);
