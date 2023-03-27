@@ -13,38 +13,46 @@ enum MainDisplayType { boll, ma, none }
 class KStaticConfig {
   ///---------------------------------------------------------
   ///主图ma
-  static const mainMa1 = 5;
-  static const mainMa2 = 10;
-  static const mainMa3 = 20;
+   int mainMa1 = 5;
+
+   int mainMa2 = 10;
+
+   int mainMa3 = 20;
 
   ///boll参数
-  static const bollN = 20;
-  static const bollK = 2;
+   int bollN = 20;
+
+   int bollK = 2;
 
   ///cci参数
-  static const cciCount = 14;
+   int cciCount = 14;
 
   /// kdj参数
-  static const kdjN = 9;
-  static const kdjM1 = 3;
-  static const kdjM2 = 3;
+   int kdjN = 9;
+
+   int kdjM1 = 3;
+
+   int kdjM2 = 3;
 
   ///成交量ma
-  static const volMa1 = 5;
-  static const volMa2 = 10;
+   int volMa1 = 5;
+
+   int volMa2 = 10;
 
   ///wr
-  static const rsiOne = 10;
+   int rsiOne = 10;
 
   ///rsi
-  static const wrOne = 10;
+   int wrOne = 10;
 
   /// kdj
   ///计算使用参数
   ///macd
-  static const macdS = 12;
-  static const macdL = 26;
-  static const macdM = 9;
+   int macdS = 12;
+
+   int macdL = 26;
+
+   int macdM = 9;
 
   ///---------------------------------------------------------
 

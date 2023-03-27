@@ -4,24 +4,18 @@ import 'package:f_b_kline/entity/k_line_entity.dart';
 import 'package:f_b_kline/k_static_config.dart';
 
 class DataUtil {
-  static calculate(List<KLineEntity> dataList,
-      [int firParam = KStaticConfig.mainMa1,
-      int senParam = KStaticConfig.mainMa2,
-      int thrParam = KStaticConfig.mainMa3,
-      int volMa1 = KStaticConfig.volMa1,
-      int volMa2 = KStaticConfig.volMa2,
-      int n = KStaticConfig.bollN,
-      k = KStaticConfig.bollK]) {
-    calcMA(dataList, firParam, senParam, thrParam);
-    calcBOLL(dataList, n, k);
-    calcVolumeMA(dataList, volMa1, volMa2);
-    calcKDJ(
-        dataList, KStaticConfig.kdjN, KStaticConfig.kdjM1, KStaticConfig.kdjM2);
-    calcMACD(dataList, KStaticConfig.macdS, KStaticConfig.macdL,
-        KStaticConfig.macdM);
-    calcRSI(dataList, KStaticConfig.rsiOne);
-    calcWR(dataList, KStaticConfig.wrOne);
-    calcCCI(dataList, KStaticConfig.cciCount);
+  static calculate(List<KLineEntity> dataList) {
+    calcMA(dataList, KStaticConfig().mainMa1, KStaticConfig().mainMa2,
+        KStaticConfig().mainMa3);
+    calcBOLL(dataList, KStaticConfig().bollN, KStaticConfig().bollK);
+    calcVolumeMA(dataList, KStaticConfig().volMa1, KStaticConfig().volMa2);
+    calcKDJ(dataList, KStaticConfig().kdjN, KStaticConfig().kdjM1,
+        KStaticConfig().kdjM2);
+    calcMACD(dataList, KStaticConfig().macdS, KStaticConfig().macdL,
+        KStaticConfig().macdM);
+    calcRSI(dataList, KStaticConfig().rsiOne);
+    calcWR(dataList, KStaticConfig().wrOne);
+    calcCCI(dataList, KStaticConfig().cciCount);
   }
 
   static calcMA(
