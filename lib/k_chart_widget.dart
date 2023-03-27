@@ -20,7 +20,10 @@ class KChartWidget extends StatefulWidget {
 }
 
 class KChartWidgetState extends State<KChartWidget>
-    with TickerProviderStateMixin {
+    with
+        TickerProviderStateMixin,
+        AnimationLocalStatusListenersMixin,
+        AnimationLocalListenersMixin {
   late ValueNotifier<int> repaint;
 
   StreamSubscription? bindChartTypeListener,
@@ -31,6 +34,13 @@ class KChartWidgetState extends State<KChartWidget>
 
   @override
   void initState() {
+    animationController = AnimationController(
+        vsync: this,
+        value: 0,
+        lowerBound: double.negativeInfinity,
+        upperBound: double.infinity,
+        duration: const Duration(seconds: 1));
+
     bindChartTypeListener?.cancel();
     bindTranslateListener?.cancel();
     bindDataListener?.cancel();
@@ -59,15 +69,26 @@ class KChartWidgetState extends State<KChartWidget>
     });
 
     bindTranslateListener = widget.adapter.bindTranslateListener((data) {
+      animationController?.reset();
+      Animation animate = Tween(begin: widget.config.translateX, end: data)
+          .animate(animationController!);
+      listener() {
+        widget.config.updateTranslate(animate.value, widget.adapter.dataLength);
+      }
+
+      stateListener(status) {
+        if (status == AnimationStatus.completed) {
+          animationController?.removeListener(listener);
+          animationController?.removeStatusListener(stateListener);
+        }
+      }
+
+      animationController
+        ?..addListener(listener)
+        ..addStatusListener(stateListener);
+
       reRender();
     });
-
-    animationController = AnimationController(
-        vsync: this,
-        value: 0,
-        lowerBound: double.negativeInfinity,
-        upperBound: double.infinity,
-        duration: const Duration(seconds: 1));
 
     super.initState();
   }
@@ -111,14 +132,23 @@ class KChartWidgetState extends State<KChartWidget>
                   position: widget.config.translateX,
                   velocity: details.velocity.pixelsPerSecond.dx,
                   friction: 0.09);
-          animationController?.addListener(() {
+          listener() {
             double tempValue = animationController?.value ?? 0.0;
             if (!tempValue.isInfinite &&
                 tempValue != widget.config.translateX) {
               widget.config.updateTranslate(tempValue, dataLength);
               reRender();
             }
-          });
+          }
+
+          animationController?.addListener(listener);
+          stateListener(status) {
+            if (status == AnimationStatus.completed) {
+              animationController?.removeStatusListener(stateListener);
+            }
+          }
+
+          animationController?.addStatusListener(stateListener);
           animationController?.animateWith(clampingScrollSimulation);
           reRender();
         }
@@ -155,6 +185,8 @@ class KChartWidgetState extends State<KChartWidget>
         var dataLength = widget.adapter.dataLength;
         if (dataLength != 0) {
           animationController?.stop();
+          animationController?.clearListeners();
+          animationController?.clearStatusListeners();
           animationController?.reset();
           reRender();
         }
@@ -187,5 +219,15 @@ class KChartWidgetState extends State<KChartWidget>
     bindChartTypeListener?.cancel();
     bindTranslateListener?.cancel();
     bindDataListener?.cancel();
+  }
+
+  @override
+  void didRegisterListener() {
+    animationController?.didRegisterListener();
+  }
+
+  @override
+  void didUnregisterListener() {
+    animationController?.didUnregisterListener();
   }
 }

@@ -14,7 +14,7 @@ class DataAdapter {
   List<double> senDisplayPoints = [];
   Isolate? isolate;
 
-  StreamController<int> dataController = StreamController<int>.broadcast();
+  StreamController dataController = StreamController.broadcast();
   StreamController<dynamic> typeController =
       StreamController<ChartGroupType>.broadcast();
   StreamController<double> translateController =
