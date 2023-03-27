@@ -15,7 +15,7 @@ void main() {
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
-  DataAdapter? adapter = DataAdapter();
+  final DataAdapter adapter = DataAdapter();
 
   // This widget is the root of your application.
   @override
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
           ..vol = double.parse('${item[5]}'));
       }
 
-      adapter!.resetData(data);
+      adapter.resetData(data);
     });
 
     return MaterialApp(
@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
           width: double.maxFinite,
           height: 400,
           child: KChartWidget(
-            adapter!,
+            adapter,
             config: KRunConfig(
               dateFormatter: (int? value) {
                 return formatDate(

@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'dart:ui' as ui;
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:f_b_kline/entity/k_line_entity.dart';
@@ -47,11 +46,11 @@ class MainRender extends IRender {
 
     if (open < close) {
       open += 1;
-      config.chartColor = KStaticConfig.chartColors['increase']!;
+      config.chartColor = KStaticConfig().chartColors['increase']!;
       paint.color = config.chartColor;
     } else if (open > close) {
       close -= 1;
-      config.chartColor = KStaticConfig.chartColors['decrease']!;
+      config.chartColor = KStaticConfig().chartColors['decrease']!;
       paint.color = config.chartColor;
     } else {
       open += 1;
@@ -61,10 +60,10 @@ class MainRender extends IRender {
     switch (config.chartDisplayType) {
       case ChartDisplayType.kline:
         canvas.drawLine(Offset(x, open), Offset(x, close),
-            paint..strokeWidth = itemWidth - KStaticConfig.candleItemSpace * 2);
+            paint..strokeWidth = itemWidth - KStaticConfig().candleItemSpace * 2);
 
         canvas.drawLine(Offset(x, high), Offset(x, low),
-            paint..strokeWidth = KStaticConfig.lineWidth);
+            paint..strokeWidth = KStaticConfig().lineWidth);
 
         switch (config.mainDisplayType) {
           case MainDisplayType.boll:
@@ -85,7 +84,7 @@ class MainRender extends IRender {
 
   void renderTimeLine(
       List<double> l, double close, double lX, double x, ui.Canvas canvas) {
-    Color chartColor = KStaticConfig.chartColors['timeLine'] as ui.Color;
+    Color chartColor = KStaticConfig().chartColors['timeLine'] as ui.Color;
     fillPaint.shader ??= LinearGradient(
             colors: [chartColor, (chartColor).withOpacity(0.05)],
             stops: const [0.05, 1.0],
@@ -124,18 +123,18 @@ class MainRender extends IRender {
     double lastMaTwo = l[KMainIndex.maTwo * 3 + 1];
     double lastMaThree = l[KMainIndex.maThree * 3 + 1];
 
-    paint.strokeWidth = KStaticConfig.lineWidth;
+    paint.strokeWidth = KStaticConfig().lineWidth;
     if (!lastMaOne.isInfinite) {
       canvas.drawLine(Offset(x, maOne), Offset(lX, lastMaOne),
-          paint..color = KStaticConfig.chartColors['maFir']!);
+          paint..color = KStaticConfig().chartColors['maFir']!);
     }
     if (!lastMaTwo.isInfinite) {
       canvas.drawLine(Offset(x, maTwo), Offset(lX, lastMaTwo),
-          paint..color = KStaticConfig.chartColors['maSen']!);
+          paint..color = KStaticConfig().chartColors['maSen']!);
     }
     if (!maThree.isInfinite) {
       canvas.drawLine(Offset(x, maThree), Offset(lX, lastMaThree),
-          paint..color = KStaticConfig.chartColors['maThr']!);
+          paint..color = KStaticConfig().chartColors['maThr']!);
     }
   }
 
@@ -148,18 +147,18 @@ class MainRender extends IRender {
     double dn = c[KMainIndex.dn * 3 + 1];
     double lastDn = l[KMainIndex.dn * 3 + 1];
 
-    paint.strokeWidth = KStaticConfig.lineWidth;
+    paint.strokeWidth = KStaticConfig().lineWidth;
     if (!lastUp.isInfinite) {
       canvas.drawLine(Offset(x, up), Offset(lX, lastUp),
-          paint..color = KStaticConfig.chartColors['ub']!);
+          paint..color = KStaticConfig().chartColors['ub']!);
     }
     if (!lastMb.isInfinite) {
       canvas.drawLine(Offset(x, mb), Offset(lX, lastMb),
-          paint..color = KStaticConfig.chartColors['boll']!);
+          paint..color = KStaticConfig().chartColors['boll']!);
     }
     if (!lastDn.isInfinite) {
       canvas.drawLine(Offset(x, dn), Offset(lX, lastDn),
-          paint..color = KStaticConfig.chartColors['lb']!);
+          paint..color = KStaticConfig().chartColors['lb']!);
     }
   }
 
@@ -181,27 +180,27 @@ class MainRender extends IRender {
 
       if (config.selectedX! < config.width / 2) {
         left = config.width -
-            KStaticConfig.infoWindowWidth -
-            KStaticConfig.infoWindowWidthMarginHorizontal;
-        right = config.width - KStaticConfig.infoWindowWidthMarginHorizontal;
+            KStaticConfig().infoWindowWidth -
+            KStaticConfig().infoWindowWidthMarginHorizontal;
+        right = config.width - KStaticConfig().infoWindowWidthMarginHorizontal;
       } else {
-        left = KStaticConfig.infoWindowWidthMarginHorizontal;
-        right = KStaticConfig.infoWindowWidthMarginHorizontal +
-            KStaticConfig.infoWindowWidth;
+        left = KStaticConfig().infoWindowWidthMarginHorizontal;
+        right = KStaticConfig().infoWindowWidthMarginHorizontal +
+            KStaticConfig().infoWindowWidth;
       }
 
       canvas.drawRect(
           Rect.fromLTRB(
               left,
-              KStaticConfig.infoWindowWidthMarginVertical,
+              KStaticConfig().infoWindowWidthMarginVertical,
               right,
-              KStaticConfig.infoWindowItemHeight * marketInfo.length +
-                  KStaticConfig.infoWindowWidthMarginVertical),
-          paint..color = KStaticConfig.chartColors['infoWindowBackground']!);
+              KStaticConfig().infoWindowItemHeight * marketInfo.length +
+                  KStaticConfig().infoWindowWidthMarginVertical),
+          paint..color = KStaticConfig().chartColors['infoWindowBackground']!);
       List<String> keyList = [...marketInfo.keys];
       for (int i = 0; i < marketInfo.length; i++) {
-        var rowY = KStaticConfig.infoWindowItemHeight * i +
-            KStaticConfig.infoWindowWidthMarginVertical;
+        var rowY = KStaticConfig().infoWindowItemHeight * i +
+            KStaticConfig().infoWindowWidthMarginVertical;
         KTextPainter(left, rowY).renderText(canvas, TextSpan(text: keyList[i]));
         KTextPainter(right, rowY).renderText(
             canvas, TextSpan(text: marketInfo[keyList[i]]),
@@ -217,21 +216,21 @@ class MainRender extends IRender {
       case MainDisplayType.boll:
         _textSpan = TextSpan(children: [
           buildTextSpan('BOOL:${data.mb?.toStringAsFixed(2) ?? '--'}',
-              color: KStaticConfig.chartColors['boll']!),
+              color: KStaticConfig().chartColors['boll']!),
           buildTextSpan('  UB:${data.up?.toStringAsFixed(2) ?? '--'}',
-              color: KStaticConfig.chartColors['ub']!),
+              color: KStaticConfig().chartColors['ub']!),
           buildTextSpan('  LB:${data.dn?.toStringAsFixed(2) ?? '--'}',
-              color: KStaticConfig.chartColors['lb']!),
+              color: KStaticConfig().chartColors['lb']!),
         ]);
         break;
       case MainDisplayType.ma:
         _textSpan = TextSpan(children: [
           buildTextSpan('MA5:${config.mainValueFormatter.call(data.ma1)}',
-              color: KStaticConfig.chartColors['maFir']!),
+              color: KStaticConfig().chartColors['maFir']!),
           buildTextSpan('   MA10:${config.mainValueFormatter.call(data.ma2)}',
-              color: KStaticConfig.chartColors['maSen']!),
+              color: KStaticConfig().chartColors['maSen']!),
           buildTextSpan('  MA20:${config.mainValueFormatter.call(data.ma3)}',
-              color: KStaticConfig.chartColors['maThr']!),
+              color: KStaticConfig().chartColors['maThr']!),
         ]);
         break;
       case MainDisplayType.none:
@@ -300,20 +299,20 @@ class MainRender extends IRender {
     var dx = selectedDisplay[0] + config.chartScaleWidth / 2;
     var dy = selectedDisplay[KMainIndex.close * 3 + 1];
     canvas.drawLine(Offset(0, dy), Offset(config.width, dy),
-        paint..color = KStaticConfig.chartColors['crossHorizontal']!);
+        paint..color = KStaticConfig().chartColors['crossHorizontal']!);
 
     canvas.drawLine(
         Offset(dx, 0),
-        Offset(dx, config.height - KStaticConfig.xAxisHeight),
+        Offset(dx, config.height - KStaticConfig().xAxisHeight),
         crossLineVerticalPaint
           ..strokeWidth =
-              config.chartScaleWidth - KStaticConfig.candleItemSpace * 2);
+              config.chartScaleWidth - KStaticConfig().candleItemSpace * 2);
 
     KTextPainter(selectedDisplay[0], config.height,
-            boxHeight: KStaticConfig.xAxisHeight)
+            boxHeight: KStaticConfig().xAxisHeight)
         .renderText(canvas, buildTextSpan(config.dateFormatter.call(data.time)),
             top: true,
             align: KTextAlign.center,
-            backGroundColor: KStaticConfig.chartColors['selectedTime']!);
+            backGroundColor: KStaticConfig().chartColors['selectedTime']!);
   }
 }

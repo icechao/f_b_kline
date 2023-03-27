@@ -23,12 +23,12 @@ class MacdRender extends IRender {
 
     if (macd > zero) {
       paint
-        ..color = config.chartColor = KStaticConfig.chartColors['decrease']!
-        ..strokeWidth = itemWidth - KStaticConfig.candleItemSpace * 2;
+        ..color = config.chartColor = KStaticConfig().chartColors['decrease']!
+        ..strokeWidth = itemWidth - KStaticConfig().candleItemSpace * 2;
     } else if (macd > 0) {
       paint
-        ..color = config.chartColor = KStaticConfig.chartColors['increase']!
-        ..strokeWidth = itemWidth - KStaticConfig.candleItemSpace * 2;
+        ..color = config.chartColor = KStaticConfig().chartColors['increase']!
+        ..strokeWidth = itemWidth - KStaticConfig().candleItemSpace * 2;
     } else {
       macd += 1;
     }
@@ -42,14 +42,14 @@ class MacdRender extends IRender {
         Offset(lX + halfWidth, lastDif),
         Offset(x + halfWidth, dif),
         paint
-          ..color = KStaticConfig.chartColors['dif']!
-          ..strokeWidth = KStaticConfig.lineWidth);
+          ..color = KStaticConfig().chartColors['dif']!
+          ..strokeWidth = KStaticConfig().lineWidth);
     canvas.drawLine(
         Offset(lX + halfWidth, lastDea),
         Offset(x + halfWidth, dea),
         paint
-          ..color = KStaticConfig.chartColors['dea']!
-          ..strokeWidth = KStaticConfig.lineWidth);
+          ..color = KStaticConfig().chartColors['dea']!
+          ..strokeWidth = KStaticConfig().lineWidth);
   }
 
   @override

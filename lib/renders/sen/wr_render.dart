@@ -9,8 +9,8 @@ import 'package:f_b_kline/k_static_config.dart';
 class WrRender extends IRender {
   WrRender(super.config, super.adapter) {
     paint
-      ..strokeWidth = KStaticConfig.lineWidth
-      ..color = KStaticConfig.chartColors['wr']!;
+      ..strokeWidth = KStaticConfig().lineWidth
+      ..color = KStaticConfig().chartColors['wr']!;
   }
 
   @override

@@ -26,11 +26,11 @@ class KdjRender extends IRender {
     double lastJ = l[SenIndex.j * 3 + 1];
 
     canvas.drawLine(Offset(lX + halfWidth, lastK), Offset(x + halfWidth, k),
-        paint..color = KStaticConfig.chartColors['k']!);
+        paint..color = KStaticConfig().chartColors['k']!);
     canvas.drawLine(Offset(lX + halfWidth, lastD), Offset(x + halfWidth, d),
-        paint..color = KStaticConfig.chartColors['d']!);
+        paint..color = KStaticConfig().chartColors['d']!);
     canvas.drawLine(Offset(lX + halfWidth, lastJ), Offset(x + halfWidth, j),
-        paint..color = KStaticConfig.chartColors['j']!);
+        paint..color = KStaticConfig().chartColors['j']!);
   }
 
   @override

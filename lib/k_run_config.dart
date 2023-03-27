@@ -28,7 +28,7 @@ class KRunConfig {
   double scaleX = 1, scaleY = 1;
   double volBaseY = 0.0, senBaseY = 0.0;
   double kRightSpace = 100;
-  double chartScaleWidth = KStaticConfig.candleItemWidth;
+  double chartScaleWidth = KStaticConfig().candleItemWidth;
 
   late IRender mainRender, xAxisRender;
   IRender? volRender;
@@ -67,10 +67,10 @@ class KRunConfig {
 
     senRender = MacdRender(this, adapter);
 
-    var padding = KStaticConfig.topPadding;
+    var padding = KStaticConfig().topPadding;
     this.type = type;
-    var rowCount = KStaticConfig.gridRowCount;
-    double item = (height - padding - KStaticConfig.xAxisHeight) / rowCount;
+    var rowCount = KStaticConfig().gridRowCount;
+    double item = (height - padding - KStaticConfig().xAxisHeight) / rowCount;
     mainRender = MainRender(this, adapter)
       ..axisPainter.add(KTextPainter(width, padding));
     switch (this.type!) {
@@ -138,11 +138,11 @@ class KRunConfig {
     }
 
     xAxisRender = XAxisRender(this, adapter);
-    var columnCount = KStaticConfig.gridRowCount;
+    var columnCount = KStaticConfig().gridRowCount;
     double xSpace = width / (columnCount);
     for (int i = 0; i <= rowCount; i++) {
       xAxisRender.axisPainter.add(KTextPainter(xSpace * i, height,
-          boxHeight: KStaticConfig.xAxisHeight));
+          boxHeight: KStaticConfig().xAxisHeight));
     }
   }
 
@@ -293,7 +293,7 @@ class KRunConfig {
         chartScaleWidth,
         mainRect!.height / (mainRender.chartAsiaMax - mainRender.chartAsiaMin),
         adapter.mainDisplayPoints,
-        preTranslateY: -KStaticConfig.topPadding);
+        preTranslateY: -KStaticConfig().topPadding);
     if (volRect != null) {
       KMatrixUtils().exeVolMatrix(
           translateX,
@@ -329,7 +329,7 @@ class KRunConfig {
     var halfWidth = width / 2;
     double rate = (halfWidth - translateX) / dataLength;
     scaleX = scale.clamp(0.2, 5);
-    chartScaleWidth = KStaticConfig.candleItemWidth * scaleX;
+    chartScaleWidth = KStaticConfig().candleItemWidth * scaleX;
     dataLength = calcDataLength(length);
     updateTranslate(halfWidth - (dataLength * rate), length);
   }

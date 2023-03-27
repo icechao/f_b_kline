@@ -10,7 +10,7 @@ abstract class IRender {
   final DataAdapter adapter;
   late double displayValueMax, displayValueMin, chartAsiaMax, chartAsiaMin;
   late int maxValueIndex, minValueIndex;
-  final Paint paint = Paint()..strokeWidth = KStaticConfig.lineWidth;
+  final Paint paint = Paint()..strokeWidth = KStaticConfig().lineWidth;
 
   final List<KTextPainter> axisPainter = [];
 
@@ -49,7 +49,7 @@ abstract class IRender {
     return TextSpan(
         text: text,
         style: TextStyle(
-            color: color ?? KStaticConfig.chartColors['text']!,
+            color: color ?? KStaticConfig().chartColors['text']!,
             fontSize: fontSize));
   }
 }

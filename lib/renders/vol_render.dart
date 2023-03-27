@@ -26,23 +26,23 @@ class VolRender extends IRender {
     canvas.drawLine(
         Offset(x + halfWidth, vol),
         Offset(x + halfWidth, config.volRect!.bottom),
-        paint..strokeWidth = itemWidth - KStaticConfig.candleItemSpace * 2);
+        paint..strokeWidth = itemWidth - KStaticConfig().candleItemSpace * 2);
 
     paint
       ..style = PaintingStyle.stroke
-      ..strokeWidth = KStaticConfig.lineWidth;
+      ..strokeWidth = KStaticConfig().lineWidth;
     if (!lastVolMa1.isInfinite && !volMa1.isInfinite) {
       canvas.drawLine(
           Offset(lX + halfWidth, lastVolMa1),
           Offset(x + halfWidth, volMa1),
-          paint..color = KStaticConfig.chartColors['volMaFir']!);
+          paint..color = KStaticConfig().chartColors['volMaFir']!);
     }
 
     if (!lastVolMa2.isInfinite && !volMa2.isInfinite) {
       canvas.drawLine(
           Offset(lX + halfWidth, lastVolMa2),
           Offset(x + halfWidth, volMa2),
-          paint..color = KStaticConfig.chartColors['volMaSen']!);
+          paint..color = KStaticConfig().chartColors['volMaSen']!);
     }
   }
 

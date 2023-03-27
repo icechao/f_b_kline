@@ -13,51 +13,51 @@ enum MainDisplayType { boll, ma, none }
 class KStaticConfig {
   ///---------------------------------------------------------
   ///主图ma
-   int mainMa1 = 5;
+  int mainMa1 = 5;
 
-   int mainMa2 = 10;
+  int mainMa2 = 10;
 
-   int mainMa3 = 20;
+  int mainMa3 = 20;
 
   ///boll参数
-   int bollN = 20;
+  int bollN = 20;
 
-   int bollK = 2;
+  int bollK = 2;
 
   ///cci参数
-   int cciCount = 14;
+  int cciCount = 14;
 
   /// kdj参数
-   int kdjN = 9;
+  int kdjN = 9;
 
-   int kdjM1 = 3;
+  int kdjM1 = 3;
 
-   int kdjM2 = 3;
+  int kdjM2 = 3;
 
   ///成交量ma
-   int volMa1 = 5;
+  int volMa1 = 5;
 
-   int volMa2 = 10;
+  int volMa2 = 10;
 
   ///wr
-   int rsiOne = 10;
+  int rsiOne = 10;
 
   ///rsi
-   int wrOne = 10;
+  int wrOne = 10;
 
   /// kdj
   ///计算使用参数
   ///macd
-   int macdS = 12;
+  int macdS = 12;
 
-   int macdL = 26;
+  int macdL = 26;
 
-   int macdM = 9;
+  int macdM = 9;
 
   ///---------------------------------------------------------
 
   static KStaticConfig? _instance;
-  static const xAxisHeight = 20.0;
+  double xAxisHeight = 20.0;
 
   KStaticConfig._internal() {
     _instance = this;
@@ -68,21 +68,20 @@ class KStaticConfig {
     return _instance!;
   }
 
-  static const gridRowCount = 5;
-  static const gridColumnCount = 5;
+  double topPadding = 30.0;
+  int gridRowCount = 5;
+  int gridColumnCount = 5;
 
-  static const candleItemWidth = 12.0;
-  static const candleItemSpace = 1.0;
-  static const infoWindowWidth = 120.0;
-  static const infoWindowWidthMarginVertical = 20.0;
-  static const infoWindowWidthMarginHorizontal = 20.0;
-  static const infoWindowItemHeight = 20.0;
-  static const lineWidth = 1.0;
-  static const defaultChartType = ChartGroupType.withVol;
+  double candleItemWidth = 12.0;
+  double candleItemSpace = 1.0;
+  double infoWindowWidth = 120.0;
+  double infoWindowWidthMarginVertical = 20.0;
+  double infoWindowWidthMarginHorizontal = 20.0;
+  double infoWindowItemHeight = 20.0;
+  double lineWidth = 1.0;
+  ChartGroupType defaultChartType = ChartGroupType.withVol;
 
-  static const topPadding = 30.0;
-
-  static const chartColors = {
+  final chartColors = {
     ///默认文本颜色
     'text': Colors.blue,
 

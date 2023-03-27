@@ -9,8 +9,8 @@ import 'package:f_b_kline/k_static_config.dart';
 class CciRender extends IRender {
   CciRender(super.config, super.adapter) {
     paint
-      ..strokeWidth = KStaticConfig.lineWidth
-      ..color = KStaticConfig.chartColors['cci']!;
+      ..strokeWidth = KStaticConfig().lineWidth
+      ..color = KStaticConfig().chartColors['cci']!;
   }
 
 

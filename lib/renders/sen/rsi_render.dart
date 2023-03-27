@@ -9,8 +9,8 @@ import 'package:f_b_kline/k_static_config.dart';
 class RsiRender extends IRender {
   RsiRender(super.config, super.adapter) {
     paint
-      ..strokeWidth = KStaticConfig.lineWidth
-      ..color = KStaticConfig.chartColors['rsi']!;
+      ..strokeWidth = KStaticConfig().lineWidth
+      ..color = KStaticConfig().chartColors['rsi']!;
   }
 
 
