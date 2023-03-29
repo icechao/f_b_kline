@@ -1,11 +1,11 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:f_b_kline/k_text_painter.dart';
+import 'package:f_b_kline/chart/k_text_painter.dart';
 import 'package:flutter/material.dart';
-import 'package:f_b_kline/entity/k_line_entity.dart';
-import 'package:f_b_kline/i_render.dart';
-import 'package:f_b_kline/k_static_config.dart';
+import 'package:f_b_kline/chart/entity/k_line_entity.dart';
+import 'package:f_b_kline/chart/i_render.dart';
+import 'package:f_b_kline/chart/k_static_config.dart';
 
 class KdjRender extends IRender {
   KdjRender(super.config, super.adapter) {
@@ -92,4 +92,6 @@ class KdjRender extends IRender {
       displayValueMin = min(displayValueMin, item.j!);
     }
   }
+  @override
+  double get axisTextSize => KStaticConfig().senAxisTextSize;
 }

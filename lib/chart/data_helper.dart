@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:f_b_kline/entity/k_line_entity.dart';
-import 'package:f_b_kline/k_static_config.dart';
+import 'package:f_b_kline/chart/entity/k_line_entity.dart';
+import 'package:f_b_kline/chart/k_static_config.dart';
 
 class DataUtil {
   static calculate(List<KLineEntity> dataList) {

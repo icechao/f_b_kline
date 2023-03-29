@@ -2,10 +2,10 @@ import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:f_b_kline/entity/k_line_entity.dart';
-import 'package:f_b_kline/i_render.dart';
-import 'package:f_b_kline/k_static_config.dart';
-import 'package:f_b_kline/k_text_painter.dart';
+import 'package:f_b_kline/chart/entity/k_line_entity.dart';
+import 'package:f_b_kline/chart/i_render.dart';
+import 'package:f_b_kline/chart/k_static_config.dart';
+import 'package:f_b_kline/chart/k_text_painter.dart';
 
 class MainRender extends IRender {
   final Path linePath = Path();
@@ -306,9 +306,17 @@ class MainRender extends IRender {
 
     KTextPainter(selectedDisplay[0], config.height,
             boxHeight: KStaticConfig().xAxisHeight)
-        .renderText(canvas, buildTextSpan(config.dateFormatter.call(data.time)),
+        .renderText(
+            canvas,
+            buildTextSpan(config.dateFormatter.call(data.time),
+                color: KStaticConfig().chartColors['selectedAxisDate'],
+                fontSize: KStaticConfig().mainXAxisTextSize),
             top: true,
             align: KTextAlign.center,
-            backGroundColor: KStaticConfig().chartColors['selectedTime']!);
+            backGroundColor:
+                KStaticConfig().chartColors['selectedDateBackground']!);
   }
+
+  @override
+  double get axisTextSize => KStaticConfig().mainAxisTextSize;
 }

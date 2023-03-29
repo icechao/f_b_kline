@@ -68,19 +68,52 @@ class KStaticConfig {
     return _instance!;
   }
 
+  ///主图纵坐标文字大小
+  double mainAxisTextSize = 10.0;
+
+  ///主图横坐标文字大小
+  double mainXAxisTextSize = 10.0;
+
+  ///成交量坐标文字大小
+  double volAxisTextSize = 10.0;
+
+  ///附图坐标文字大小
+  double senAxisTextSize = 10.0;
+
+  ///主图上内间距
   double topPadding = 30.0;
+
+  ///网格行数
   int gridRowCount = 5;
+
+  ///网络列数
   int gridColumnCount = 5;
 
+  ///candle width
   double candleItemWidth = 12.0;
+
+  ///candle/candle space
   double candleItemSpace = 1.0;
+
+  ///选中弹出窗口宽
   double infoWindowWidth = 120.0;
+
+  ///选中弹出窗纵向距离
   double infoWindowWidthMarginVertical = 20.0;
+
+  ///选中弹出窗纵向距离
   double infoWindowWidthMarginHorizontal = 20.0;
+
+  ///弹出窗每行高
   double infoWindowItemHeight = 20.0;
+
+  ///统一线宽
   double lineWidth = 1.0;
+
+  ///主图显示图表
   ChartGroupType defaultChartType = ChartGroupType.withVol;
 
+  ///十字线纵向渐变色
   List<Color> crossColors = [
     Colors.transparent,
     Colors.white30,
@@ -88,6 +121,7 @@ class KStaticConfig {
     Colors.transparent
   ];
 
+  ///十字线纵向渐变色关键眯
   List<double>? colorStops = [0.1, 0.3, 0.7, 0.9];
 
   final chartColors = {
@@ -106,8 +140,11 @@ class KStaticConfig {
     ///跌
     'decrease': Colors.red,
 
-    ///坐标文字
-    'axis': Colors.grey,
+    ///横坐标文字
+    'axisDate': Colors.grey,
+
+    ///选中横坐标文字
+    'selectedAxisDate': Colors.grey,
 
     ///网格
     'grid': Colors.blueGrey,
@@ -161,27 +198,13 @@ class KStaticConfig {
     'volMaSen': Colors.yellow,
 
     //选中的时间的背景色
-    'selectedTime': Colors.deepPurple,
+    'selectedDateBackground': Colors.deepPurple,
 
     //选中的时间的背景色
     'crossHorizontal': Colors.white,
     //选中的时间的背景色
     'infoWindowBackground': Colors.lightBlueAccent,
   };
-}
-
-class CalcKeys {
-  static const chartScaleWidth = 'chartScaleWidth';
-  static const translateX = 'translateX';
-  static const minTranslateX = 'minTranslateX';
-  static const widgetWidth = 'widgetWidth';
-  static const widgetHeight = 'widgetHeight';
-  static const dataLength = 'dataLength';
-  static const dataCount = 'dataCount';
-  static const screenLeft = 'screenLeft';
-  static const screenRight = 'screenRight';
-  static const mainRectHeight = 'mainRectHeight';
-  static const displayData = 'mainRectHeight';
 }
 
 class KMainIndex {

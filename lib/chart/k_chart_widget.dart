@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:f_b_kline/background_painter.dart';
-import 'package:f_b_kline/data_adapter.dart';
-import 'package:f_b_kline/chart_painter.dart';
-import 'package:f_b_kline/k_run_config.dart';
-import 'package:f_b_kline/k_static_config.dart';
+import 'package:f_b_kline/chart/background_painter.dart';
+import 'package:f_b_kline/chart/data_adapter.dart';
+import 'package:f_b_kline/chart/chart_painter.dart';
+import 'package:f_b_kline/chart/k_run_config.dart';
+import 'package:f_b_kline/chart/k_static_config.dart';
 
 class KChartWidget extends StatefulWidget {
   final DataAdapter adapter;

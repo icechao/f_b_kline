@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:f_b_kline/k_static_config.dart';
+import 'package:f_b_kline/chart/k_static_config.dart';
 
 class BackgroundPainter extends CustomPainter {
   final Paint backgroundPaint = Paint();

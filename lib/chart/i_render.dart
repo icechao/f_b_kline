@@ -1,9 +1,9 @@
+import 'package:f_b_kline/chart/entity/k_line_entity.dart';
+import 'package:f_b_kline/chart/k_run_config.dart';
 import 'package:flutter/material.dart';
-import 'package:f_b_kline/data_adapter.dart';
-import 'package:f_b_kline/entity/index.dart';
-import 'package:f_b_kline/k_run_config.dart';
-import 'package:f_b_kline/k_static_config.dart';
-import 'package:f_b_kline/k_text_painter.dart';
+import 'package:f_b_kline/chart/data_adapter.dart';
+import 'package:f_b_kline/chart/k_static_config.dart';
+import 'package:f_b_kline/chart/k_text_painter.dart';
 
 abstract class IRender {
   final KRunConfig config;
@@ -36,6 +36,8 @@ abstract class IRender {
           top: true, align: KTextAlign.left);
     }
   }
+
+  double get axisTextSize;
 
   ValueFormatter getFormatter() {
     return (number) {
