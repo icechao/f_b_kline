@@ -19,8 +19,6 @@ class RsiRender extends IRender {
   @override
   void renderChart(Canvas canvas, List<double> c, List<double> l,
       double itemWidth, int index) {
-    double lX = l[0];
-
     double x = c[0] + itemWidth / 2;
     double y = c[SenIndex.rsi * 3 + 1];
     double lastY = l[SenIndex.rsi * 3 + 1];

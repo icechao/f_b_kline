@@ -1,4 +1,8 @@
-# 
+# 做一个flutter最简单易用的K线  
+# 做性能优秀的K线  
+# 持续更新中有问题请到github中提
+
+
 
 A new Flutter project.
 

@@ -125,6 +125,8 @@ class KChartWidgetState extends State<KChartWidget>
         }
       },
       onScaleEnd: (ScaleEndDetails details) {
+
+        debugPrint('detail   :   ${details.velocity.pixelsPerSecond.dx}');
         var dataLength = widget.adapter.dataLength;
         if (dataLength > 0) {
           ClampingScrollSimulation clampingScrollSimulation =

@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:f_b_kline/chart/k_text_painter.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +21,6 @@ class MacdRender extends IRender {
     double dif = c[SenIndex.dif * 3 + 1];
     double dea = c[SenIndex.dea * 3 + 1];
     double lastDif = l[SenIndex.dif * 3 + 1];
-    double lastDea = l[SenIndex.dea * 3 + 1];
     double zero = c[c.length - 2];
 
     if (macd > zero) {

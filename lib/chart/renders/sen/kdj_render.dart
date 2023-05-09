@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:f_b_kline/chart/k_text_painter.dart';
 import 'package:flutter/material.dart';
@@ -92,6 +91,7 @@ class KdjRender extends IRender {
       displayValueMin = min(displayValueMin, item.j!);
     }
   }
+
   @override
   double get axisTextSize => KStaticConfig().senAxisTextSize;
 }
