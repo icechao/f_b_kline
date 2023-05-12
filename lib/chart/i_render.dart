@@ -5,6 +5,7 @@ import 'package:f_b_kline/chart/data_adapter.dart';
 import 'package:f_b_kline/chart/k_static_config.dart';
 import 'package:f_b_kline/chart/k_text_painter.dart';
 
+///interface
 abstract class IRender {
   final KRunConfig config;
   final DataAdapter adapter;
@@ -18,13 +19,17 @@ abstract class IRender {
 
   IRender(this.config, this.adapter);
 
+  ///paint chart
   void renderChart(Canvas canvas, List<double> c, List<double> l,
       double itemWidth, int index);
 
+  /// paint text
   void renderText(Canvas canvas);
 
+  ///paint lines
   void renderLine(Canvas canvas);
 
+  ///paint Axis
   void renderAxis(Canvas canvas) {
     if (axisPainter.isNotEmpty) {
       axisPainter.first.renderText(
@@ -39,12 +44,14 @@ abstract class IRender {
 
   double get axisTextSize;
 
+  /// chart formatter
   ValueFormatter getFormatter() {
     return (number) {
       return number?.toStringAsFixed(2) ?? '--';
     };
   }
 
+  ///calc max & min value
   void calcMaxMin(KLineEntity item, int index);
 
   InlineSpan buildTextSpan(String text, {Color? color, double fontSize = 10}) {

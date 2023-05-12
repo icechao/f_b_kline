@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// 图形变换工具类
-/// 将实际数据转换成图形上的点 
+/// 将实际数据转换成图形上的点
 class KMatrixUtils {
   static KMatrixUtils? _instance;
 
@@ -16,6 +16,7 @@ class KMatrixUtils {
 
   Matrix4? mainMatrix, volMatrix, senMatrix;
 
+  ///exe matrix transform for main
   void exeMainMatrix(double translateX, double translateY, double scaleX,
       double scaleY, List<double> data,
       {preTranslateY = 0.0}) {
@@ -28,6 +29,7 @@ class KMatrixUtils {
     KMatrixUtils().mainMatrix!.applyToVector3Array(data);
   }
 
+  ///exe matrix transform for vol
   void exeVolMatrix(double translateX, double translateY, double scaleX,
       double scaleY, List<double> data,
       {preTranslateY = 0.0}) {
@@ -40,6 +42,7 @@ class KMatrixUtils {
     KMatrixUtils().volMatrix!.applyToVector3Array(data);
   }
 
+  ///exe matrix transform for sen
   void exeSenMatrix(double translateX, double translateY, double scaleX,
       double scaleY, List<double> data,
       {preTranslateY = 0.0}) {

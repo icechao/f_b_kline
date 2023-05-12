@@ -3,6 +3,7 @@ import 'package:f_b_kline/chart/data_adapter.dart';
 import 'package:f_b_kline/chart/k_run_config.dart';
 import 'package:f_b_kline/chart/k_static_config.dart';
 
+///主视图绘制调度
 class ChartPainter extends CustomPainter {
   final KRunConfig runConfig;
   final ChartGroupType? type;

@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:f_b_kline/chart/export_k_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-import 'chart/export_k_chart.dart';
 
 void main() {
   runApp(MyApp());

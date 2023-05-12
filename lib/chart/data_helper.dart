@@ -8,20 +8,20 @@ import 'package:f_b_kline/chart/k_static_config.dart';
 /// 计算完成后会自动发送到主线程
 class DataUtil {
   static calculate(List<KLineEntity> dataList) {
-    calcMA(dataList, KStaticConfig().mainMa1, KStaticConfig().mainMa2,
+    _calcMA(dataList, KStaticConfig().mainMa1, KStaticConfig().mainMa2,
         KStaticConfig().mainMa3);
-    calcBOLL(dataList, KStaticConfig().bollN, KStaticConfig().bollK);
-    calcVolumeMA(dataList, KStaticConfig().volMa1, KStaticConfig().volMa2);
-    calcKDJ(dataList, KStaticConfig().kdjN, KStaticConfig().kdjM1,
+    _calcBOLL(dataList, KStaticConfig().bollN, KStaticConfig().bollK);
+    _calcVolumeMA(dataList, KStaticConfig().volMa1, KStaticConfig().volMa2);
+    _calcKDJ(dataList, KStaticConfig().kdjN, KStaticConfig().kdjM1,
         KStaticConfig().kdjM2);
-    calcMACD(dataList, KStaticConfig().macdS, KStaticConfig().macdL,
+    _calcMACD(dataList, KStaticConfig().macdS, KStaticConfig().macdL,
         KStaticConfig().macdM);
-    calcRSI(dataList, KStaticConfig().rsiOne);
-    calcWR(dataList, KStaticConfig().wrOne);
-    calcCCI(dataList, KStaticConfig().cciCount);
+    _calcRSI(dataList, KStaticConfig().rsiOne);
+    _calcWR(dataList, KStaticConfig().wrOne);
+    _calcCCI(dataList, KStaticConfig().cciCount);
   }
 
-  static calcMA(
+  static _calcMA(
       List<KLineEntity> dataList, int firParam, int senParam, int thrParam) {
     double fir = 0.0, sen = 0.0, thi = 0.0;
     if (dataList.isNotEmpty) {
@@ -58,7 +58,7 @@ class DataUtil {
     }
   }
 
-  static void calcBOLL(List<KLineEntity> dataList, int n, int k) {
+  static void _calcBOLL(List<KLineEntity> dataList, int n, int k) {
     _calcBOLLMA(n, dataList);
     for (int i = 0; i < dataList.length; i++) {
       KLineEntity entity = dataList[i];
@@ -96,7 +96,7 @@ class DataUtil {
   }
 
   /// 12 26 9
-  static void calcMACD(
+  static void _calcMACD(
       List<KLineEntity> dataList, int ma1, ma2, int diffParam) {
     double ema1 = 0;
     double ema2 = 0;
@@ -128,7 +128,7 @@ class DataUtil {
     }
   }
 
-  static void calcVolumeMA(List<KLineEntity> dataList, int volMa1, int volMa2) {
+  static void _calcVolumeMA(List<KLineEntity> dataList, int volMa1, int volMa2) {
     double volumeMa1 = 0.0;
     double volumeMa2 = 0.0;
 
@@ -154,7 +154,7 @@ class DataUtil {
     }
   }
 
-  static void calcRSI(List<KLineEntity> dataList, int rsiParsm) {
+  static void _calcRSI(List<KLineEntity> dataList, int rsiParsm) {
     double? rsi;
     double rsiABSEma = 0;
     double rsiMaxEma = 0;
@@ -178,7 +178,7 @@ class DataUtil {
     }
   }
 
-  static void calcKDJ(List<KLineEntity> dataList, int n, int m1, int m2) {
+  static void _calcKDJ(List<KLineEntity> dataList, int n, int m1, int m2) {
     var preK = 50.0;
     var preD = 50.0;
     final tmp = dataList.first;
@@ -213,7 +213,7 @@ class DataUtil {
     }
   }
 
-  static void calcWR(List<KLineEntity> dataList, int wrParam) {
+  static void _calcWR(List<KLineEntity> dataList, int wrParam) {
     double r;
     for (int i = 0; i < dataList.length; i++) {
       KLineEntity entity = dataList[i];
@@ -236,7 +236,7 @@ class DataUtil {
     }
   }
 
-  static void calcCCI(List<KLineEntity> dataList, int count) {
+  static void _calcCCI(List<KLineEntity> dataList, int count) {
     final size = dataList.length;
     for (int i = 0; i < size; i++) {
       final kline = dataList[i];

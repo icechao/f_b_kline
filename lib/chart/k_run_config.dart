@@ -14,7 +14,10 @@ import 'package:f_b_kline/chart/renders/sen/macd_render.dart';
 import 'package:f_b_kline/chart/renders/vol_render.dart';
 import 'package:f_b_kline/chart/renders/x_axis_render.dart';
 
+///日期格式化
 typedef DateFormatter = String Function(int?);
+
+///数值格式化
 typedef ValueFormatter = String Function(num?);
 
 ///单例类,K线运行时类库
@@ -53,16 +56,18 @@ class KRunConfig {
       required this.mainValueFormatter,
       required this.volValueFormatter});
 
-  ///计算横向最大长度
+  ///max length of data
   double calcDataLength(int count) {
     return count * chartScaleWidth;
   }
 
+  /// storage size in memory
   void setSize(Size size) {
     width = size.width;
     height = size.height;
   }
 
+  /// init area rest
   void initRect(ChartGroupType? type, DataAdapter adapter) {
     type ??= ChartGroupType.withVol;
     if (this.type == type) {
@@ -155,7 +160,7 @@ class KRunConfig {
     }
   }
 
-  ///计算屏幕显示的左右坐标
+  ///index of screen left & right
   void calcScreenIndex(DataAdapter adapter) {
     double dataLength = calcDataLength(adapter.dataLength);
 
@@ -180,6 +185,7 @@ class KRunConfig {
     }
   }
 
+  ///calc data witch need display
   void calcShowValues(DataAdapter adapter) {
     adapter.mainDisplayPoints = [];
     adapter.volDisplayPoints = [];
@@ -324,6 +330,7 @@ class KRunConfig {
     }
   }
 
+  /// calc min translate
   double calcMinTranslateX(int itemCount) {
     var length = -calcDataLength(itemCount);
     if (kRightSpace - length > width) {
@@ -333,6 +340,7 @@ class KRunConfig {
     }
   }
 
+  /// change sacle
   void updateScale(double scale, int length) {
     var dataLength = calcDataLength(length);
     var halfWidth = width / 2;
@@ -343,21 +351,25 @@ class KRunConfig {
     updateTranslate(halfWidth - (dataLength * rate), length);
   }
 
+  ///change translate to new translate
   void updateTranslate(double translate, int length) {
     var min = calcMinTranslateX(length);
     translateX = translate.clamp(min, 0);
   }
 
+  ///update translate with diff
   void updateTranslateWithDx(double dx, int length) {
     var min = calcMinTranslateX(length);
     translateX = (translateX + dx).clamp(min, 0);
   }
 
+  /// x to index
   int xToIndex(double x, int length) {
     var ceil = ((x - translateX) / chartScaleWidth).floor();
     return ceil.clamp(0, length - 1);
   }
 
+  ///paint
   void renderChart(Canvas canvas, DataAdapter adapter) {
     for (int i = screenLeft; i <= screenRight; i++) {
       int startIndex = 3 * 10 * (i - screenLeft);
@@ -423,6 +435,7 @@ class KRunConfig {
       ..renderText(canvas);
   }
 
+  /// change selected x
   void updateSelectedX(double? dx) {
     if (dx == null) {
       selectedIndex = null;
@@ -430,6 +443,7 @@ class KRunConfig {
     selectedX = dx;
   }
 
+  /// get market info
   Map<String, String> getMarketInfo(DataAdapter adapter, int selectedIndex) {
     KLineEntity data = adapter.data[selectedIndex];
 
@@ -442,6 +456,7 @@ class KRunConfig {
       ..['vol'] = mainValueFormatter.call(data.vol);
   }
 
+  /// second render init
   IRender getSenRender(DataAdapter adapter) {
     switch (chartSenType) {
       case ChartSenType.macd:

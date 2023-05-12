@@ -6,6 +6,7 @@ import 'package:f_b_kline/chart/entity/k_line_entity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:f_b_kline/chart/k_static_config.dart';
 
+///数据适配器
 class DataAdapter {
   List<KLineEntity> data = [];
   int dataLength = 0;
@@ -20,14 +21,17 @@ class DataAdapter {
   StreamController<double> translateController =
       StreamController<double>.broadcast();
 
+  ///注册数据变化监听
   StreamSubscription bindDataListener(void Function(dynamic) function) {
     return dataController.stream.listen(function);
   }
 
+  ///注册K线布局变化监听
   StreamSubscription bindChartTypeListener(void Function(dynamic) function) {
     return typeController.stream.listen(function);
   }
 
+  ///注册改变k线位置监听
   StreamSubscription bindTranslateListener(void Function(double) function) {
     return translateController.stream.listen(function);
   }
@@ -66,6 +70,7 @@ class DataAdapter {
     _initReceive();
   }
 
+  ///init listeners
   void _initReceive() async {
     ReceivePort receivePort = ReceivePort();
     receivePort.listen((message) {
@@ -90,6 +95,7 @@ class DataAdapter {
   }
 }
 
+/// new thread
 _isolateFuture(SendPort sendPort) {
   ReceivePort receivePort = ReceivePort();
 

@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
+/// 文本位置枚举
 enum KTextAlign { left, center, right }
 
-///文本渲染类
+///文本渲染封装
 class KTextPainter {
   final Paint paint = Paint();
 
@@ -15,6 +16,7 @@ class KTextPainter {
       ..strutStyle = strutStyle;
   }
 
+  /// paint text
   renderText(Canvas canvas, InlineSpan span,
       {bool top = false, KTextAlign? align, Color? backGroundColor}) {
     painter

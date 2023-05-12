@@ -77,6 +77,11 @@ class MainRender extends IRender {
         break;
     }
 
+    renderPriceLine(index, x, canvas, close);
+  }
+
+  /// paint current price
+  void renderPriceLine(int index, double x, ui.Canvas canvas, double close) {
     if (index == config.screenRight) {
       var textPainter = TextPainter()
         ..text = buildTextSpan(
@@ -85,10 +90,11 @@ class MainRender extends IRender {
         ..textDirection = TextDirection.rtl
         ..layout();
 
-      var textWidth = textPainter.width;
-      var halfTextHeight = textPainter.height / 2;
-      if (textWidth + x < config.width) {
-        double lintRight = config.width - textWidth;
+      var textWidth = textPainter.width,
+          halfTextHeight = textPainter.height / 2,
+          width = config.width;
+      if (textWidth + x < width) {
+        double lintRight = width - textWidth;
         for (double positionX = x;
             positionX < lintRight && positionX < lintRight;
             positionX += 4) {
@@ -98,32 +104,33 @@ class MainRender extends IRender {
               paint..color = KStaticConfig().chartColors['priceLineColor']!);
         }
         canvas.drawRect(
-            Rect.fromLTRB(config.width - textWidth, close - halfTextHeight,
-                config.width, close + halfTextHeight),
+            Rect.fromLTRB(width - textWidth, close - halfTextHeight, width,
+                close + halfTextHeight),
             paint
               ..color =
                   KStaticConfig().chartColors['priceLineRectBackground']!);
         textPainter.paint(
-            canvas, Offset(config.width - textWidth, close - halfTextHeight));
+            canvas, Offset(width - textWidth, close - halfTextHeight));
       } else {
-        for (double positionX = 0; positionX < config.width; positionX += 4) {
+        for (double positionX = 0; positionX < width; positionX += 4) {
           canvas.drawLine(
               Offset(positionX, close),
               Offset(positionX + 2, close),
               paint..color = KStaticConfig().chartColors['priceLineColor']!);
         }
         canvas.drawRRect(
-            RRect.fromLTRBR(config.width - textWidth * 2, close - halfTextHeight,
-                config.width - textWidth, close + halfTextHeight,Radius.circular(2)),
+            RRect.fromLTRBR(width - textWidth * 2, close - halfTextHeight,
+                width - textWidth, close + halfTextHeight, Radius.circular(2)),
             paint
               ..color =
                   KStaticConfig().chartColors['priceLineRectBackground']!);
-        textPainter.paint(canvas,
-            Offset(config.width - textWidth * 2, close - halfTextHeight));
+        textPainter.paint(
+            canvas, Offset(width - textWidth * 2, close - halfTextHeight));
       }
     }
   }
 
+  /// paint time line
   void renderTimeLine(
       List<double> l, double close, double lX, double x, ui.Canvas canvas) {
     Color chartColor = KStaticConfig().chartColors['timeLine'] as ui.Color;
@@ -155,6 +162,7 @@ class MainRender extends IRender {
     canvas.drawPath(linePath, fillPaint);
   }
 
+  /// paint ma line
   void renderMa(List<double> c, List<double> l, ui.Canvas canvas, double x,
       double open, double close, double itemWidth, double lX) {
     double maOne = c[KMainIndex.maOne * 3 + 1];
@@ -180,6 +188,7 @@ class MainRender extends IRender {
     }
   }
 
+  /// paint boll line
   void renderBoll(List<double> c, List<double> l, ui.Canvas canvas, double x,
       double open, double close, double itemWidth, double lX) {
     double mb = c[KMainIndex.mb * 3 + 1];
@@ -331,7 +340,7 @@ class MainRender extends IRender {
     }
   }
 
-  ///绘制十字线
+  /// paint cross line
   void renderCross(Canvas canvas, int selectedIndex, KLineEntity data) {
     int startIndex = 3 * 10 * (selectedIndex - config.screenLeft);
     int stopIndex = 3 * 10 * (selectedIndex - config.screenLeft + 1);

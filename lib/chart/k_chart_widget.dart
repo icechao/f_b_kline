@@ -208,6 +208,7 @@ class KChartWidgetState extends State<KChartWidget>
     );
   }
 
+  /// next frame repaint
   void reRender({bool force = false}) {
     if (force) {
       repaint.value = DateTime.now().millisecondsSinceEpoch;

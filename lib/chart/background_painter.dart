@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:f_b_kline/chart/k_static_config.dart';
 
+/// K线背景绘制画笔
 class BackgroundPainter extends CustomPainter {
   final Paint backgroundPaint = Paint();
   final Paint gridPaint = Paint();
