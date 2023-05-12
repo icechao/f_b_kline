@@ -76,6 +76,52 @@ class MainRender extends IRender {
         renderTimeLine(l, close, lX, x, canvas);
         break;
     }
+
+    if (index == config.screenRight) {
+      var textPainter = TextPainter()
+        ..text = buildTextSpan(
+            config.mainValueFormatter.call(adapter.data.last.close),
+            color: KStaticConfig().chartColors['priceLineText']!)
+        ..textDirection = TextDirection.rtl
+        ..layout();
+
+      var textWidth = textPainter.width;
+      var halfTextHeight = textPainter.height / 2;
+      if (textWidth + x < config.width) {
+        double lintRight = config.width - textWidth;
+        for (double positionX = x;
+            positionX < lintRight && positionX < lintRight;
+            positionX += 4) {
+          canvas.drawLine(
+              Offset(positionX, close),
+              Offset(positionX + 2, close),
+              paint..color = KStaticConfig().chartColors['priceLineColor']!);
+        }
+        canvas.drawRect(
+            Rect.fromLTRB(config.width - textWidth, close - halfTextHeight,
+                config.width, close + halfTextHeight),
+            paint
+              ..color =
+                  KStaticConfig().chartColors['priceLineRectBackground']!);
+        textPainter.paint(
+            canvas, Offset(config.width - textWidth, close - halfTextHeight));
+      } else {
+        for (double positionX = 0; positionX < config.width; positionX += 4) {
+          canvas.drawLine(
+              Offset(positionX, close),
+              Offset(positionX + 2, close),
+              paint..color = KStaticConfig().chartColors['priceLineColor']!);
+        }
+        canvas.drawRRect(
+            RRect.fromLTRBR(config.width - textWidth * 2, close - halfTextHeight,
+                config.width - textWidth, close + halfTextHeight,Radius.circular(2)),
+            paint
+              ..color =
+                  KStaticConfig().chartColors['priceLineRectBackground']!);
+        textPainter.paint(canvas,
+            Offset(config.width - textWidth * 2, close - halfTextHeight));
+      }
+    }
   }
 
   void renderTimeLine(

@@ -3,6 +3,9 @@ import 'dart:math';
 import 'package:f_b_kline/chart/entity/k_line_entity.dart';
 import 'package:f_b_kline/chart/k_static_config.dart';
 
+/// 数据加工类
+/// 计算数据指标,运算会在子线程中进行
+/// 计算完成后会自动发送到主线程
 class DataUtil {
   static calculate(List<KLineEntity> dataList) {
     calcMA(dataList, KStaticConfig().mainMa1, KStaticConfig().mainMa2,

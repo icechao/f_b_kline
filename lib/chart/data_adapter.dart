@@ -33,6 +33,7 @@ class DataAdapter {
   }
 
   ///重置数据 当数据发生变化时调用
+  ///[KLineEntity]数据模型
   resetData(List<KLineEntity>? data, {bool resetTranslate = false}) {
     dataLength = data?.length ?? 0;
     this.data
@@ -40,14 +41,21 @@ class DataAdapter {
       ..addAll(data ?? []);
     if (resetTranslate) {
       /// 是否使用动画重置
+      changeTranslate(double.minPositive);
     }
     sendPort.send(data);
   }
 
-  changeType(ChartGroupType type) {
+  ///chart显示组合类型 会自动根据类型切换对应的类型
+  /// [ChartGroupType]  主图成交量指标视图显示
+  /// [ChartSenType]    附图类型显示
+  /// [ChartDisplayType]  K线还是折线图
+  /// [MainDisplayType]  主图指标显示
+  changeType(dynamic type) {
     typeController.add(type);
   }
 
+  ///X轴平移变化
   changeTranslate(double translate) {
     translateController.add(translate);
   }
@@ -55,10 +63,10 @@ class DataAdapter {
   late SendPort sendPort;
 
   DataAdapter() {
-    initReceive();
+    _initReceive();
   }
 
-  void initReceive() async {
+  void _initReceive() async {
     ReceivePort receivePort = ReceivePort();
     receivePort.listen((message) {
       if (message is SendPort) {
@@ -72,7 +80,7 @@ class DataAdapter {
       }
     });
     isolate ??= await Isolate.spawn(
-      isolateFuture,
+      _isolateFuture,
       receivePort.sendPort,
     );
   }
@@ -82,7 +90,7 @@ class DataAdapter {
   }
 }
 
-isolateFuture(SendPort sendPort) {
+_isolateFuture(SendPort sendPort) {
   ReceivePort receivePort = ReceivePort();
 
   receivePort.listen((message) {

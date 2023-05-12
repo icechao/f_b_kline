@@ -3,10 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:f_b_kline/chart/data_adapter.dart';
-import 'package:f_b_kline/chart/entity/index.dart';
-import 'package:f_b_kline/chart/k_chart_widget.dart';
-import 'package:f_b_kline/chart/k_run_config.dart';
+
+import 'chart/export_k_chart.dart';
 
 void main() {
   runApp(MyApp());

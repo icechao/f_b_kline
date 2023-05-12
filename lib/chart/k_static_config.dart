@@ -108,7 +108,7 @@ class KStaticConfig {
   double infoWindowItemHeight = 20.0;
 
   ///统一线宽
-  double lineWidth = 1.0;
+  double lineWidth = 0.6;
 
   ///主图显示图表
   ChartGroupType defaultChartType = ChartGroupType.withVol;
@@ -132,7 +132,7 @@ class KStaticConfig {
     'timeLine': Colors.blue,
 
     ///背景色
-    'background': Colors.grey,
+    'background': Colors.black,
 
     ///涨
     'increase': Colors.green,
@@ -202,8 +202,18 @@ class KStaticConfig {
 
     //选中的时间的背景色
     'crossHorizontal': Colors.white,
+
     //选中的时间的背景色
     'infoWindowBackground': Colors.lightBlueAccent,
+
+    //当前价格线颜色
+    'priceLineColor': Colors.grey,
+
+    //当前价格框背景颜色
+    'priceLineRectBackground': Colors.orange,
+
+    //当前价格文字颜色
+    'priceLineText': Colors.white,
   };
 }
 

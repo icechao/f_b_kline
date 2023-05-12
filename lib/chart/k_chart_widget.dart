@@ -61,6 +61,11 @@ class KChartWidgetState extends State<KChartWidget>
           widget.config.chartSenType = type;
           reRender(force: true);
         }
+      } else if (type is ChartDisplayType) {
+        if (type != widget.config.chartDisplayType) {
+          widget.config.chartDisplayType = type;
+          reRender(force: true);
+        }
       }
     });
 
@@ -125,7 +130,6 @@ class KChartWidgetState extends State<KChartWidget>
         }
       },
       onScaleEnd: (ScaleEndDetails details) {
-
         debugPrint('detail   :   ${details.velocity.pixelsPerSecond.dx}');
         var dataLength = widget.adapter.dataLength;
         if (dataLength > 0) {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// 图形变换工具类
+/// 将实际数据转换成图形上的点 
 class KMatrixUtils {
   static KMatrixUtils? _instance;
 
