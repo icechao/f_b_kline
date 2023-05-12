@@ -1,4 +1,12 @@
+
+
+<img src="https://github.com/icechao/KlineChart/blob/master/1565013719576.gif" width="320" hegiht="480" align=center />
+
 ### 使用
+持续更新中请尽量使用库依赖
+
+Adapter不需要重新初始化 只需要一个adapter请做好内存管理
+
 ```dart
 
     final DataAdapter adapter = DataAdapter();
@@ -8,9 +16,12 @@
    return Container(
           margin: const EdgeInsets.only(top: 100),
           width: double.maxFinite,
-          height: 400,
+          ///max height
+          height: 400, 
           child: KChartWidget(
+            /// data adapter 
             adapter,
+            /// static config
             config: KRunConfig(
               dateFormatter: (int? value) {
                 return formatDate(
@@ -27,10 +38,13 @@
         )
 ```
 ### 修改指数参数及配置信息   
-    KStaticConfig
+    KStaticConfig 静态配置信息不
 ```dart
-KStaticConfig().mainMa1 = 10;
-adapter.resetData(data)
+
+    KStaticConfig()
+      ..mainMa1 = 10
+      ..mainMa2 = 30
+      ....
 
 ```
 ### 常用API
@@ -42,15 +56,17 @@ adapter.resetData(data)
 
 
 ```dart
-  ///chart显示组合类型 会自动根据类型切换对应的类型
-  /// [ChartGroupType]  主图成交量指标视图显示
-  /// [ChartSenType]    附图类型显示
-  /// [ChartDisplayType]  K线还是折线图
-  /// [MainDisplayType]  主图指标显示
+  ///chart display type 
+  /// [ChartGroupType]  main display area
+  /// [ChartSenType]    second type
+  /// [ChartDisplayType]  time/kline
+  /// [MainDisplayType]   boll / ma /none
   changeType(dynamic type) 
 ```
 
 ```dart
-  ///X轴平移变化
+  /// change chart display location
   changeTranslate(double translate)
 ```
+
+
