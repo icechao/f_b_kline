@@ -9,7 +9,7 @@ class KTextPainter {
 
   late double x, y, boxHeight;
   late TextPainter painter = TextPainter();
-
+  /// 对文本进行二次封装方便后期使用
   KTextPainter(this.x, this.y, {StrutStyle? strutStyle, this.boxHeight = 0}) {
     painter
       ..textDirection = TextDirection.ltr

@@ -76,13 +76,13 @@ class VolRender extends IRender {
 
     if (data.maVolume1 != null) {
       text.add(buildTextSpan(
-          '  MA(${KStaticConfig().volMa1}):${config.volValueFormatter.call(data.maVolume1)}',
+          '  MA(${KIndexParams().volMa1}):${config.volValueFormatter.call(data.maVolume1)}',
           color: KStaticConfig().chartColors['volMaFir']));
     }
 
     if (data.maVolume2 != null) {
       text.add(buildTextSpan(
-          '  MA(${KStaticConfig().volMa1}):${config.volValueFormatter.call(data.maVolume2)}',
+          '  MA(${KIndexParams().volMa1}):${config.volValueFormatter.call(data.maVolume2)}',
           color: KStaticConfig().chartColors['volMaSen']));
     }
     KTextPainter(config.volRect!.left, config.volRect!.top)

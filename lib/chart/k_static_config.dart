@@ -8,52 +8,11 @@ enum ChartDisplayType { kline, timeLine }
 
 enum MainDisplayType { boll, ma, none }
 
+enum CrossType { followClose, followFinger, followAll }
+
 ///静态常量工具不需要修改
 ///只需要在运行前修改代码
 class KStaticConfig {
-  ///---------------------------------------------------------
-  ///主图ma
-  int mainMa1 = 5;
-
-  int mainMa2 = 10;
-
-  int mainMa3 = 20;
-
-  ///boll参数
-  int bollN = 20;
-
-  int bollK = 2;
-
-  ///cci参数
-  int cciCount = 14;
-
-  /// kdj参数
-  int kdjN = 9;
-
-  int kdjM1 = 3;
-
-  int kdjM2 = 3;
-
-  ///成交量ma
-  int volMa1 = 5;
-
-  int volMa2 = 10;
-
-  ///wr
-  int rsiOne = 10;
-
-  ///rsi
-  int wrOne = 10;
-
-  /// kdj
-  ///计算使用参数
-  ///macd
-  int macdS = 12;
-
-  int macdL = 26;
-
-  int macdM = 9;
-
   ///---------------------------------------------------------
 
   static KStaticConfig? _instance;
@@ -113,7 +72,7 @@ class KStaticConfig {
   ///主图显示图表
   ChartGroupType defaultChartType = ChartGroupType.withVol;
 
-  ///十字线纵向渐变色
+  ///十字线渐变色,仅在十字线竖线是宽线模式线生效
   List<Color> crossColors = [
     Colors.transparent,
     Colors.white30,
@@ -202,6 +161,7 @@ class KStaticConfig {
 
     //选中的时间的背景色
     'crossHorizontal': Colors.white,
+    'crossVertical': Colors.white,
 
     //选中的时间的背景色
     'infoWindowBackground': Colors.lightBlueAccent,
@@ -215,6 +175,60 @@ class KStaticConfig {
     //当前价格文字颜色
     'priceLineText': Colors.white,
   };
+}
+
+class KIndexParams {
+  static KIndexParams? _instance;
+
+  KIndexParams._internal() {
+    _instance = this;
+  }
+
+  factory KIndexParams() {
+    _instance ??= KIndexParams._internal();
+    return _instance!;
+  }
+
+  int mainMa1 = 5;
+
+  int mainMa2 = 10;
+
+  int mainMa3 = 20;
+
+  ///boll参数
+  int bollN = 20;
+
+  int bollK = 2;
+
+  ///cci参数
+  int cciCount = 14;
+
+  /// kdj参数
+  int kdjN = 9;
+
+  int kdjM1 = 3;
+
+  int kdjM2 = 3;
+
+  ///成交量ma
+  int volMa1 = 5;
+
+  int volMa2 = 10;
+
+  ///wr
+  int rsiOne = 10;
+
+  ///rsi
+  int wrOne = 10;
+
+  /// kdj
+  ///计算使用参数
+  ///macd
+  int macdS = 12;
+
+  int macdL = 26;
+
+  int macdM = 9;
 }
 
 class KMainIndex {

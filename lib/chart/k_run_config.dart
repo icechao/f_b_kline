@@ -26,6 +26,7 @@ class KRunConfig {
   final DateFormatter dateFormatter;
   final ValueFormatter mainValueFormatter;
   final ValueFormatter volValueFormatter;
+  final CrossType crossType;
 
   late double height, width;
   Rect? mainRect, volRect, senRect;
@@ -48,13 +49,15 @@ class KRunConfig {
 
   late Color chartColor;
 
-  double? selectedX;
+  /// 手势触发时按住的位置
+  double? selectedX, selectedY;
   int? selectedIndex;
 
   KRunConfig(
       {required this.dateFormatter,
       required this.mainValueFormatter,
-      required this.volValueFormatter});
+      required this.volValueFormatter,
+      this.crossType = CrossType.followAll});
 
   ///max length of data
   double calcDataLength(int count) {
@@ -441,6 +444,11 @@ class KRunConfig {
       selectedIndex = null;
     }
     selectedX = dx;
+  }
+
+  /// change selected x
+  void updateSelectedY(double? dy) {
+    selectedY = dy;
   }
 
   /// get market info

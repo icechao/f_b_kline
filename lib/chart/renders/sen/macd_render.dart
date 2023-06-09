@@ -70,7 +70,7 @@ class MacdRender extends IRender {
 
     List<InlineSpan> text = [
       buildTextSpan(
-          'MACD(${KStaticConfig().macdS},${KStaticConfig().macdL},${KStaticConfig().macdL}):${data.macd?.toStringAsFixed(2)}',
+          'MACD(${KIndexParams().macdS},${KIndexParams().macdL},${KIndexParams().macdL}):${data.macd?.toStringAsFixed(2)}',
           color: KStaticConfig().chartColors['text'])
     ];
 

@@ -8,17 +8,17 @@ import 'package:f_b_kline/chart/k_static_config.dart';
 /// 计算完成后会自动发送到主线程
 class DataUtil {
   static calculate(List<KLineEntity> dataList) {
-    _calcMA(dataList, KStaticConfig().mainMa1, KStaticConfig().mainMa2,
-        KStaticConfig().mainMa3);
-    _calcBOLL(dataList, KStaticConfig().bollN, KStaticConfig().bollK);
-    _calcVolumeMA(dataList, KStaticConfig().volMa1, KStaticConfig().volMa2);
-    _calcKDJ(dataList, KStaticConfig().kdjN, KStaticConfig().kdjM1,
-        KStaticConfig().kdjM2);
-    _calcMACD(dataList, KStaticConfig().macdS, KStaticConfig().macdL,
-        KStaticConfig().macdM);
-    _calcRSI(dataList, KStaticConfig().rsiOne);
-    _calcWR(dataList, KStaticConfig().wrOne);
-    _calcCCI(dataList, KStaticConfig().cciCount);
+    _calcMA(dataList, KIndexParams().mainMa1, KIndexParams().mainMa2,
+        KIndexParams().mainMa3);
+    _calcBOLL(dataList, KIndexParams().bollN, KIndexParams().bollK);
+    _calcVolumeMA(dataList, KIndexParams().volMa1, KIndexParams().volMa2);
+    _calcKDJ(dataList, KIndexParams().kdjN, KIndexParams().kdjM1,
+        KIndexParams().kdjM2);
+    _calcMACD(dataList, KIndexParams().macdS, KIndexParams().macdL,
+        KIndexParams().macdM);
+    _calcRSI(dataList, KIndexParams().rsiOne);
+    _calcWR(dataList, KIndexParams().wrOne);
+    _calcCCI(dataList, KIndexParams().cciCount);
   }
 
   static _calcMA(
@@ -128,7 +128,8 @@ class DataUtil {
     }
   }
 
-  static void _calcVolumeMA(List<KLineEntity> dataList, int volMa1, int volMa2) {
+  static void _calcVolumeMA(
+      List<KLineEntity> dataList, int volMa1, int volMa2) {
     double volumeMa1 = 0.0;
     double volumeMa2 = 0.0;
 

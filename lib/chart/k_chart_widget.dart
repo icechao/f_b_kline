@@ -7,6 +7,7 @@ import 'package:f_b_kline/chart/chart_painter.dart';
 import 'package:f_b_kline/chart/k_run_config.dart';
 import 'package:f_b_kline/chart/k_static_config.dart';
 
+/// Kline chart Widget
 class KChartWidget extends StatefulWidget {
   final DataAdapter adapter;
   final KRunConfig config;
@@ -26,10 +27,12 @@ class KChartWidgetState extends State<KChartWidget>
         AnimationLocalListenersMixin {
   late ValueNotifier<int> repaint;
 
+  ///bind stream
   StreamSubscription? bindChartTypeListener,
       bindDataListener,
       bindTranslateListener;
 
+  ///animation Controller
   AnimationController? animationController;
 
   @override
@@ -111,6 +114,7 @@ class KChartWidgetState extends State<KChartWidget>
             reRender();
           } else {
             widget.config.updateSelectedX(details.focalPoint.dx);
+            widget.config.updateSelectedY(details.localFocalPoint.dy);
           }
         }
       },
@@ -165,8 +169,10 @@ class KChartWidgetState extends State<KChartWidget>
         if (dataLength > 0) {
           if (widget.config.selectedX != null) {
             widget.config.updateSelectedX(null);
+            widget.config.updateSelectedY(null);
           } else {
             widget.config.updateSelectedX(details.globalPosition.dx);
+            widget.config.updateSelectedY(details.localPosition.dy);
           }
           reRender();
         }
@@ -176,6 +182,7 @@ class KChartWidgetState extends State<KChartWidget>
 
         if (dataLength > 0) {
           widget.config.updateSelectedX(details.globalPosition.dx);
+          widget.config.updateSelectedY(details.localPosition.dy);
           reRender();
         }
       },
@@ -184,6 +191,7 @@ class KChartWidgetState extends State<KChartWidget>
 
         if (dataLength > 0) {
           widget.config.updateSelectedX(details.globalPosition.dx);
+          widget.config.updateSelectedY(details.localPosition.dy);
           reRender();
         }
       },

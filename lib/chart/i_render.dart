@@ -24,12 +24,15 @@ abstract class IRender {
       double itemWidth, int index);
 
   /// paint text
+  /// [canvas]
   void renderText(Canvas canvas);
 
   ///paint lines
+  /// [canvas]
   void renderLine(Canvas canvas);
 
   ///paint Axis
+  /// [canvas]
   void renderAxis(Canvas canvas) {
     if (axisPainter.isNotEmpty) {
       axisPainter.first.renderText(
@@ -42,6 +45,7 @@ abstract class IRender {
     }
   }
 
+  /// axis text size
   double get axisTextSize;
 
   /// chart formatter
@@ -54,6 +58,7 @@ abstract class IRender {
   ///calc max & min value
   void calcMaxMin(KLineEntity item, int index);
 
+  /// build a text span
   InlineSpan buildTextSpan(String text, {Color? color, double fontSize = 10}) {
     return TextSpan(
         text: text,

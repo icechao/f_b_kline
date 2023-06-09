@@ -9,6 +9,7 @@ class KMatrixUtils {
     _instance = this;
   }
 
+  /// factory
   factory KMatrixUtils() {
     _instance ??= KMatrixUtils._internal();
     return _instance!;

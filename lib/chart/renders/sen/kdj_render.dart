@@ -59,7 +59,7 @@ class KdjRender extends IRender {
 
     List<InlineSpan> text = [
       buildTextSpan(
-          'KDJ(${KStaticConfig().kdjN},${KStaticConfig().kdjM1},${KStaticConfig().kdjM2})}',
+          'KDJ(${KIndexParams().kdjN},${KIndexParams().kdjM1},${KIndexParams().kdjM2})}',
           color: KStaticConfig().chartColors['text'])
     ];
 

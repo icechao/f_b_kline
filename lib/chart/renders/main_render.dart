@@ -119,8 +119,12 @@ class MainRender extends IRender {
               paint..color = KStaticConfig().chartColors['priceLineColor']!);
         }
         canvas.drawRRect(
-            RRect.fromLTRBR(width - textWidth * 2, close - halfTextHeight,
-                width - textWidth, close + halfTextHeight, Radius.circular(2)),
+            RRect.fromLTRBR(
+                width - textWidth * 2,
+                close - halfTextHeight,
+                width - textWidth,
+                close + halfTextHeight,
+                const Radius.circular(2)),
             paint
               ..color =
                   KStaticConfig().chartColors['priceLineRectBackground']!);
@@ -346,18 +350,64 @@ class MainRender extends IRender {
     int stopIndex = 3 * 10 * (selectedIndex - config.screenLeft + 1);
     var selectedDisplay =
         adapter.mainDisplayPoints.sublist(startIndex, stopIndex);
-
-    var dx = selectedDisplay[0] + config.chartScaleWidth / 2;
     var dy = selectedDisplay[KMainIndex.close * 3 + 1];
-    canvas.drawLine(Offset(0, dy), Offset(config.width, dy),
-        paint..color = KStaticConfig().chartColors['crossHorizontal']!);
 
-    canvas.drawLine(
-        Offset(dx, 0),
-        Offset(dx, config.height - KStaticConfig().xAxisHeight),
+    var maxDy = config.height - KStaticConfig().xAxisHeight;
+    switch (config.crossType) {
+      case CrossType.followClose:
+        var dx = selectedDisplay[0] + config.chartScaleWidth / 2;
+
+        ///横线
+        canvas.drawLine(Offset(0, dy), Offset(config.width, dy),
+            paint..color = KStaticConfig().chartColors['crossHorizontal']!);
+
+        ///竖线
+        canvas.drawLine(
+            Offset(dx, 0),
+            Offset(dx, maxDy),
+            crossLineVerticalPaint
+              ..strokeWidth =
+                  config.chartScaleWidth - KStaticConfig().candleItemSpace * 2);
+        break;
+      case CrossType.followFinger:
+        double dx = config.selectedX!;
+        paint.color = KStaticConfig().chartColors['crossHorizontal']!;
+        for (double i = 0; i < config.width; i += 4) {
+          ///横虚线
+          canvas.drawLine(Offset(i, config.selectedY!),
+              Offset(i + 2, config.selectedY!), paint);
+        }
         crossLineVerticalPaint
-          ..strokeWidth =
-              config.chartScaleWidth - KStaticConfig().candleItemSpace * 2);
+          ..color = KStaticConfig().chartColors['crossVertical']!
+          ..shader = null;
+        for (double i = 0; i < maxDy; i += 4) {
+          ///横虚线
+          canvas.drawLine(
+              Offset(dx, i), Offset(dx, i + 2), crossLineVerticalPaint);
+        }
+        break;
+      case CrossType.followAll:
+        var dx = config.selectedX!;
+        paint.color = KStaticConfig().chartColors['crossHorizontal']!;
+        for (double i = 0; i < config.width; i += 4) {
+          ///横虚线
+          canvas.drawLine(Offset(i, config.selectedY!),
+              Offset(i + 2, config.selectedY!), paint);
+
+          ///横虚线
+          canvas.drawLine(Offset(i, dy), Offset(i + 2, dy), paint);
+        }
+        crossLineVerticalPaint
+          ..color = KStaticConfig().chartColors['crossVertical']!
+          ..shader = null;
+        for (double i = 0; i < maxDy; i += 4) {
+          ///横虚线
+          canvas.drawLine(
+              Offset(dx, i), Offset(dx, i + 2), crossLineVerticalPaint);
+        }
+
+        break;
+    }
 
     KTextPainter(selectedDisplay[0], config.height,
             boxHeight: KStaticConfig().xAxisHeight)
