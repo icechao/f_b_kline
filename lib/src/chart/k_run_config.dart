@@ -1,18 +1,17 @@
-import 'package:f_b_kline/chart/renders/sen/cci_render.dart';
-import 'package:f_b_kline/chart/renders/sen/kdj_render.dart';
-import 'package:f_b_kline/chart/renders/sen/rsi_render.dart';
-import 'package:f_b_kline/chart/renders/sen/wr_render.dart';
+import 'package:f_b_kline/src/chart/i_render.dart';
+import 'package:f_b_kline/src/chart/k_matrix_util.dart';
+import 'package:f_b_kline/src/chart/k_text_painter.dart';
+import 'package:f_b_kline/src/chart/renders/main_render.dart';
+import 'package:f_b_kline/src/chart/renders/sen/cci_render.dart';
+import 'package:f_b_kline/src/chart/renders/sen/kdj_render.dart';
+import 'package:f_b_kline/src/chart/renders/sen/macd_render.dart';
+import 'package:f_b_kline/src/chart/renders/sen/rsi_render.dart';
+import 'package:f_b_kline/src/chart/renders/sen/wr_render.dart';
+import 'package:f_b_kline/src/chart/renders/vol_render.dart';
+import 'package:f_b_kline/src/chart/renders/x_axis_render.dart';
 import 'package:flutter/material.dart';
-import 'package:f_b_kline/chart/data_adapter.dart';
-import 'package:f_b_kline/chart/entity/index.dart';
-import 'package:f_b_kline/chart/i_render.dart';
-import 'package:f_b_kline/chart/k_matrix_util.dart';
-import 'package:f_b_kline/chart/k_static_config.dart';
-import 'package:f_b_kline/chart/k_text_painter.dart';
-import 'package:f_b_kline/chart/renders/main_render.dart';
-import 'package:f_b_kline/chart/renders/sen/macd_render.dart';
-import 'package:f_b_kline/chart/renders/vol_render.dart';
-import 'package:f_b_kline/chart/renders/x_axis_render.dart';
+
+import '../../export_k_chart.dart';
 
 ///日期格式化
 typedef DateFormatter = String Function(int?);

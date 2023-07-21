@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:f_b_kline/chart/export_k_chart.dart';
+import 'package:f_b_kline/export_k_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -72,16 +72,16 @@ class MyApp extends StatelessWidget {
                       text: formatDate2(
                     DateTime.fromMillisecondsSinceEpoch(klineEntry.time ?? 0),
                   )),
-                  const TextSpan(text: 'open'): TextSpan(
-                      text: klineEntry.open.toStringAsFixed(3) ?? '--'),
-                  const TextSpan(text: 'high'): TextSpan(
-                      text: klineEntry.high.toStringAsFixed(3) ?? '--'),
+                  const TextSpan(text: 'open'):
+                      TextSpan(text: klineEntry.open.toStringAsFixed(3)),
+                  const TextSpan(text: 'high'):
+                      TextSpan(text: klineEntry.high.toStringAsFixed(3)),
                   const TextSpan(text: 'low'):
-                      TextSpan(text: klineEntry.low.toStringAsFixed(3) ?? '--'),
-                  const TextSpan(text: 'close'): TextSpan(
-                      text: klineEntry.close.toStringAsFixed(3) ?? '--'),
+                      TextSpan(text: klineEntry.low.toStringAsFixed(3)),
+                  const TextSpan(text: 'close'):
+                      TextSpan(text: klineEntry.close.toStringAsFixed(3)),
                   const TextSpan(text: 'vol'):
-                      TextSpan(text: klineEntry.vol.toStringAsFixed(3) ?? '--'),
+                      TextSpan(text: klineEntry.vol.toStringAsFixed(3)),
                 };
               },
             ),

@@ -1,11 +1,9 @@
 import 'dart:async';
 
+import 'package:f_b_kline/export_k_chart.dart';
+import 'package:f_b_kline/src/chart/background_painter.dart';
+import 'package:f_b_kline/src/chart/chart_painter.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:f_b_kline/chart/background_painter.dart';
-import 'package:f_b_kline/chart/data_adapter.dart';
-import 'package:f_b_kline/chart/chart_painter.dart';
-import 'package:f_b_kline/chart/k_run_config.dart';
-import 'package:f_b_kline/chart/k_static_config.dart';
 
 /// Kline chart Widget
 class KChartWidget extends StatefulWidget {

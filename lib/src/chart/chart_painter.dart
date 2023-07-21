@@ -1,7 +1,7 @@
+import 'package:f_b_kline/src/chart/data_adapter.dart';
+import 'package:f_b_kline/src/chart/k_run_config.dart';
+import 'package:f_b_kline/src/chart/k_static_config.dart';
 import 'package:flutter/material.dart';
-import 'package:f_b_kline/chart/data_adapter.dart';
-import 'package:f_b_kline/chart/k_run_config.dart';
-import 'package:f_b_kline/chart/k_static_config.dart';
 
 ///主视图绘制调度
 class ChartPainter extends CustomPainter {

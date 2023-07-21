@@ -1,9 +1,6 @@
-import 'package:f_b_kline/chart/entity/k_line_entity.dart';
-import 'package:f_b_kline/chart/k_run_config.dart';
+import 'package:f_b_kline/export_k_chart.dart';
+import 'package:f_b_kline/src/chart/k_text_painter.dart';
 import 'package:flutter/material.dart';
-import 'package:f_b_kline/chart/data_adapter.dart';
-import 'package:f_b_kline/chart/k_static_config.dart';
-import 'package:f_b_kline/chart/k_text_painter.dart';
 
 /// interface
 /// [config] cache config [KRunConfig]

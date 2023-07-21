@@ -1,5 +1,5 @@
+import 'package:f_b_kline/src/chart/k_static_config.dart';
 import 'package:flutter/material.dart';
-import 'package:f_b_kline/chart/k_static_config.dart';
 
 /// K线背景绘制画笔
 class BackgroundPainter extends CustomPainter {

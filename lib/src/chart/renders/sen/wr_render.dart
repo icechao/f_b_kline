@@ -1,29 +1,30 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:f_b_kline/chart/k_text_painter.dart';
+import 'package:f_b_kline/src/chart/entity/index.dart';
+import 'package:f_b_kline/src/chart/i_render.dart';
+import 'package:f_b_kline/src/chart/k_static_config.dart';
+import 'package:f_b_kline/src/chart/k_text_painter.dart';
 import 'package:flutter/material.dart';
-import 'package:f_b_kline/chart/entity/k_line_entity.dart';
-import 'package:f_b_kline/chart/i_render.dart';
-import 'package:f_b_kline/chart/k_static_config.dart';
 
-
-
-class RsiRender extends IRender {
+class WrRender extends IRender {
   final Path linePath = Path();
 
-  RsiRender(super.config, super.adapter) {
+  WrRender(super.config, super.adapter) {
     paint
+      ..style = PaintingStyle.stroke
       ..strokeWidth = KStaticConfig().lineWidth
-      ..color = KStaticConfig().chartColors['rsi']!;
+      ..color = KStaticConfig().chartColors['wr']!;
   }
 
   @override
   void renderChart(Canvas canvas, List<double> c, List<double> l,
       double itemWidth, int index) {
-    double x = c[0] + itemWidth / 2;
-    double y = c[SenIndex.rsi * 3 + 1];
-    double lastY = l[SenIndex.rsi * 3 + 1];
+    double halfWidth = itemWidth / 2;
+    double x = c[0] + halfWidth;
+    double y = c[SenIndex.wr * 3 + 1];
+    double lastY = l[SenIndex.wr * 3 + 1];
+
     if (lastY.isInfinite) {
       linePath
         ..reset()
@@ -45,8 +46,8 @@ class RsiRender extends IRender {
 
     if (data.rsi != null) {
       var text = buildTextSpan(
-          'RSI(${KIndexParams().rsiOne}):${data.rsi!.toStringAsFixed(2)}',
-          color: KStaticConfig().chartColors['rsi']);
+          'WR(${KIndexParams().wrOne}):${data.r!.toStringAsFixed(2)}',
+          color: KStaticConfig().chartColors['wr']);
       KTextPainter(config.volRect!.left, config.volRect!.top)
           .renderText(canvas, text);
     }
@@ -54,9 +55,9 @@ class RsiRender extends IRender {
 
   @override
   void calcMaxMin(KLineEntity item, int index) {
-    if (null != item.rsi) {
-      displayValueMax = max(displayValueMax, item.rsi!);
-      displayValueMin = min(displayValueMin, item.rsi!);
+    if (null != item.r) {
+      displayValueMax = max(displayValueMax, item.r!);
+      displayValueMin = min(displayValueMin, item.r!);
     }
   }
 

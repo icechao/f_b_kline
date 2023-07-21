@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:isolate';
 
-import 'package:f_b_kline/chart/data_helper.dart';
-import 'package:f_b_kline/chart/entity/k_line_entity.dart';
+import 'package:f_b_kline/export_k_chart.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:f_b_kline/chart/k_static_config.dart';
 
 ///数据适配器
 class DataAdapter {
