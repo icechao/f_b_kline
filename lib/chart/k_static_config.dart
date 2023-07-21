@@ -57,7 +57,13 @@ class KStaticConfig {
   ///选中弹出窗口宽
   double infoWindowWidth = 120.0;
 
-  ///选中弹出窗纵向距离
+  ///选中弹出窗口横向Padding
+  double infoWindowHPadding = 5.0;
+
+  ///选中弹出窗口外框圆角
+  double infoWindowRadius = 2.0;
+
+  ///选中弹出窗纵向与边缘距离
   double infoWindowWidthMarginVertical = 20.0;
 
   ///选中弹出窗纵向距离
@@ -68,6 +74,12 @@ class KStaticConfig {
 
   ///统一线宽
   double lineWidth = 0.6;
+
+  ///最新价格线文字框左右间距
+  double priceLineTextBoxHPadding = 4.0;
+
+  ///最新价格线文字框圆角
+  double priceLineTextBoxRadius = 2;
 
   ///主图显示图表
   ChartGroupType defaultChartType = ChartGroupType.withVol;

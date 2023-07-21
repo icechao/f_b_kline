@@ -1,3 +1,9 @@
+
+## 0.0.1+4
+
+* infoBuilder
+* UI setting 
+
 ## 0.0.1+3
 
 * add example

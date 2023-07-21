@@ -6,6 +6,9 @@ import 'package:f_b_kline/chart/entity/k_line_entity.dart';
 import 'package:f_b_kline/chart/i_render.dart';
 import 'package:f_b_kline/chart/k_static_config.dart';
 
+/// macd painter
+/// [difPath] dif line path
+/// [deaPath] dea line path
 class MacdRender extends IRender {
   MacdRender(super.config, super.adapter);
 

@@ -10,6 +10,10 @@ class ChartPainter extends CustomPainter {
   final DataAdapter adapter;
   final Listenable repaint;
 
+  /// constructor
+  /// [type] type  [ChartGroupType]
+  /// [adapter]   adapter   [DataAdapter]
+  /// [repaint]   repaint notice   [Listenable]
   const ChartPainter(this.type, this.adapter, this.runConfig, this.repaint)
       : super(repaint: repaint);
 

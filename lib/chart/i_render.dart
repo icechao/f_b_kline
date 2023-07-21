@@ -5,7 +5,13 @@ import 'package:f_b_kline/chart/data_adapter.dart';
 import 'package:f_b_kline/chart/k_static_config.dart';
 import 'package:f_b_kline/chart/k_text_painter.dart';
 
-///interface
+/// interface
+/// [config] cache config [KRunConfig]
+/// [adapter] data adapter [DataAdapter]
+/// [displayValueMax] the max value  witch chart display
+/// [displayValueMin] the min value  witch chart display
+/// [chartAsiaMax] the max value witch chart Asia
+/// [chartAsiaMin] the min value witch chart Asia
 abstract class IRender {
   final KRunConfig config;
   final DataAdapter adapter;
@@ -20,6 +26,11 @@ abstract class IRender {
   IRender(this.config, this.adapter);
 
   ///paint chart
+  ///[canvas] canvas
+  ///[c] current index data
+  ///[l] last index data
+  ///[itemWidth] itemWidth
+  ///[index] index
   void renderChart(Canvas canvas, List<double> c, List<double> l,
       double itemWidth, int index);
 
@@ -59,6 +70,9 @@ abstract class IRender {
   void calcMaxMin(KLineEntity item, int index);
 
   /// build a text span
+  /// [text] text
+  /// [color] color
+  /// [fontSize] fontSize
   InlineSpan buildTextSpan(String text, {Color? color, double fontSize = 10}) {
     return TextSpan(
         text: text,

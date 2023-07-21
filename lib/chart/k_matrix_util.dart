@@ -18,6 +18,13 @@ class KMatrixUtils {
   Matrix4? mainMatrix, volMatrix, senMatrix;
 
   ///exe matrix transform for main
+  ///[translateX] translateX
+  ///[translateX] translateX
+  ///[translateY] translateY
+  ///[scaleX] scaleX
+  ///[scaleY] scaleY
+  ///[data] data
+  ///[preTranslateY] preTranslateY
   void exeMainMatrix(double translateX, double translateY, double scaleX,
       double scaleY, List<double> data,
       {preTranslateY = 0.0}) {
@@ -31,6 +38,13 @@ class KMatrixUtils {
   }
 
   ///exe matrix transform for vol
+  ///[translateX] translateX
+  ///[translateX] translateX
+  ///[translateY] translateY
+  ///[scaleX] scaleX
+  ///[scaleY] scaleY
+  ///[data] data
+  ///[preTranslateY] preTranslateY
   void exeVolMatrix(double translateX, double translateY, double scaleX,
       double scaleY, List<double> data,
       {preTranslateY = 0.0}) {
@@ -44,6 +58,13 @@ class KMatrixUtils {
   }
 
   ///exe matrix transform for sen
+  ///[translateX] translateX
+  ///[translateX] translateX
+  ///[translateY] translateY
+  ///[scaleX] scaleX
+  ///[scaleY] scaleY
+  ///[data] data
+  ///[preTranslateY] preTranslateY
   void exeSenMatrix(double translateX, double translateY, double scaleX,
       double scaleY, List<double> data,
       {preTranslateY = 0.0}) {

@@ -7,6 +7,10 @@ import 'package:f_b_kline/chart/entity/k_line_entity.dart';
 import 'package:f_b_kline/chart/i_render.dart';
 import 'package:f_b_kline/chart/k_static_config.dart';
 
+/// cci painter
+/// [linePath]
+/// [renderChart] add point into linePath
+/// [renderLine] draw path
 class CciRender extends IRender {
   final Path linePath = Path();
 

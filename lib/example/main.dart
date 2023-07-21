@@ -66,6 +66,24 @@ class MyApp extends StatelessWidget {
               volValueFormatter: (number) {
                 return number?.toStringAsFixed(3) ?? '--';
               },
+              infoBuilder: (klineEntry) {
+                return <TextSpan, TextSpan>{
+                  const TextSpan(text: 'Date'): TextSpan(
+                      text: formatDate2(
+                    DateTime.fromMillisecondsSinceEpoch(klineEntry.time ?? 0),
+                  )),
+                  const TextSpan(text: 'open'): TextSpan(
+                      text: klineEntry.open.toStringAsFixed(3) ?? '--'),
+                  const TextSpan(text: 'high'): TextSpan(
+                      text: klineEntry.high.toStringAsFixed(3) ?? '--'),
+                  const TextSpan(text: 'low'):
+                      TextSpan(text: klineEntry.low.toStringAsFixed(3) ?? '--'),
+                  const TextSpan(text: 'close'): TextSpan(
+                      text: klineEntry.close.toStringAsFixed(3) ?? '--'),
+                  const TextSpan(text: 'vol'):
+                      TextSpan(text: klineEntry.vol.toStringAsFixed(3) ?? '--'),
+                };
+              },
             ),
           ),
         ),
@@ -75,6 +93,10 @@ class MyApp extends StatelessWidget {
 
   String formatDate(DateTime value) {
     return DateFormat('MM/dd HH:mm:ss').format(value);
+  }
+
+  String formatDate2(DateTime value) {
+    return DateFormat('MM/dd HH:mm').format(value);
   }
 }
 

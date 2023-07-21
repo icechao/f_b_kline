@@ -20,6 +20,8 @@ typedef DateFormatter = String Function(int?);
 ///数值格式化
 typedef ValueFormatter = String Function(num?);
 
+typedef InfoBuilder = Map<TextSpan, TextSpan> Function(KLineEntity);
+
 ///单例类,K线运行时类库
 ///不需要修改运行时配置
 class KRunConfig {
@@ -27,6 +29,7 @@ class KRunConfig {
   final ValueFormatter mainValueFormatter;
   final ValueFormatter volValueFormatter;
   final CrossType crossType;
+  final InfoBuilder infoBuilder;
 
   late double height, width;
   Rect? mainRect, volRect, senRect;
@@ -53,10 +56,15 @@ class KRunConfig {
   double? selectedX, selectedY;
   int? selectedIndex;
 
+  /// constructor
+  /// [dateFormatter] data formatter
+  /// [mainValueFormatter] main value formatter
+  /// [volValueFormatter] vol value formatter
   KRunConfig(
       {required this.dateFormatter,
       required this.mainValueFormatter,
       required this.volValueFormatter,
+      required this.infoBuilder,
       this.crossType = CrossType.followAll});
 
   ///max length of data
@@ -65,12 +73,15 @@ class KRunConfig {
   }
 
   /// storage size in memory
+  /// [size] size
   void setSize(Size size) {
     width = size.width;
     height = size.height;
   }
 
   /// init area rest
+  /// [type] show type  [ChartGroupType]
+  /// [adapter] data adapter  [DataAdapter]
   void initRect(ChartGroupType? type, DataAdapter adapter) {
     type ??= ChartGroupType.withVol;
     if (this.type == type) {
@@ -189,6 +200,7 @@ class KRunConfig {
   }
 
   ///calc data witch need display
+  /// [adapter] data adapter  [DataAdapter]
   void calcShowValues(DataAdapter adapter) {
     adapter.mainDisplayPoints = [];
     adapter.volDisplayPoints = [];
@@ -334,6 +346,7 @@ class KRunConfig {
   }
 
   /// calc min translate
+  /// [itemCount] data length
   double calcMinTranslateX(int itemCount) {
     var length = -calcDataLength(itemCount);
     if (kRightSpace - length > width) {
@@ -343,7 +356,9 @@ class KRunConfig {
     }
   }
 
-  /// change sacle
+  /// change scale
+  /// [scale] new scale
+  /// [length] data length
   void updateScale(double scale, int length) {
     var dataLength = calcDataLength(length);
     var halfWidth = width / 2;
@@ -355,24 +370,34 @@ class KRunConfig {
   }
 
   ///change translate to new translate
+  /// [translate] new translate
+  /// [length] data length
   void updateTranslate(double translate, int length) {
     var min = calcMinTranslateX(length);
     translateX = translate.clamp(min, 0);
   }
 
   ///update translate with diff
+  /// [dx] diff  x
+  /// [length] data length
   void updateTranslateWithDx(double dx, int length) {
     var min = calcMinTranslateX(length);
     translateX = (translateX + dx).clamp(min, 0);
   }
 
   /// x to index
+  /// [x] translate x
+  /// [length] data length
+  ///  return index of x
   int xToIndex(double x, int length) {
     var ceil = ((x - translateX) / chartScaleWidth).floor();
     return ceil.clamp(0, length - 1);
   }
 
   ///paint
+  ///[canvas]
+  ///[canvas]
+  /// [adapter] data adapter  [DataAdapter]
   void renderChart(Canvas canvas, DataAdapter adapter) {
     for (int i = screenLeft; i <= screenRight; i++) {
       int startIndex = 3 * 10 * (i - screenLeft);
@@ -438,7 +463,8 @@ class KRunConfig {
       ..renderText(canvas);
   }
 
-  /// change selected x
+  /// the selected x point
+  /// [dx] diff x
   void updateSelectedX(double? dx) {
     if (dx == null) {
       selectedIndex = null;
@@ -446,25 +472,23 @@ class KRunConfig {
     selectedX = dx;
   }
 
-  /// change selected x
+  /// the selected x point
+  /// [dy] diff y
   void updateSelectedY(double? dy) {
     selectedY = dy;
   }
 
-  /// get market info
-  Map<String, String> getMarketInfo(DataAdapter adapter, int selectedIndex) {
+  /// build selected info
+  /// [adapter] data adapter  [DataAdapter]
+  /// [selectedIndex] selected index
+  Map<TextSpan, TextSpan> getMarketInfo(
+      DataAdapter adapter, int selectedIndex) {
     KLineEntity data = adapter.data[selectedIndex];
-
-    return <String, String>{}
-      ..['data'] = dateFormatter.call(data.time)
-      ..['open'] = mainValueFormatter.call(data.open)
-      ..['high'] = mainValueFormatter.call(data.high)
-      ..['low'] = mainValueFormatter.call(data.low)
-      ..['close'] = mainValueFormatter.call(data.close)
-      ..['vol'] = mainValueFormatter.call(data.vol);
+    return infoBuilder.call(data);
   }
 
   /// second render init
+  /// [adapter] data adapter  [DataAdapter]
   IRender getSenRender(DataAdapter adapter) {
     switch (chartSenType) {
       case ChartSenType.macd:

@@ -32,12 +32,15 @@ Adapter不需要重新初始化 只需要一个adapter请做好内存管理
               volValueFormatter: (number) {
                 return number?.toStringAsFixed(3) ?? '--';
               },
+              infoBuilder:(_){
+                return ...
+              } 
             ),
           ),
         )
 ```
 ### 修改指数参数及配置信息   
-    KStaticConfig 静态配置信息不
+    KStaticConfig 静态配置信息
 ```dart
 
     KStaticConfig()

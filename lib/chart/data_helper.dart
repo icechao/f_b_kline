@@ -21,6 +21,11 @@ class DataUtil {
     _calcCCI(dataList, KIndexParams().cciCount);
   }
 
+  /// calc  MA
+  /// [dataList] source data
+  /// [firParam] firParam
+  /// [senParam] senParam
+  /// [thrParam]thrParam
   static _calcMA(
       List<KLineEntity> dataList, int firParam, int senParam, int thrParam) {
     double fir = 0.0, sen = 0.0, thi = 0.0;
@@ -58,6 +63,10 @@ class DataUtil {
     }
   }
 
+  /// calc BOLL
+  /// [dataList] source data
+  /// [n]  N
+  /// [k]  K
   static void _calcBOLL(List<KLineEntity> dataList, int n, int k) {
     _calcBOLLMA(n, dataList);
     for (int i = 0; i < dataList.length; i++) {
@@ -79,6 +88,9 @@ class DataUtil {
     }
   }
 
+  /// calc BOLL MA
+  /// [day] ma
+  /// [dataList] source data
   static void _calcBOLLMA(int day, List<KLineEntity> dataList) {
     double ma = 0;
     for (int i = 0; i < dataList.length; i++) {
@@ -95,7 +107,11 @@ class DataUtil {
     }
   }
 
-  /// 12 26 9
+  /// calc MACD
+  /// [dataList] source data
+  /// [ma1]   MA params
+  /// [ma2]   MA params
+  /// [diffParam] diffParam
   static void _calcMACD(
       List<KLineEntity> dataList, int ma1, ma2, int diffParam) {
     double ema1 = 0;
@@ -128,6 +144,10 @@ class DataUtil {
     }
   }
 
+  /// calc Volume MA
+  /// [dataList] source data
+  /// [volMa1]  Volume MA params
+  /// [volMa2]  Volume MA params
   static void _calcVolumeMA(
       List<KLineEntity> dataList, int volMa1, int volMa2) {
     double volumeMa1 = 0.0;
@@ -155,7 +175,10 @@ class DataUtil {
     }
   }
 
-  static void _calcRSI(List<KLineEntity> dataList, int rsiParsm) {
+  /// calc RSI
+  /// [dataList] source data
+  /// [rsiParams]  RSI params
+  static void _calcRSI(List<KLineEntity> dataList, int rsiParams) {
     double? rsi;
     double rsiABSEma = 0;
     double rsiMaxEma = 0;
@@ -170,15 +193,20 @@ class DataUtil {
         double rMax = max(0, closePrice - dataList[i - 1].close.toDouble());
         double rAbs = (closePrice - dataList[i - 1].close.toDouble()).abs();
 
-        rsiMaxEma = (rMax + (rsiParsm - 1) * rsiMaxEma) / rsiParsm;
-        rsiABSEma = (rAbs + (rsiParsm - 1) * rsiABSEma) / rsiParsm;
+        rsiMaxEma = (rMax + (rsiParams - 1) * rsiMaxEma) / rsiParams;
+        rsiABSEma = (rAbs + (rsiParams - 1) * rsiABSEma) / rsiParams;
         rsi = (rsiMaxEma / rsiABSEma) * 100;
       }
-      if (i < (rsiParsm - 1)) rsi = null;
+      if (i < (rsiParams - 1)) rsi = null;
       entity.rsi = rsi;
     }
   }
 
+  /// calc kdj
+  /// [dataList] source data
+  /// [n]  kdj params
+  /// [m1]  kdj params
+  /// [m2]  kdj params
   static void _calcKDJ(List<KLineEntity> dataList, int n, int m1, int m2) {
     var preK = 50.0;
     var preD = 50.0;
@@ -214,6 +242,9 @@ class DataUtil {
     }
   }
 
+  /// calc WR
+  /// [dataList] source data
+  /// [wrParam]  wr params
   static void _calcWR(List<KLineEntity> dataList, int wrParam) {
     double r;
     for (int i = 0; i < dataList.length; i++) {
@@ -237,6 +268,9 @@ class DataUtil {
     }
   }
 
+  /// calc CCI
+  /// [dataList] source data
+  /// [count]  cci params
   static void _calcCCI(List<KLineEntity> dataList, int count) {
     final size = dataList.length;
     for (int i = 0; i < size; i++) {

@@ -120,11 +120,13 @@ class MainRender extends IRender {
         }
         canvas.drawRRect(
             RRect.fromLTRBR(
-                width - textWidth * 2,
+                width -
+                    textWidth * 2 -
+                    KStaticConfig().priceLineTextBoxHPadding,
                 close - halfTextHeight,
-                width - textWidth,
+                width - textWidth + KStaticConfig().priceLineTextBoxHPadding,
                 close + halfTextHeight,
-                const Radius.circular(2)),
+                Radius.circular(KStaticConfig().priceLineTextBoxRadius)),
             paint
               ..color =
                   KStaticConfig().chartColors['priceLineRectBackground']!);
@@ -228,7 +230,7 @@ class MainRender extends IRender {
 
       _buildInfoText(data);
 
-      Map<String, String> marketInfo =
+      Map<TextSpan, TextSpan> marketInfo =
           config.getMarketInfo(adapter, selectedIndex);
       renderCross(canvas, selectedIndex, data);
       double left, right;
@@ -244,28 +246,33 @@ class MainRender extends IRender {
             KStaticConfig().infoWindowWidth;
       }
 
-      canvas.drawRect(
-          Rect.fromLTRB(
+      canvas.drawRRect(
+          RRect.fromLTRBR(
               left,
               KStaticConfig().infoWindowWidthMarginVertical,
               right,
               KStaticConfig().infoWindowItemHeight * marketInfo.length +
-                  KStaticConfig().infoWindowWidthMarginVertical),
+                  KStaticConfig().infoWindowWidthMarginVertical,
+              Radius.circular(KStaticConfig().infoWindowRadius)),
           paint..color = KStaticConfig().chartColors['infoWindowBackground']!);
-      List<String> keyList = [...marketInfo.keys];
+      List<TextSpan> keyList = [...marketInfo.keys];
       for (int i = 0; i < marketInfo.length; i++) {
         var rowY = KStaticConfig().infoWindowItemHeight * i +
             KStaticConfig().infoWindowWidthMarginVertical;
-        KTextPainter(left, rowY).renderText(canvas, TextSpan(text: keyList[i]));
-        KTextPainter(right, rowY).renderText(
-            canvas, TextSpan(text: marketInfo[keyList[i]]),
-            align: KTextAlign.left);
+        KTextPainter(left + KStaticConfig().infoWindowHPadding, rowY)
+            .renderText(canvas, keyList[i]);
+        KTextPainter(right - KStaticConfig().infoWindowHPadding, rowY)
+            .renderText(canvas, marketInfo[keyList[i]]!,
+                align: KTextAlign.left);
       }
     } else {
       _buildInfoText(adapter.data.last);
     }
   }
 
+  /// build  top info
+  /// if show info window display  selected else display the last one
+  /// [data] selected data
   void _buildInfoText(KLineEntity data) {
     switch (config.mainDisplayType) {
       case MainDisplayType.boll:
@@ -344,7 +351,10 @@ class MainRender extends IRender {
     }
   }
 
-  /// paint cross line
+  ///  renderCross
+  ///  canvas
+  ///
+  ///  data
   void renderCross(Canvas canvas, int selectedIndex, KLineEntity data) {
     int startIndex = 3 * 10 * (selectedIndex - config.screenLeft);
     int stopIndex = 3 * 10 * (selectedIndex - config.screenLeft + 1);

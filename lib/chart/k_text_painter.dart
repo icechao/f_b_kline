@@ -3,12 +3,13 @@ import 'package:flutter/cupertino.dart';
 /// 文本位置枚举
 enum KTextAlign { left, center, right }
 
-///文本渲染封装
+/// text render
 class KTextPainter {
   final Paint paint = Paint();
 
   late double x, y, boxHeight;
   late TextPainter painter = TextPainter();
+
   /// 对文本进行二次封装方便后期使用
   KTextPainter(this.x, this.y, {StrutStyle? strutStyle, this.boxHeight = 0}) {
     painter
@@ -17,6 +18,11 @@ class KTextPainter {
   }
 
   /// paint text
+  /// [canvas] canvas
+  /// [span] text
+  /// [top] text 是否向上
+  /// [align] align [KTextAlign]
+  /// [backGroundColor] backGroundColor
   renderText(Canvas canvas, InlineSpan span,
       {bool top = false, KTextAlign? align, Color? backGroundColor}) {
     painter

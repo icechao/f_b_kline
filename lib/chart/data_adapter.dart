@@ -70,7 +70,7 @@ class DataAdapter {
     _initReceive();
   }
 
-  ///init listeners
+  /// init listeners
   void _initReceive() async {
     ReceivePort receivePort = ReceivePort();
     receivePort.listen((message) {
@@ -96,6 +96,7 @@ class DataAdapter {
 }
 
 /// new thread
+/// [sendPort]  sendPort [SendPort]
 _isolateFuture(SendPort sendPort) {
   ReceivePort receivePort = ReceivePort();
 
