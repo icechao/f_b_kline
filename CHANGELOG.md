@@ -1,8 +1,11 @@
+## 0.0.1+4
+
+* package name
 
 ## 0.0.1+4
 
 * infoBuilder
-* UI setting 
+* UI setting
 
 ## 0.0.1+3
 

@@ -19,15 +19,12 @@ DataAdapter不需要重新初始化 只需要一个adapter请做好内存管理
 
     ......
     
-    return  Container(
+    retutrn Container(
         margin: const EdgeInsets.only(top: 100),
         width: double.maxFinite,
-        ///max height
         height: 400,
         child: KChartWidget(
-        /// data adapter 
             adapter,
-            /// static config
             config: KRunConfig(
                 dateFormatter: (int? value) {
                 return formatDate(
@@ -39,12 +36,33 @@ DataAdapter不需要重新初始化 只需要一个adapter请做好内存管理
                 volValueFormatter: (number) {
                   return number?.toStringAsFixed(3) ?? '--';
                 },
-                infoBuilder:(_){
-                  return ...
-                }
+                infoBuilder: (klineEntry) {
+                return <TextSpan, TextSpan>{
+                    const TextSpan(text: 'Date'): TextSpan(
+                    text: formatDate2(
+                    DateTime.fromMillisecondsSinceEpoch(klineEntry.time ?? 0),
+                    )),
+                    const TextSpan(text: 'open'):
+                     TextSpan(text: klineEntry.open.toStringAsFixed(3)),
+                    const TextSpan(text: 'high'):
+                      TextSpan(text: klineEntry.high.toStringAsFixed(3)),
+                    const TextSpan(text: 'low'):
+                      TextSpan(text: klineEntry.low.toStringAsFixed(3)),
+                    const TextSpan(text: 'close'):
+                      TextSpan(text: klineEntry.close.toStringAsFixed(3)),
+                    const TextSpan(text: 'vol'):
+                      TextSpan(text: klineEntry.vol.toStringAsFixed(3)),
+                    };
+                    },
+                ),
             ),
         ),
     )
+
+    ......
+
+
+    adapter.resetData(data);
 ```
 
 ### 修改指数参数及配置信息
@@ -56,8 +74,8 @@ DataAdapter不需要重新初始化 只需要一个adapter请做好内存管理
     KStaticConfig()
     ..mainMa1 = 10
     ..mainMa2 = 30
-    ...
-    .
+    ......
+    
 
 ```
 
@@ -66,9 +84,9 @@ DataAdapter不需要重新初始化 只需要一个adapter请做好内存管理
 ```dart
     ///重置数据 当数据发生变化时调用
     ///[KLineEntity]数据模型
-    resetData
-    (
-    List<KLineEntity>? data, {bool resetTranslate = false})
+    ///更多API查看 [DataAdapter]
+    resetData(List<KLineEntity>? data, {bool resetTranslate = false})
+
 ```
 
 ```dart
@@ -77,20 +95,12 @@ DataAdapter不需要重新初始化 只需要一个adapter请做好内存管理
     /// [ChartSenType]    second type
     /// [ChartDisplayType]  time/kline
     /// [MainDisplayType]   boll / ma /none
-    changeType
-    (
-    dynamic
-    type
-    ) 
+    changeType(dynamic type) 
 ```
 
 ```dart
     /// change chart display location
-    changeTranslate
-    (
-    double
-    translate
-    )
+    changeTranslate(double translate)
 ```
 
 
