@@ -1,6 +1,10 @@
 
 
 <img src="https://github.com/icechao/f_b_kline/blob/master/image.png" width="320" hegiht="480" align=center />
+
+
+![Image](https://github.com/icechao/f_b_kline/blob/master/image.png)
+
 ### 使用
 持续更新中请尽量使用库依赖
 
