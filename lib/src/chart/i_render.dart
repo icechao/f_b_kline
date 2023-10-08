@@ -1,5 +1,5 @@
-import 'package:f_b_kline/export_k_chart.dart';
 import 'package:f_b_kline/src/chart/k_text_painter.dart';
+import 'package:f_b_kline/src/export_k_chart.dart';
 import 'package:flutter/material.dart';
 
 /// interface

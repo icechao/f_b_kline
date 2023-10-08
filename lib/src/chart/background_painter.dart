@@ -1,4 +1,4 @@
-import 'package:f_b_kline/src/chart/k_static_config.dart';
+import 'package:f_b_kline/src/chart/config/k_static_config.dart';
 import 'package:flutter/material.dart';
 
 /// K线背景绘制画笔

@@ -68,6 +68,9 @@ DataAdapter不需要重新初始化 只需要一个adapter请做好内存管理
 ### 修改指数参数及配置信息
 
     KStaticConfig 静态配置信息
+...dart
+
+...
 
 ```dart
 
@@ -102,5 +105,7 @@ DataAdapter不需要重新初始化 只需要一个adapter请做好内存管理
     /// change chart display location
     changeTranslate(double translate)
 ```
+
+
 
 

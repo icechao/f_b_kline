@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:f_b_kline/export_k_chart.dart';
+import 'package:f_b_kline/src/export_k_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -19,6 +19,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 5), () {
       List<KLineEntity> data = [];
+
+      /// KLineEntity list data
       var decode = json.decode(jsonString);
       for (var item in decode) {
         data.add(KLineEntity()

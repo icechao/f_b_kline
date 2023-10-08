@@ -1,6 +1,6 @@
+import 'package:f_b_kline/src/chart/config/k_run_config.dart';
+import 'package:f_b_kline/src/chart/config/k_static_config.dart';
 import 'package:f_b_kline/src/chart/data_adapter.dart';
-import 'package:f_b_kline/src/chart/k_run_config.dart';
-import 'package:f_b_kline/src/chart/k_static_config.dart';
 import 'package:flutter/material.dart';
 
 ///主视图绘制调度

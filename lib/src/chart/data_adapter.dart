@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:isolate';
 
-import 'package:f_b_kline/export_k_chart.dart';
+import 'package:f_b_kline/src/export_k_chart.dart';
 import 'package:flutter/cupertino.dart';
 
 ///数据适配器

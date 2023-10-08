@@ -1,7 +1,7 @@
 import 'dart:math';
 
+import 'package:f_b_kline/src/chart/config/k_static_config.dart';
 import 'package:f_b_kline/src/chart/entity/k_line_entity.dart';
-import 'package:f_b_kline/src/chart/k_static_config.dart';
 
 /// 数据加工类
 /// 计算数据指标,运算会在子线程中进行

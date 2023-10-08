@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:f_b_kline/export_k_chart.dart';
 import 'package:f_b_kline/src/chart/background_painter.dart';
 import 'package:f_b_kline/src/chart/chart_painter.dart';
+import 'package:f_b_kline/src/export_k_chart.dart';
 import 'package:flutter/cupertino.dart';
 
 /// Kline chart Widget
@@ -10,6 +10,7 @@ class KChartWidget extends StatefulWidget {
   final DataAdapter adapter;
   final KRunConfig config;
 
+  ///constructor
   const KChartWidget(this.adapter, {super.key, required this.config});
 
   @override

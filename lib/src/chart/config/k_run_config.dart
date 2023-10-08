@@ -1,3 +1,6 @@
+import 'package:f_b_kline/src/chart/config/k_static_config.dart';
+import 'package:f_b_kline/src/chart/data_adapter.dart';
+import 'package:f_b_kline/src/chart/entity/k_line_entity.dart';
 import 'package:f_b_kline/src/chart/i_render.dart';
 import 'package:f_b_kline/src/chart/k_matrix_util.dart';
 import 'package:f_b_kline/src/chart/k_text_painter.dart';
@@ -10,8 +13,6 @@ import 'package:f_b_kline/src/chart/renders/sen/wr_render.dart';
 import 'package:f_b_kline/src/chart/renders/vol_render.dart';
 import 'package:f_b_kline/src/chart/renders/x_axis_render.dart';
 import 'package:flutter/material.dart';
-
-import '../../export_k_chart.dart';
 
 ///日期格式化
 typedef DateFormatter = String Function(int?);
