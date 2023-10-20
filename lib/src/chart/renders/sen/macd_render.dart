@@ -87,7 +87,7 @@ class MacdRender extends IRender {
           color: KStaticConfig().chartColors['dea']));
     }
     KTextPainter(config.senRect!.left, config.senRect!.top)
-        .renderText(canvas, TextSpan(children: text), align: KTextAlign.right);
+        .renderText(canvas, TextSpan(children: text), align: KAlign.right);
   }
 
   @override

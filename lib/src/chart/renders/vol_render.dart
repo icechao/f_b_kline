@@ -86,7 +86,7 @@ class VolRender extends IRender {
           color: KStaticConfig().chartColors['volMaSen']));
     }
     KTextPainter(config.volRect!.left, config.volRect!.top)
-        .renderText(canvas, TextSpan(children: text), align: KTextAlign.right);
+        .renderText(canvas, TextSpan(children: text), align: KAlign.right);
   }
 
   @override

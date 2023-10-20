@@ -1,3 +1,4 @@
+import 'package:f_b_kline/src/chart/k_text_painter.dart';
 import 'package:flutter/material.dart';
 
 enum ChartGroupType { withVol, withVolSen, withSen, withNone }
@@ -9,6 +10,8 @@ enum ChartDisplayType { kline, timeLine }
 enum MainDisplayType { boll, ma, none }
 
 enum CrossType { followClose, followFinger, followAll }
+
+enum XAxisType { flow, pin }
 
 ///静态常量工具不需要修改
 ///只需要在运行前修改代码
@@ -26,6 +29,8 @@ class KStaticConfig {
     _instance ??= KStaticConfig._internal();
     return _instance!;
   }
+
+  double kRightSpace = 100;
 
   ///主图纵坐标文字大小
   double mainAxisTextSize = 10.0;
@@ -83,6 +88,15 @@ class KStaticConfig {
 
   ///主图显示图表
   ChartGroupType defaultChartType = ChartGroupType.withVol;
+
+  /// X Axis Type
+  XAxisType xAxisType = XAxisType.flow;
+
+  /// x axis count
+  int xAxisCount = 3;
+
+  /// x axis align
+  KAlign xAxisAlign = KAlign.center;
 
   ///十字线渐变色,仅在十字线竖线是宽线模式线生效
   List<Color> crossColors = [

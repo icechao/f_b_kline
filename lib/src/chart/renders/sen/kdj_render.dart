@@ -73,7 +73,7 @@ class KdjRender extends IRender {
         color: KStaticConfig().chartColors['j']));
 
     KTextPainter(config.senRect!.left, config.senRect!.top)
-        .renderText(canvas, TextSpan(children: text), align: KTextAlign.right);
+        .renderText(canvas, TextSpan(children: text), align: KAlign.right);
   }
 
   @override

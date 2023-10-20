@@ -45,11 +45,11 @@ abstract class IRender {
     if (axisPainter.isNotEmpty) {
       axisPainter.first.renderText(
           canvas, buildTextSpan(getFormatter().call(chartAsiaMax)),
-          top: false, align: KTextAlign.left);
+          top: false, align: KAlign.left);
 
       axisPainter.last.renderText(
           canvas, buildTextSpan(getFormatter().call(chartAsiaMin)),
-          top: true, align: KTextAlign.left);
+          top: true, align: KAlign.left);
     }
   }
 

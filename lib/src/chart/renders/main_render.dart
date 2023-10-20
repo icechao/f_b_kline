@@ -263,7 +263,7 @@ class MainRender extends IRender {
             .renderText(canvas, keyList[i]);
         KTextPainter(right - KStaticConfig().infoWindowHPadding, rowY)
             .renderText(canvas, marketInfo[keyList[i]]!,
-                align: KTextAlign.left);
+                align: KAlign.left);
       }
     } else {
       _buildInfoText(adapter.data.last);
@@ -316,7 +316,7 @@ class MainRender extends IRender {
           buildTextSpan(
               config.mainValueFormatter.call(chartAsiaMax - i * diff)),
           top: true,
-          align: KTextAlign.left);
+          align: KAlign.left);
     }
   }
 
@@ -427,7 +427,7 @@ class MainRender extends IRender {
                 color: KStaticConfig().chartColors['selectedAxisDate'],
                 fontSize: KStaticConfig().mainXAxisTextSize),
             top: true,
-            align: KTextAlign.center,
+            align: KAlign.center,
             backGroundColor:
                 KStaticConfig().chartColors['selectedDateBackground']!);
   }

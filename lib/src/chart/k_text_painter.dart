@@ -1,17 +1,24 @@
 import 'package:flutter/cupertino.dart';
 
 /// 文本位置枚举
-enum KTextAlign { left, center, right }
+enum KAlign { left, center, right }
 
 /// text render
 class KTextPainter {
+  double Function(double)? xParser;
+
+  get x {
+    return xParser?.call(_x) ?? _x;
+  }
+
   final Paint paint = Paint();
 
-  late double x, y, boxHeight;
-  late TextPainter painter = TextPainter();
+  final double _x, y, boxHeight;
+  final TextPainter painter = TextPainter();
 
   /// 对文本进行二次封装方便后期使用
-  KTextPainter(this.x, this.y, {StrutStyle? strutStyle, this.boxHeight = 0}) {
+  KTextPainter(this._x, this.y,
+      {StrutStyle? strutStyle, this.boxHeight = 0, this.xParser}) {
     painter
       ..textDirection = TextDirection.ltr
       ..strutStyle = strutStyle;
@@ -21,23 +28,23 @@ class KTextPainter {
   /// [canvas] canvas
   /// [span] text
   /// [top] text 是否向上
-  /// [align] align [KTextAlign]
+  /// [align] align [KAlign]
   /// [backGroundColor] backGroundColor
   renderText(Canvas canvas, InlineSpan span,
-      {bool top = false, KTextAlign? align, Color? backGroundColor}) {
+      {bool top = false, KAlign? align, Color? backGroundColor}) {
     painter
       ..text = span
       ..layout();
     double dx;
     switch (align) {
-      case KTextAlign.left:
+      case KAlign.left:
         dx = x - painter.width;
         break;
-      case KTextAlign.center:
+      case KAlign.center:
         dx = x - painter.width / 2;
         break;
 
-      case KTextAlign.right:
+      case KAlign.right:
       default:
         dx = x;
         break;

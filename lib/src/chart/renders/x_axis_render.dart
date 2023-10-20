@@ -6,7 +6,10 @@ import 'package:f_b_kline/src/chart/i_render.dart';
 import 'package:f_b_kline/src/chart/k_text_painter.dart';
 
 class XAxisRender extends IRender {
-  XAxisRender(super.config, super.adapter);
+  XAxisRender(
+    super.config,
+    super.adapter,
+  );
 
   @override
   void renderAxis(Canvas canvas) {}
@@ -29,7 +32,7 @@ class XAxisRender extends IRender {
             fontSize: axisTextSize,
             color: KStaticConfig().chartColors['axisDate']),
         top: true,
-        align: KTextAlign.center,
+        align: KAlign.center,
       );
     }
   }

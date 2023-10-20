@@ -37,7 +37,7 @@ class KRunConfig {
   double translateX = double.nan;
   double scaleX = 1, scaleY = 1;
   double volBaseY = 0.0, senBaseY = 0.0;
-  double kRightSpace = 100;
+  double kRightSpace = KStaticConfig().kRightSpace;
   double chartScaleWidth = KStaticConfig().candleItemWidth;
 
   late IRender mainRender, xAxisRender;
@@ -87,10 +87,11 @@ class KRunConfig {
     if (this.type == type) {
       return;
     }
-    var padding = KStaticConfig().topPadding;
+    var kStaticConfig = KStaticConfig();
+    var padding = kStaticConfig.topPadding;
     this.type = type;
-    var rowCount = KStaticConfig().gridRowCount;
-    double item = (height - padding - KStaticConfig().xAxisHeight) / rowCount;
+    var rowCount = kStaticConfig.gridRowCount;
+    double item = (height - padding - kStaticConfig.xAxisHeight) / rowCount;
     mainRender = MainRender(this, adapter)
       ..axisPainter.add(KTextPainter(width, padding));
     switch (this.type!) {
@@ -166,11 +167,24 @@ class KRunConfig {
     }
 
     xAxisRender = XAxisRender(this, adapter);
-    var columnCount = KStaticConfig().gridRowCount;
+    var columnCount = kStaticConfig.xAxisCount;
     double xSpace = width / (columnCount);
-    for (int i = 0; i <= rowCount; i++) {
-      xAxisRender.axisPainter.add(KTextPainter(xSpace * i, height,
-          boxHeight: KStaticConfig().xAxisHeight));
+    switch (kStaticConfig.xAxisType) {
+      case XAxisType.flow:
+        for (int i = -rowCount ~/ 2 - 1; i <= rowCount ~/ 2 + 1; i++) {
+          xAxisRender.axisPainter.add(KTextPainter(xSpace * i, height,
+              boxHeight: kStaticConfig.xAxisHeight,
+              xParser: (x) {
+            return translateX % width + x;
+          }
+          ));
+        }
+        break;
+      default:
+        for (int i = 0; i <= rowCount  + 1; i++) {
+          xAxisRender.axisPainter.add(KTextPainter(xSpace * i, height,
+              boxHeight: kStaticConfig.xAxisHeight));
+        }
     }
   }
 
