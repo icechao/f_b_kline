@@ -173,15 +173,13 @@ class KRunConfig {
       case XAxisType.flow:
         for (int i = -rowCount ~/ 2 - 1; i <= rowCount ~/ 2 + 1; i++) {
           xAxisRender.axisPainter.add(KTextPainter(xSpace * i, height,
-              boxHeight: kStaticConfig.xAxisHeight,
-              xParser: (x) {
+              boxHeight: kStaticConfig.xAxisHeight, xParser: (x) {
             return translateX % width + x;
-          }
-          ));
+          }));
         }
         break;
       default:
-        for (int i = 0; i <= rowCount  + 1; i++) {
+        for (int i = 0; i <= rowCount + 1; i++) {
           xAxisRender.axisPainter.add(KTextPainter(xSpace * i, height,
               boxHeight: kStaticConfig.xAxisHeight));
         }
@@ -231,10 +229,17 @@ class KRunConfig {
     for (int i = screenLeft; i <= screenRight; i++) {
       KLineEntity item = adapter.data[i];
       double xIndex = (i.toDouble());
+      double zIndex = 0;
+      if (mainRender.maxValueIndex == i) {
+        zIndex++;
+      }
+      if (mainRender.minValueIndex == i) {
+        zIndex++;
+      }
       adapter.mainDisplayPoints
         ..add(xIndex)
         ..add(item.open)
-        ..add(0.0)
+        ..add(zIndex)
         ..add(0.0)
         ..add(item.close)
         ..add(0.0)

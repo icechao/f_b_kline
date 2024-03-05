@@ -262,8 +262,7 @@ class MainRender extends IRender {
         KTextPainter(left + KStaticConfig().infoWindowHPadding, rowY)
             .renderText(canvas, keyList[i]);
         KTextPainter(right - KStaticConfig().infoWindowHPadding, rowY)
-            .renderText(canvas, marketInfo[keyList[i]]!,
-                align: KAlign.left);
+            .renderText(canvas, marketInfo[keyList[i]]!, align: KAlign.left);
       }
     } else {
       _buildInfoText(adapter.data.last);
@@ -322,32 +321,32 @@ class MainRender extends IRender {
 
   @override
   void calcMaxMin(KLineEntity item, int index) {
+    var tempMax = displayValueMax;
+    var tempMin = displayValueMin;
     displayValueMax = max(displayValueMax, item.high);
-    if (null != item.ma1) {
-      displayValueMax = max(displayValueMax, item.ma1!);
-    }
-    if (null != item.ma2) {
-      displayValueMax = max(displayValueMax, item.ma2!);
-    }
-    if (null != item.ma3) {
-      displayValueMax = max(displayValueMax, item.ma3!);
-    }
-    if (null != item.up) {
-      displayValueMax = max(displayValueMax, item.up!);
-    }
-
     displayValueMin = min(displayValueMin, item.low);
-    if (null != item.ma1) {
-      displayValueMin = min(displayValueMin, item.ma1!);
+    switch (config.mainDisplayType) {
+      case MainDisplayType.boll:
+        displayValueMax = max(displayValueMax, item.up ?? 0);
+        displayValueMin = min(displayValueMin, item.dn ?? 0);
+        break;
+      case MainDisplayType.ma:
+        displayValueMax = max(displayValueMax, item.ma1 ?? 0);
+        displayValueMax = max(displayValueMax, item.ma2 ?? 0);
+        displayValueMax = max(displayValueMax, item.ma3 ?? 0);
+
+        displayValueMin = min(displayValueMin, item.ma1 ?? 0);
+        displayValueMin = min(displayValueMin, item.ma2 ?? 0);
+        displayValueMin = min(displayValueMin, item.ma3 ?? 0);
+        break;
+      case MainDisplayType.none:
+        break;
     }
-    if (null != item.ma2) {
-      displayValueMin = min(displayValueMin, item.ma2!);
+    if (tempMax != displayValueMax) {
+      maxValueIndex = index;
     }
-    if (null != item.ma3) {
-      displayValueMin = min(displayValueMin, item.ma3!);
-    }
-    if (null != item.dn) {
-      displayValueMin = min(displayValueMin, item.dn!);
+    if (tempMin != displayValueMin) {
+      minValueIndex = index;
     }
   }
 
