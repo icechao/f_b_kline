@@ -1,6 +1,8 @@
 ![Image](https://github.com/icechao/f_b_kline/blob/master/image.png)
 
 ## 使用
+[安卓原生K线](https://github.com/icechao/KlineChart)
+
 
 持续更新中请尽量使用库依赖
 
