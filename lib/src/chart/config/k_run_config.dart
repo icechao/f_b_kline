@@ -28,7 +28,7 @@ class KRunConfig {
   final DateFormatter dateFormatter;
   final ValueFormatter mainValueFormatter;
   final ValueFormatter volValueFormatter;
-  final CrossType crossType;
+
   final InfoBuilder infoBuilder;
 
   late double height, width;
@@ -49,6 +49,8 @@ class KRunConfig {
   ChartDisplayType chartDisplayType = ChartDisplayType.kline;
   MainDisplayType mainDisplayType = MainDisplayType.boll;
   ChartSenType chartSenType = ChartSenType.kdj;
+  CrossType crossType = CrossType.followAll;
+  XAxisType xAxisType = XAxisType.flow;
 
   late Color chartColor;
 
@@ -64,8 +66,7 @@ class KRunConfig {
       {required this.dateFormatter,
       required this.mainValueFormatter,
       required this.volValueFormatter,
-      required this.infoBuilder,
-      this.crossType = CrossType.followAll});
+      required this.infoBuilder});
 
   ///max length of data
   double calcDataLength(int count) {
@@ -84,9 +85,6 @@ class KRunConfig {
   /// [adapter] data adapter  [DataAdapter]
   void initRect(ChartGroupType? type, DataAdapter adapter) {
     type ??= ChartGroupType.withVol;
-    if (this.type == type) {
-      return;
-    }
     var kStaticConfig = KStaticConfig();
     var padding = kStaticConfig.topPadding;
     this.type = type;
@@ -169,7 +167,7 @@ class KRunConfig {
     xAxisRender = XAxisRender(this, adapter);
     var columnCount = kStaticConfig.xAxisCount;
     double xSpace = width / (columnCount);
-    switch (kStaticConfig.xAxisType) {
+    switch (xAxisType) {
       case XAxisType.flow:
         for (int i = -rowCount ~/ 2 - 1; i <= rowCount ~/ 2 + 1; i++) {
           xAxisRender.axisPainter.add(KTextPainter(xSpace * i, height,
@@ -214,6 +212,9 @@ class KRunConfig {
   ///calc data witch need display
   /// [adapter] data adapter  [DataAdapter]
   void calcShowValues(DataAdapter adapter) {
+    if (adapter.data.isEmpty) {
+      return;
+    }
     adapter.mainDisplayPoints = [];
     adapter.volDisplayPoints = [];
     adapter.senDisplayPoints = [];

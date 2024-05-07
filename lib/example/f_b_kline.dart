@@ -51,43 +51,129 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         backgroundColor: Colors.grey,
-        body: Container(
-          margin: const EdgeInsets.only(top: 100),
-          width: double.maxFinite,
-          height: 400,
-          child: KChartWidget(
-            adapter,
-            config: KRunConfig(
-              dateFormatter: (int? value) {
-                return formatDate(
-                    DateTime.fromMillisecondsSinceEpoch(value ?? 0));
-              },
-              mainValueFormatter: (number) {
-                return number?.toStringAsFixed(3) ?? '--';
-              },
-              volValueFormatter: (number) {
-                return number?.toStringAsFixed(3) ?? '--';
-              },
-              infoBuilder: (klineEntry) {
-                return <TextSpan, TextSpan>{
-                  const TextSpan(text: 'Date'): TextSpan(
-                      text: formatDate2(
-                    DateTime.fromMillisecondsSinceEpoch(klineEntry.time ?? 0),
-                  )),
-                  const TextSpan(text: 'open'):
-                      TextSpan(text: klineEntry.open.toStringAsFixed(3)),
-                  const TextSpan(text: 'high'):
-                      TextSpan(text: klineEntry.high.toStringAsFixed(3)),
-                  const TextSpan(text: 'low'):
-                      TextSpan(text: klineEntry.low.toStringAsFixed(3)),
-                  const TextSpan(text: 'close'):
-                      TextSpan(text: klineEntry.close.toStringAsFixed(3)),
-                  const TextSpan(text: 'vol'):
-                      TextSpan(text: klineEntry.vol.toStringAsFixed(3)),
-                };
-              },
+        body: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(top: 100),
+              width: double.maxFinite,
+              height: 400,
+              child: KChartWidget(
+                adapter,
+                config: KRunConfig(
+                  dateFormatter: (int? value) {
+                    return formatDate(
+                        DateTime.fromMillisecondsSinceEpoch(value ?? 0));
+                  },
+                  mainValueFormatter: (number) {
+                    return number?.toStringAsFixed(3) ?? '--';
+                  },
+                  volValueFormatter: (number) {
+                    return number?.toStringAsFixed(3) ?? '--';
+                  },
+                  infoBuilder: (klineEntry) {
+                    return <TextSpan, TextSpan>{
+                      const TextSpan(text: 'Date'): TextSpan(
+                          text: formatDate2(
+                        DateTime.fromMillisecondsSinceEpoch(
+                            klineEntry.time ?? 0),
+                      )),
+                      const TextSpan(text: 'open'):
+                          TextSpan(text: klineEntry.open.toStringAsFixed(3)),
+                      const TextSpan(text: 'high'):
+                          TextSpan(text: klineEntry.high.toStringAsFixed(3)),
+                      const TextSpan(text: 'low'):
+                          TextSpan(text: klineEntry.low.toStringAsFixed(3)),
+                      const TextSpan(text: 'close'):
+                          TextSpan(text: klineEntry.close.toStringAsFixed(3)),
+                      const TextSpan(text: 'vol'):
+                          TextSpan(text: klineEntry.vol.toStringAsFixed(3)),
+                    };
+                  },
+                ),
+              ),
             ),
-          ),
+            Row(
+              children: [
+                ElevatedButton(
+                    onPressed: () => adapter.changeType(MainDisplayType.boll),
+                    child: const Text("BOLL")),
+                ElevatedButton(
+                    onPressed: () => adapter.changeType(MainDisplayType.ma),
+                    child: const Text("MA")),
+                ElevatedButton(
+                    onPressed: () => adapter.changeType(MainDisplayType.none),
+                    child: const Text("不显示")),
+              ],
+            ),
+            Row(
+              children: [
+                ElevatedButton(
+                    onPressed: () => adapter.changeType(ChartSenType.macd),
+                    child: const Text("MACD")),
+                ElevatedButton(
+                    onPressed: () => adapter.changeType(ChartSenType.kdj),
+                    child: const Text("KDJ")),
+                ElevatedButton(
+                    onPressed: () => adapter.changeType(ChartSenType.rsi),
+                    child: const Text("RSI")),
+                ElevatedButton(
+                    onPressed: () => adapter.changeType(ChartSenType.cci),
+                    child: const Text("CCI")),
+              ],
+            ),
+            Row(
+              children: [
+                ElevatedButton(
+                    onPressed: () =>
+                        adapter.changeType(ChartGroupType.withNone),
+                    child: const Text("K线")),
+                ElevatedButton(
+                    onPressed: () => adapter.changeType(ChartGroupType.withSen),
+                    child: const Text("附图")),
+                ElevatedButton(
+                    onPressed: () => adapter.changeType(ChartGroupType.withVol),
+                    child: const Text("成交")),
+                ElevatedButton(
+                    onPressed: () =>
+                        adapter.changeType(ChartGroupType.withVolSen),
+                    child: const Text("附图和成交量")),
+              ],
+            ),
+            Row(
+              children: [
+                ElevatedButton(
+                    onPressed: () => adapter.changeType(ChartDisplayType.kline),
+                    child: const Text("显示K线")),
+                ElevatedButton(
+                    onPressed: () =>
+                        adapter.changeType(ChartDisplayType.timeLine),
+                    child: const Text("显示分时线")),
+              ],
+            ),
+            Row(
+              children: [
+                ElevatedButton(
+                    onPressed: () => adapter.changeType(CrossType.followClose),
+                    child: const Text("十字线收盘价")),
+                ElevatedButton(
+                    onPressed: () => adapter.changeType(CrossType.followFinger),
+                    child: const Text("十字线手指")),
+                ElevatedButton(
+                    onPressed: () => adapter.changeType(CrossType.followAll),
+                    child: const Text("手指和收盘价")),
+              ],
+            ),
+            Row(
+              children: [
+                ElevatedButton(
+                    onPressed: () => adapter.changeType(XAxisType.flow),
+                    child: const Text("X坐标滑动")),
+                ElevatedButton(
+                    onPressed: () => adapter.changeType(XAxisType.pin),
+                    child: const Text("X坐标固定")),
+              ],
+            )
+          ],
         ),
       ),
     );

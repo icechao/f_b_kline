@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 ///主视图绘制调度
 class ChartPainter extends CustomPainter {
   final KRunConfig runConfig;
-  final ChartGroupType? type;
   final DataAdapter adapter;
   final Listenable repaint;
 
@@ -14,7 +13,7 @@ class ChartPainter extends CustomPainter {
   /// [type] type  [ChartGroupType]
   /// [adapter]   adapter   [DataAdapter]
   /// [repaint]   repaint notice   [Listenable]
-  const ChartPainter(this.type, this.adapter, this.runConfig, this.repaint)
+  const ChartPainter(this.adapter, this.runConfig, this.repaint)
       : super(repaint: repaint);
 
   @override
@@ -25,7 +24,7 @@ class ChartPainter extends CustomPainter {
 
     runConfig
       ..setSize(size)
-      ..initRect(type, adapter)
+      ..initRect(runConfig.type, adapter)
       ..calcScreenIndex(adapter)
       ..calcShowValues(adapter)
       ..renderChart(canvas, adapter);

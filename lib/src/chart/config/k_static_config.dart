@@ -89,9 +89,6 @@ class KStaticConfig {
   ///主图显示图表
   ChartGroupType defaultChartType = ChartGroupType.withVol;
 
-  /// X Axis Type
-  XAxisType xAxisType = XAxisType.flow;
-
   /// x axis count
   int xAxisCount = 3;
 

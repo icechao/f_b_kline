@@ -1,3 +1,6 @@
+## 0.0.3
+* fix bug
+
 ## 0.0.2+1
 * optimized code
 

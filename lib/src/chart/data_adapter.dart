@@ -15,7 +15,7 @@ class DataAdapter {
 
   StreamController dataController = StreamController.broadcast();
   StreamController<dynamic> typeController =
-      StreamController<ChartGroupType>.broadcast();
+      StreamController<dynamic>.broadcast();
   StreamController<double> translateController =
       StreamController<double>.broadcast();
 

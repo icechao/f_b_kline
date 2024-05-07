@@ -12,6 +12,7 @@ class RsiRender extends IRender {
 
   RsiRender(super.config, super.adapter) {
     paint
+      ..style = PaintingStyle.stroke
       ..strokeWidth = KStaticConfig().lineWidth
       ..color = KStaticConfig().chartColors['rsi']!;
   }

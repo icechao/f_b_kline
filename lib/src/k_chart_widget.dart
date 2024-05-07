@@ -68,6 +68,16 @@ class KChartWidgetState extends State<KChartWidget>
           widget.config.chartDisplayType = type;
           reRender(force: true);
         }
+      } else if (type is XAxisType) {
+        if (type != widget.config.xAxisType) {
+          widget.config.xAxisType = type;
+          reRender(force: true);
+        }
+      } else if (type is CrossType) {
+        if (type != widget.config.crossType) {
+          widget.config.crossType = type;
+          reRender(force: true);
+        }
       }
     });
 
@@ -205,23 +215,21 @@ class KChartWidgetState extends State<KChartWidget>
       },
       child: CustomPaint(
         painter: BackgroundPainter(),
-        foregroundPainter: ChartPainter(
-            widget.config.type ?? ChartGroupType.withVolSen,
-            widget.adapter,
-            widget.config,
-            repaint),
+        foregroundPainter: ChartPainter(widget.adapter, widget.config, repaint),
       ),
     );
   }
 
   /// next frame repaint
   void reRender({bool force = false}) {
-    if (force) {
-      repaint.value = DateTime.now().millisecondsSinceEpoch;
-    } else {
-      var newTime = DateTime.now().millisecondsSinceEpoch;
-      if (newTime - (repaint.value) > 10) {
-        repaint.value = newTime;
+    if (widget.adapter.dataLength != 0) {
+      if (force) {
+        repaint.value = DateTime.now().millisecondsSinceEpoch;
+      } else {
+        var newTime = DateTime.now().millisecondsSinceEpoch;
+        if (newTime - (repaint.value) > 10) {
+          repaint.value = newTime;
+        }
       }
     }
   }

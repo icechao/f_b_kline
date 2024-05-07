@@ -16,7 +16,7 @@ description: Flutter has excellent neutral performance and easy access to the K 
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.0.2+1
+version: 0.0.3
 
 repository: https://github.com/icechao/f_b_kline.git
 

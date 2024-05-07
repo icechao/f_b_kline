@@ -13,7 +13,7 @@ abstract class IRender {
   final KRunConfig config;
   final DataAdapter adapter;
   late double displayValueMax, displayValueMin, chartAsiaMax, chartAsiaMin;
-  late int maxValueIndex, minValueIndex;
+  int maxValueIndex = 0, minValueIndex = 0;
   final Paint paint = Paint()..strokeWidth = KStaticConfig().lineWidth;
 
   final List<KTextPainter> axisPainter = [];
