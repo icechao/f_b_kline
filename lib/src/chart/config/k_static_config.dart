@@ -179,23 +179,25 @@ class KStaticConfig {
     ///成交量均线2
     'volMaSen': Colors.yellow,
 
-    //选中的时间的背景色
+    /// 选中的时间的背景色
     'selectedDateBackground': Colors.deepPurple,
 
-    //选中的时间的背景色
+    /// 十字线横线颜色
     'crossHorizontal': Colors.white,
+
+    /// 十字线竖线颜色
     'crossVertical': Colors.white,
 
-    //选中的时间的背景色
+    /// 选中弹出窗的背景色
     'infoWindowBackground': Colors.lightBlueAccent,
 
-    //当前价格线颜色
+    /// 当前价格线颜色
     'priceLineColor': Colors.grey,
 
-    //当前价格框背景颜色
+    /// 当前价格框背景颜色
     'priceLineRectBackground': Colors.orange,
 
-    //当前价格文字颜色
+    ///当前价格文字颜色
     'priceLineText': Colors.white,
   };
 }
