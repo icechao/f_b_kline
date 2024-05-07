@@ -1,3 +1,6 @@
+## 0.0.3+1
+* fix cci rsi label position
+
 ## 0.0.3
 * fix bug
 

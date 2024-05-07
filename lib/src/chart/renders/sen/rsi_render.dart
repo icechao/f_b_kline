@@ -46,7 +46,7 @@ class RsiRender extends IRender {
       var text = buildTextSpan(
           'RSI(${KIndexParams().rsiOne}):${data.rsi!.toStringAsFixed(2)}',
           color: KStaticConfig().chartColors['rsi']);
-      KTextPainter(config.volRect!.left, config.volRect!.top)
+      KTextPainter(config.volRect!.left, config.senRect!.top)
           .renderText(canvas, text);
     }
   }
