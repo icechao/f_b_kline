@@ -1,10 +1,17 @@
+## 0.0.3+2
+
+* infoWindow add border
+
 ## 0.0.3+1
+
 * fix cci rsi label position
 
 ## 0.0.3
+
 * fix bug
 
 ## 0.0.2+1
+
 * optimized code
 
 ## 0.0.2

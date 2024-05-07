@@ -191,6 +191,9 @@ class KStaticConfig {
     /// 选中弹出窗的背景色
     'infoWindowBackground': Colors.lightBlueAccent,
 
+    /// 选中弹出窗的边框颜色
+    'infoWindowBorder': Colors.white,
+
     /// 当前价格线颜色
     'priceLineColor': Colors.grey,
 

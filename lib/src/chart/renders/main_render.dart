@@ -246,15 +246,23 @@ class MainRender extends IRender {
             KStaticConfig().infoWindowWidth;
       }
 
-      canvas.drawRRect(
-          RRect.fromLTRBR(
-              left,
+      var r = RRect.fromLTRBR(
+          left,
+          KStaticConfig().infoWindowWidthMarginVertical,
+          right,
+          KStaticConfig().infoWindowItemHeight * marketInfo.length +
               KStaticConfig().infoWindowWidthMarginVertical,
-              right,
-              KStaticConfig().infoWindowItemHeight * marketInfo.length +
-                  KStaticConfig().infoWindowWidthMarginVertical,
-              Radius.circular(KStaticConfig().infoWindowRadius)),
+          Radius.circular(KStaticConfig().infoWindowRadius));
+      canvas.drawRRect(r,
           paint..color = KStaticConfig().chartColors['infoWindowBackground']!);
+
+      canvas.drawRRect(
+          r,
+          paint
+            ..color = KStaticConfig().chartColors['infoWindowBorder']!
+            ..style = PaintingStyle.stroke);
+      paint.style = PaintingStyle.fill;
+
       List<TextSpan> keyList = [...marketInfo.keys];
       for (int i = 0; i < marketInfo.length; i++) {
         var rowY = KStaticConfig().infoWindowItemHeight * i +
