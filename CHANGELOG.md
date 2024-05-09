@@ -1,3 +1,11 @@
+## 0.0.3+4
+* fix max min value error
+
+## 0.0.3+3
+* support change tap mode
+* add max min value in main chart
+* max min display config
+
 ## 0.0.3+2
 
 * infoWindow add border

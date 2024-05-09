@@ -1,17 +1,26 @@
 import 'package:f_b_kline/src/chart/k_text_painter.dart';
 import 'package:flutter/material.dart';
 
+/// K线的显示类型
 enum ChartGroupType { withVol, withVolSen, withSen, withNone }
 
+/// 附图的指标类型
 enum ChartSenType { macd, kdj, wr, rsi, cci }
 
+/// 主图显示的类型
 enum ChartDisplayType { kline, timeLine }
 
+/// 主图显示的指标类型
 enum MainDisplayType { boll, ma, none }
 
+///十字线的显示模式
 enum CrossType { followClose, followFinger, followAll }
 
+/// X坐标的滑动模式
 enum XAxisType { flow, pin }
+
+///选中手势的点击模式
+enum TapType { single, continuous }
 
 ///静态常量工具不需要修改
 ///只需要在运行前修改代码
@@ -19,7 +28,6 @@ class KStaticConfig {
   ///---------------------------------------------------------
 
   static KStaticConfig? _instance;
-  double xAxisHeight = 20.0;
 
   KStaticConfig._internal() {
     _instance = this;
@@ -30,10 +38,21 @@ class KStaticConfig {
     return _instance!;
   }
 
+  /// 点击模式
+  TapType tapType = TapType.continuous;
+
+  double xAxisHeight = 20.0;
+
   double kRightSpace = 100;
+
+  /// 最大最小值连线的长
+  double maxMinLineLength = 20.0;
 
   ///主图纵坐标文字大小
   double mainAxisTextSize = 10.0;
+
+  ///主图纵坐标文字大小
+  double maxMinTextSize = 10.0;
 
   ///主图横坐标文字大小
   double mainXAxisTextSize = 10.0;
@@ -202,6 +221,9 @@ class KStaticConfig {
 
     ///当前价格文字颜色
     'priceLineText': Colors.white,
+
+    /// 最大值最小值颜色
+    'maxMinColor': Colors.white,
   };
 }
 

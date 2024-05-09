@@ -45,7 +45,7 @@ class KRunConfig {
   IRender? senRender;
   late int screenLeft, screenRight;
 
-  ChartGroupType? type;
+  ChartGroupType? chartGroupType;
   ChartDisplayType chartDisplayType = ChartDisplayType.kline;
   MainDisplayType mainDisplayType = MainDisplayType.boll;
   ChartSenType chartSenType = ChartSenType.kdj;
@@ -87,12 +87,12 @@ class KRunConfig {
     type ??= ChartGroupType.withVol;
     var kStaticConfig = KStaticConfig();
     var padding = kStaticConfig.topPadding;
-    this.type = type;
+    this.chartGroupType = type;
     var rowCount = kStaticConfig.gridRowCount;
     double item = (height - padding - kStaticConfig.xAxisHeight) / rowCount;
     mainRender = MainRender(this, adapter)
       ..axisPainter.add(KTextPainter(width, padding));
-    switch (this.type!) {
+    switch (this.chartGroupType!) {
       case ChartGroupType.withVolSen:
         mainRect =
             Rect.fromLTRB(0, padding, width, item * (rowCount - 2) + padding);

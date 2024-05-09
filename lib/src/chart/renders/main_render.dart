@@ -13,6 +13,8 @@ class MainRender extends IRender {
 
   final Paint crossLineVerticalPaint = Paint();
 
+  final Paint maxMinPaint = Paint();
+
   late TextSpan _textSpan;
 
   MainRender(super.config, super.adapter) {
@@ -60,6 +62,59 @@ class MainRender extends IRender {
 
         canvas.drawLine(Offset(x, high), Offset(x, low),
             paint..strokeWidth = KStaticConfig().lineWidth);
+
+        if (index == maxValueIndex) {
+          double minLineStart;
+          KAlign textAlign;
+          if (x > config.width / 2) {
+            minLineStart = x - KStaticConfig().maxMinLineLength;
+            textAlign = KAlign.left;
+          } else {
+            minLineStart = x + KStaticConfig().maxMinLineLength;
+            textAlign = KAlign.right;
+          }
+          canvas.drawLine(
+              Offset(minLineStart, high),
+              Offset(x, high),
+              paint
+                ..strokeWidth = KStaticConfig().lineWidth
+                ..color = KStaticConfig().chartColors['maxMinColor']!);
+          KTextPainter(minLineStart, high - KStaticConfig().maxMinTextSize / 2)
+              .renderText(
+                  canvas,
+                  buildTextSpan(
+                      config.mainValueFormatter.call(adapter.data[index].high),
+                      color: KStaticConfig().chartColors['maxMinColor']!,
+                      fontSize: KStaticConfig().maxMinTextSize),
+                  top: false,
+                  align: textAlign);
+        }
+        if (index == minValueIndex) {
+          double minLineStart;
+          KAlign textAlign;
+          if (x > config.width / 2) {
+            minLineStart = x - KStaticConfig().maxMinLineLength;
+            textAlign = KAlign.left;
+          } else {
+            minLineStart = x + KStaticConfig().maxMinLineLength;
+            textAlign = KAlign.right;
+          }
+          canvas.drawLine(
+              Offset(minLineStart, low),
+              Offset(x, low),
+              paint
+                ..strokeWidth = KStaticConfig().lineWidth
+                ..color = KStaticConfig().chartColors['maxMinColor']!);
+          KTextPainter(minLineStart, low - KStaticConfig().maxMinTextSize / 2)
+              .renderText(
+                  canvas,
+                  buildTextSpan(
+                      config.mainValueFormatter.call(adapter.data[index].low),
+                      color: KStaticConfig().chartColors['maxMinColor']!,
+                      fontSize: KStaticConfig().maxMinTextSize),
+                  top: false,
+                  align: textAlign);
+        }
 
         switch (config.mainDisplayType) {
           case MainDisplayType.boll:
@@ -335,17 +390,17 @@ class MainRender extends IRender {
     displayValueMin = min(displayValueMin, item.low);
     switch (config.mainDisplayType) {
       case MainDisplayType.boll:
-        displayValueMax = max(displayValueMax, item.up ?? 0);
-        displayValueMin = min(displayValueMin, item.dn ?? 0);
+        displayValueMax = max(displayValueMax, item.dn ?? displayValueMax);
+        displayValueMin = min(displayValueMin, item.up ?? displayValueMin);
         break;
       case MainDisplayType.ma:
-        displayValueMax = max(displayValueMax, item.ma1 ?? 0);
-        displayValueMax = max(displayValueMax, item.ma2 ?? 0);
-        displayValueMax = max(displayValueMax, item.ma3 ?? 0);
+        displayValueMax = max(displayValueMax, item.ma1 ?? displayValueMax);
+        displayValueMax = max(displayValueMax, item.ma2 ?? displayValueMax);
+        displayValueMax = max(displayValueMax, item.ma3 ?? displayValueMax);
 
-        displayValueMin = min(displayValueMin, item.ma1 ?? 0);
-        displayValueMin = min(displayValueMin, item.ma2 ?? 0);
-        displayValueMin = min(displayValueMin, item.ma3 ?? 0);
+        displayValueMin = min(displayValueMin, item.ma1 ?? displayValueMin);
+        displayValueMin = min(displayValueMin, item.ma2 ?? displayValueMin);
+        displayValueMin = min(displayValueMin, item.ma3 ?? displayValueMin);
         break;
       case MainDisplayType.none:
         break;

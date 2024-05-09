@@ -49,8 +49,8 @@ class KChartWidgetState extends State<KChartWidget>
     repaint = ValueNotifier<int>(-9999999999);
     bindChartTypeListener = widget.adapter.bindChartTypeListener((type) {
       if (type is ChartGroupType) {
-        if (type != widget.config.type) {
-          widget.config.type = type;
+        if (type != widget.config.chartGroupType) {
+          widget.config.chartGroupType = type;
           reRender(force: true);
         }
       } else if (type is MainDisplayType) {
@@ -175,9 +175,14 @@ class KChartWidgetState extends State<KChartWidget>
         var dataLength = widget.adapter.dataLength;
 
         if (dataLength > 0) {
-          if (widget.config.selectedX != null) {
-            widget.config.updateSelectedX(null);
-            widget.config.updateSelectedY(null);
+          if (KStaticConfig().tapType == TapType.single) {
+            if (widget.config.selectedX != null) {
+              widget.config.updateSelectedX(null);
+              widget.config.updateSelectedY(null);
+            } else {
+              widget.config.updateSelectedX(details.globalPosition.dx);
+              widget.config.updateSelectedY(details.localPosition.dy);
+            }
           } else {
             widget.config.updateSelectedX(details.globalPosition.dx);
             widget.config.updateSelectedY(details.localPosition.dy);

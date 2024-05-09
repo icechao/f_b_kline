@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:f_b_kline/src/export_k_chart.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,17 @@ class MyApp extends StatelessWidget {
       }
 
       adapter.resetData(data);
+      // Timer.periodic(const Duration(seconds: 3), (timer) {
+      //   KLineEntity item = data[Random().nextInt(data.length - 1)];
+      //   data.add(KLineEntity()
+      //     ..time = item.time
+      //     ..open = item.open
+      //     ..high = item.high
+      //     ..low = item.low
+      //     ..close = item.close
+      //     ..vol = item.vol);
+      //   adapter.resetData(data, resetTranslate: true);
+      // });
     });
 
     return MaterialApp(

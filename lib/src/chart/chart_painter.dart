@@ -1,5 +1,4 @@
 import 'package:f_b_kline/src/chart/config/k_run_config.dart';
-import 'package:f_b_kline/src/chart/config/k_static_config.dart';
 import 'package:f_b_kline/src/chart/data_adapter.dart';
 import 'package:flutter/material.dart';
 
@@ -10,9 +9,9 @@ class ChartPainter extends CustomPainter {
   final Listenable repaint;
 
   /// constructor
-  /// [type] type  [ChartGroupType]
-  /// [adapter]   adapter   [DataAdapter]
-  /// [repaint]   repaint notice   [Listenable]
+  /// [adapter] data adapter
+  /// [runConfig] cache config
+  /// [repaint] repaint
   const ChartPainter(this.adapter, this.runConfig, this.repaint)
       : super(repaint: repaint);
 
@@ -24,7 +23,7 @@ class ChartPainter extends CustomPainter {
 
     runConfig
       ..setSize(size)
-      ..initRect(runConfig.type, adapter)
+      ..initRect(runConfig.chartGroupType, adapter)
       ..calcScreenIndex(adapter)
       ..calcShowValues(adapter)
       ..renderChart(canvas, adapter);
