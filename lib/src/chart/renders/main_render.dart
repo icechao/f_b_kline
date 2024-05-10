@@ -514,17 +514,18 @@ class MainRender extends IRender {
             align: KAlign.center,
             backGroundColor:
                 KStaticConfig().chartColors['selectedDateBackground']!);
-    var matrix4 = Matrix4.inverted(matrixUtils.mainMatrix!);
-    var result = matrix4.applyToVector3Array([0, dy, 0]);
     if (null != builder) {
-      var kTextPainter = KTextPainter(selectedPriceX, selectedPriceY!);
-      kTextPainter.renderText(
-          canvas, builder.call(result[1]),
-          top: false,
-          fitY: true,
-          align: align,
-          backGroundColor:
-              KStaticConfig().chartColors['selectedPriceBackground']);
+      var matrix4 = Matrix4.inverted(matrixUtils.mainMatrix!);
+      var result = matrix4.applyToVector3Array([0, dy, 0]);
+      var textSpan = builder.call(result[1]);
+      if (textSpan != null) {
+        KTextPainter(selectedPriceX, selectedPriceY!).renderText(
+            canvas, textSpan,
+            fitY: true,
+            align: align,
+            backGroundColor:
+                KStaticConfig().chartColors['selectedPriceBackground']);
+      }
     }
   }
 

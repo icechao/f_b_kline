@@ -21,7 +21,7 @@ typedef DateFormatter = String Function(int?);
 typedef ValueFormatter = String Function(num?);
 
 ///价格信息构建
-typedef TextBuilder = Function(double?);
+typedef TextBuilder = TextSpan? Function(double?);
 
 typedef InfoBuilder = Map<TextSpan, TextSpan> Function(KLineEntity);
 
