@@ -1,3 +1,7 @@
+## 0.0.3+8
+
+* fix bug
+
 ## 0.0.3+6
 
 * selected horizontal line add text

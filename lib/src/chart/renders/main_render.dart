@@ -430,11 +430,11 @@ class MainRender extends IRender {
     var selectedDisplay =
         adapter.mainDisplayPoints.sublist(startIndex, stopIndex);
     var dy = selectedDisplay[KMainIndex.close * 3 + 1];
-    double dx = config.selectedX!;
+
     var maxDy = config.height - KStaticConfig().xAxisHeight;
     double? selectedPriceX, selectedPriceY;
     KAlign? align;
-    if (dx > config.width / 2) {
+    if (config.selectedX! > config.width / 2) {
       selectedPriceX = 0;
       align = KAlign.right;
     } else {
@@ -444,13 +444,13 @@ class MainRender extends IRender {
 
     switch (config.crossType) {
       case CrossType.followClose:
+        var dx = selectedDisplay[0] + config.chartScaleWidth / 2;
 
         ///横线
         canvas.drawLine(Offset(0, dy), Offset(config.width, dy),
             paint..color = KStaticConfig().chartColors['crossHorizontal']!);
 
         selectedPriceY = dy;
-
         ///竖线
         canvas.drawLine(
             Offset(dx, 0),
@@ -458,16 +458,15 @@ class MainRender extends IRender {
             crossLineVerticalPaint
               ..strokeWidth =
                   config.chartScaleWidth - KStaticConfig().candleItemSpace * 2);
-
         break;
       case CrossType.followFinger:
+        double dx = config.selectedX!;
         paint.color = KStaticConfig().chartColors['crossHorizontal']!;
         for (double i = 0; i < config.width; i += 4) {
           ///横虚线
           canvas.drawLine(Offset(i, config.selectedY!),
               Offset(i + 2, config.selectedY!), paint);
         }
-
         selectedPriceY = config.selectedY;
         crossLineVerticalPaint
           ..color = KStaticConfig().chartColors['crossVertical']!
@@ -485,9 +484,7 @@ class MainRender extends IRender {
           ///横虚线
           canvas.drawLine(Offset(i, config.selectedY!),
               Offset(i + 2, config.selectedY!), paint);
-
           selectedPriceY = config.selectedY;
-
           ///横虚线
           canvas.drawLine(Offset(i, dy), Offset(i + 2, dy), paint);
         }
