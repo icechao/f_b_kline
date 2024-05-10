@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:f_b_kline/src/chart/config/k_run_config.dart';
 import 'package:f_b_kline/src/chart/config/k_static_config.dart';
 import 'package:f_b_kline/src/chart/entity/k_line_entity.dart';
 import 'package:f_b_kline/src/chart/i_render.dart';
@@ -10,7 +11,7 @@ import 'package:flutter/material.dart';
 /// [difPath] dif line path
 /// [deaPath] dea line path
 class MacdRender extends IRender {
-  MacdRender(super.config, super.adapter);
+  MacdRender(super.config, super.adapter,super.matrixUtils);
 
   final Path difPath = Path();
   final Path deaPath = Path();
@@ -55,7 +56,7 @@ class MacdRender extends IRender {
   }
 
   @override
-  void renderLine(Canvas canvas) {
+  void renderLine(Canvas canvas, {TextBuilder? builder}) {
     canvas
       ..drawPath(
           difPath,

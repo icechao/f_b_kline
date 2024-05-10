@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui' as ui;
 
+import 'package:f_b_kline/src/chart/config/k_run_config.dart';
 import 'package:f_b_kline/src/chart/config/k_static_config.dart';
 import 'package:f_b_kline/src/chart/entity/k_line_entity.dart';
 import 'package:f_b_kline/src/chart/i_render.dart';
@@ -17,7 +18,7 @@ class MainRender extends IRender {
 
   late TextSpan _textSpan;
 
-  MainRender(super.config, super.adapter) {
+  MainRender(super.config, super.adapter, super.matrixUtils) {
     crossLineVerticalPaint
       ..color = Colors.white
       ..shader = ui.Gradient.linear(
@@ -275,7 +276,7 @@ class MainRender extends IRender {
   }
 
   @override
-  void renderLine(Canvas canvas) {
+  void renderLine(Canvas canvas, {TextBuilder? builder}) {
     if (config.selectedX != null) {
       config.selectedIndex =
           config.xToIndex(config.selectedX!, adapter.dataLength);
@@ -287,7 +288,7 @@ class MainRender extends IRender {
 
       Map<TextSpan, TextSpan> marketInfo =
           config.getMarketInfo(adapter, selectedIndex);
-      renderCross(canvas, selectedIndex, data);
+      renderCross(canvas, selectedIndex, data, builder: builder);
       double left, right;
 
       if (config.selectedX! < config.width / 2) {
@@ -422,21 +423,33 @@ class MainRender extends IRender {
   ///  canvas
   ///
   ///  data
-  void renderCross(Canvas canvas, int selectedIndex, KLineEntity data) {
+  void renderCross(Canvas canvas, int selectedIndex, KLineEntity data,
+      {TextBuilder? builder}) {
     int startIndex = 3 * 10 * (selectedIndex - config.screenLeft);
     int stopIndex = 3 * 10 * (selectedIndex - config.screenLeft + 1);
     var selectedDisplay =
         adapter.mainDisplayPoints.sublist(startIndex, stopIndex);
     var dy = selectedDisplay[KMainIndex.close * 3 + 1];
-
+    double dx = config.selectedX!;
     var maxDy = config.height - KStaticConfig().xAxisHeight;
+    double? selectedPriceX, selectedPriceY;
+    KAlign? align;
+    if (dx > config.width / 2) {
+      selectedPriceX = 0;
+      align = KAlign.right;
+    } else {
+      selectedPriceX = config.width;
+      align = KAlign.left;
+    }
+
     switch (config.crossType) {
       case CrossType.followClose:
-        var dx = selectedDisplay[0] + config.chartScaleWidth / 2;
 
         ///横线
         canvas.drawLine(Offset(0, dy), Offset(config.width, dy),
             paint..color = KStaticConfig().chartColors['crossHorizontal']!);
+
+        selectedPriceY = dy;
 
         ///竖线
         canvas.drawLine(
@@ -445,15 +458,17 @@ class MainRender extends IRender {
             crossLineVerticalPaint
               ..strokeWidth =
                   config.chartScaleWidth - KStaticConfig().candleItemSpace * 2);
+
         break;
       case CrossType.followFinger:
-        double dx = config.selectedX!;
         paint.color = KStaticConfig().chartColors['crossHorizontal']!;
         for (double i = 0; i < config.width; i += 4) {
           ///横虚线
           canvas.drawLine(Offset(i, config.selectedY!),
               Offset(i + 2, config.selectedY!), paint);
         }
+
+        selectedPriceY = config.selectedY;
         crossLineVerticalPaint
           ..color = KStaticConfig().chartColors['crossVertical']!
           ..shader = null;
@@ -470,6 +485,8 @@ class MainRender extends IRender {
           ///横虚线
           canvas.drawLine(Offset(i, config.selectedY!),
               Offset(i + 2, config.selectedY!), paint);
+
+          selectedPriceY = config.selectedY;
 
           ///横虚线
           canvas.drawLine(Offset(i, dy), Offset(i + 2, dy), paint);
@@ -497,6 +514,18 @@ class MainRender extends IRender {
             align: KAlign.center,
             backGroundColor:
                 KStaticConfig().chartColors['selectedDateBackground']!);
+    var matrix4 = Matrix4.inverted(matrixUtils.mainMatrix!);
+    var result = matrix4.applyToVector3Array([0, dy, 0]);
+    if (null != builder) {
+      var kTextPainter = KTextPainter(selectedPriceX, selectedPriceY!);
+      kTextPainter.renderText(
+          canvas, builder.call(kTextPainter, align, result[1]),
+          top: false,
+          fitY: true,
+          align: align,
+          backGroundColor:
+              KStaticConfig().chartColors['selectedPriceBackground']);
+    }
   }
 
   @override

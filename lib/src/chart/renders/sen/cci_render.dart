@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:f_b_kline/src/chart/config/k_run_config.dart';
 import 'package:f_b_kline/src/chart/config/k_static_config.dart';
 import 'package:f_b_kline/src/chart/i_render.dart';
 import 'package:f_b_kline/src/chart/k_text_painter.dart';
@@ -15,7 +16,7 @@ import '../../entity/k_line_entity.dart';
 class CciRender extends IRender {
   final Path linePath = Path();
 
-  CciRender(super.config, super.adapter) {
+  CciRender(super.config, super.adapter, super.matrixUtils) {
     paint
       ..style = PaintingStyle.stroke
       ..strokeWidth = KStaticConfig().lineWidth
@@ -38,7 +39,7 @@ class CciRender extends IRender {
   }
 
   @override
-  void renderLine(Canvas canvas) {
+  void renderLine(Canvas canvas, {TextBuilder? builder}) {
     canvas.drawPath(linePath, paint);
   }
 

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:f_b_kline/src/export_k_chart.dart';
 import 'package:flutter/material.dart';
@@ -72,6 +71,12 @@ class MyApp extends StatelessWidget {
               child: KChartWidget(
                 adapter,
                 config: KRunConfig(
+                  selectedPriceBuilder: (offset, align, double? value) {
+                    return TextSpan(
+                      text: value?.toStringAsFixed(2) ?? '--',
+                      style: const TextStyle(color: Colors.white),
+                    );
+                  },
                   dateFormatter: (int? value) {
                     return formatDate(
                         DateTime.fromMillisecondsSinceEpoch(value ?? 0));

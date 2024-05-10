@@ -48,7 +48,6 @@ class KStaticConfig {
   /// max = max + (max-min) * displayFactor
   /// min = min - (max-min) * displayFactor
 
-
   double get displayFactor => 0.2;
 
   /// 点击模式
@@ -66,7 +65,7 @@ class KStaticConfig {
   ///主图纵坐标文字大小
   double mainAxisTextSize = 10.0;
 
-  ///主图纵坐标文字大小
+  ///最高最低文字大小
   double maxMinTextSize = 10.0;
 
   ///主图横坐标文字大小
@@ -233,6 +232,9 @@ class KStaticConfig {
 
     /// 当前价格框背景颜色
     'priceLineRectBackground': Colors.orange,
+
+    /// 当前选中价格框背景颜色
+    'selectedPriceBackground': Colors.orange,
 
     ///当前价格文字颜色
     'priceLineText': Colors.white,

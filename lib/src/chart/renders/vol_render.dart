@@ -8,7 +8,7 @@ import 'package:f_b_kline/src/chart/k_text_painter.dart';
 import 'package:flutter/material.dart';
 
 class VolRender extends IRender {
-  VolRender(super.config, super.adapter);
+  VolRender(super.config, super.adapter,super.matrixUtils);
 
   final Path maFirPath = Path();
   final Path maSenPath = Path();
@@ -56,7 +56,7 @@ class VolRender extends IRender {
   }
 
   @override
-  void renderLine(Canvas canvas) {
+  void renderLine(Canvas canvas, {TextBuilder? builder}) {
     canvas
       ..drawPath(
           maFirPath, maPaint..color = KStaticConfig().chartColors['volMaFir']!)

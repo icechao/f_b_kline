@@ -1,3 +1,7 @@
+## 0.0.3+6
+
+* selected horizontal line add text
+
 ## 0.0.3+5
 
 * fix edge case

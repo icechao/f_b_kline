@@ -1,3 +1,4 @@
+import 'package:f_b_kline/src/chart/k_matrix_util.dart';
 import 'package:f_b_kline/src/chart/k_text_painter.dart';
 import 'package:f_b_kline/src/export_k_chart.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/material.dart';
 abstract class IRender {
   final KRunConfig config;
   final DataAdapter adapter;
+  final KMatrixUtils matrixUtils;
   late double displayValueMax, displayValueMin, chartAsiaMax, chartAsiaMin;
   int maxValueIndex = 0, minValueIndex = 0;
   final Paint paint = Paint()..strokeWidth = KStaticConfig().lineWidth;
@@ -20,7 +22,7 @@ abstract class IRender {
 
   final List<KTextPainter> valuePainter = [];
 
-  IRender(this.config, this.adapter);
+  IRender(this.config, this.adapter, this.matrixUtils);
 
   ///paint chart
   ///[canvas] canvas
@@ -37,7 +39,7 @@ abstract class IRender {
 
   ///paint lines
   /// [canvas]
-  void renderLine(Canvas canvas);
+  void renderLine(Canvas canvas, {TextBuilder? builder});
 
   ///paint Axis
   /// [canvas]

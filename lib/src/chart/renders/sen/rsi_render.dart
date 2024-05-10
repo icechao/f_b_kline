@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:f_b_kline/src/chart/config/k_run_config.dart';
 import 'package:f_b_kline/src/chart/config/k_static_config.dart';
 import 'package:f_b_kline/src/chart/entity/k_line_entity.dart';
 import 'package:f_b_kline/src/chart/i_render.dart';
@@ -10,7 +11,7 @@ import 'package:flutter/material.dart';
 class RsiRender extends IRender {
   final Path linePath = Path();
 
-  RsiRender(super.config, super.adapter) {
+  RsiRender(super.config, super.adapter,super.matrixUtils) {
     paint
       ..style = PaintingStyle.stroke
       ..strokeWidth = KStaticConfig().lineWidth
@@ -33,7 +34,7 @@ class RsiRender extends IRender {
   }
 
   @override
-  void renderLine(Canvas canvas) {
+  void renderLine(Canvas canvas, {TextBuilder? builder}) {
     canvas.drawPath(linePath, paint);
   }
 

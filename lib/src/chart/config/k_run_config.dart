@@ -20,16 +20,23 @@ typedef DateFormatter = String Function(int?);
 ///数值格式化
 typedef ValueFormatter = String Function(num?);
 
+///价格信息构建
+typedef TextBuilder = Function(KTextPainter, KAlign, double?);
+
 typedef InfoBuilder = Map<TextSpan, TextSpan> Function(KLineEntity);
 
 ///单例类,K线运行时类库
 ///不需要修改运行时配置
 class KRunConfig {
+  final KMatrixUtils matrixUtils = KMatrixUtils();
+
   final DateFormatter dateFormatter;
   final ValueFormatter mainValueFormatter;
   final ValueFormatter volValueFormatter;
 
   final InfoBuilder infoBuilder;
+
+  final TextBuilder selectedPriceBuilder;
 
   late double height, width;
   Rect? mainRect, volRect, senRect;
@@ -66,6 +73,7 @@ class KRunConfig {
       {required this.dateFormatter,
       required this.mainValueFormatter,
       required this.volValueFormatter,
+      required this.selectedPriceBuilder,
       required this.infoBuilder});
 
   ///max length of data
@@ -87,12 +95,12 @@ class KRunConfig {
     type ??= ChartGroupType.withVol;
     var kStaticConfig = KStaticConfig();
     var padding = kStaticConfig.topPadding;
-    this.chartGroupType = type;
+    chartGroupType = type;
     var rowCount = kStaticConfig.gridRowCount;
     double item = (height - padding - kStaticConfig.xAxisHeight) / rowCount;
-    mainRender = MainRender(this, adapter)
+    mainRender = MainRender(this, adapter, matrixUtils)
       ..axisPainter.add(KTextPainter(width, padding));
-    switch (this.chartGroupType!) {
+    switch (chartGroupType!) {
       case ChartGroupType.withVolSen:
         mainRect =
             Rect.fromLTRB(0, padding, width, item * (rowCount - 2) + padding);
@@ -102,7 +110,7 @@ class KRunConfig {
         volBaseY = mainRect!.bottom;
         volRect = Rect.fromLTRB(
             0, mainRect!.bottom, width, item * (rowCount - 1) + padding);
-        volRender = VolRender(this, adapter)
+        volRender = VolRender(this, adapter, matrixUtils)
           ..axisPainter.addAll([
             KTextPainter(width, padding + item * (rowCount - 2)),
             KTextPainter(width, padding + item * (rowCount - 1)),
@@ -153,7 +161,7 @@ class KRunConfig {
         volBaseY = mainRect!.bottom;
         volRect = Rect.fromLTRB(
             0, mainRect!.bottom, width, item * rowCount + padding);
-        volRender = VolRender(this, adapter)
+        volRender = VolRender(this, adapter, matrixUtils)
           ..axisPainter.addAll([
             KTextPainter(width, padding + item * (rowCount - 1)),
             KTextPainter(width, padding + item * rowCount),
@@ -164,7 +172,7 @@ class KRunConfig {
         break;
     }
 
-    xAxisRender = XAxisRender(this, adapter);
+    xAxisRender = XAxisRender(this, adapter, matrixUtils);
     var columnCount = kStaticConfig.xAxisCount;
     double xSpace = width / (columnCount);
     switch (xAxisType) {
@@ -523,7 +531,7 @@ class KRunConfig {
       ..renderText(canvas);
     mainRender
       ..renderAxis(canvas)
-      ..renderLine(canvas)
+      ..renderLine(canvas, builder: selectedPriceBuilder)
       ..renderText(canvas);
     volRender
       ?..renderAxis(canvas)
@@ -564,15 +572,15 @@ class KRunConfig {
   IRender getSenRender(DataAdapter adapter) {
     switch (chartSenType) {
       case ChartSenType.macd:
-        return MacdRender(this, adapter);
+        return MacdRender(this, adapter, matrixUtils);
       case ChartSenType.kdj:
-        return KdjRender(this, adapter);
+        return KdjRender(this, adapter, matrixUtils);
       case ChartSenType.wr:
-        return WrRender(this, adapter);
+        return WrRender(this, adapter, matrixUtils);
       case ChartSenType.rsi:
-        return RsiRender(this, adapter);
+        return RsiRender(this, adapter, matrixUtils);
       case ChartSenType.cci:
-        return CciRender(this, adapter);
+        return CciRender(this, adapter, matrixUtils);
     }
   }
 }

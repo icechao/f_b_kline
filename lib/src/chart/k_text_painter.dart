@@ -31,7 +31,11 @@ class KTextPainter {
   /// [align] align [KAlign]
   /// [backGroundColor] backGroundColor
   renderText(Canvas canvas, InlineSpan span,
-      {bool top = false, KAlign? align, Color? backGroundColor}) {
+      {bool top = false,
+      KAlign? align,
+      Color? backGroundColor,
+      double radius = 0,
+      bool fitY = false}) {
     painter
       ..text = span
       ..layout();
@@ -57,9 +61,14 @@ class KTextPainter {
     }
 
     var dy = top ? tempY - painter.height : tempY;
+    if (fitY) {
+      dy = dy - painter.height / 2;
+    }
     if (null != backGroundColor) {
-      canvas.drawRect(
-          Rect.fromLTRB(dx, dy, dx + painter.width, dy + painter.height),
+      canvas.drawRRect(
+          RRect.fromRectAndRadius(
+              Rect.fromLTRB(dx, dy, dx + painter.width, dy + painter.height),
+              Radius.circular(radius)),
           paint..color = backGroundColor);
     }
 
