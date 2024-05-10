@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
               child: KChartWidget(
                 adapter,
                 config: KRunConfig(
-                  selectedPriceBuilder: (offset, align, double? value) {
+                  selectedPriceBuilder: (double? value) {
                     return TextSpan(
                       text: value?.toStringAsFixed(2) ?? '--',
                       style: const TextStyle(color: Colors.white),

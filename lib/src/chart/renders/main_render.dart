@@ -519,7 +519,7 @@ class MainRender extends IRender {
     if (null != builder) {
       var kTextPainter = KTextPainter(selectedPriceX, selectedPriceY!);
       kTextPainter.renderText(
-          canvas, builder.call(kTextPainter, align, result[1]),
+          canvas, builder.call(result[1]),
           top: false,
           fitY: true,
           align: align,
