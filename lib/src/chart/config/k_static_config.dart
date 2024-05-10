@@ -27,22 +27,37 @@ enum TapType { single, continuous }
 class KStaticConfig {
   ///---------------------------------------------------------
 
+  /// instance
   static KStaticConfig? _instance;
 
+  /// constructor
   KStaticConfig._internal() {
     _instance = this;
   }
 
+  /// factory
   factory KStaticConfig() {
     _instance ??= KStaticConfig._internal();
     return _instance!;
   }
 
+  ///展示与实际值的计算因数  :
+  /// max = min
+  /// max = max*(1+ displayFactor)
+  /// min = min* (1-displayFactor)
+  /// max = max + (max-min) * displayFactor
+  /// min = min - (max-min) * displayFactor
+
+
+  double get displayFactor => 0.2;
+
   /// 点击模式
   TapType tapType = TapType.continuous;
 
+  /// X坐标高
   double xAxisHeight = 20.0;
 
+  /// 初始右侧space
   double kRightSpace = 100;
 
   /// 最大最小值连线的长
@@ -227,27 +242,35 @@ class KStaticConfig {
   };
 }
 
+/// K线的指标参数
 class KIndexParams {
+  /// instance
   static KIndexParams? _instance;
 
+  /// constructor
   KIndexParams._internal() {
     _instance = this;
   }
 
+  /// factory
   factory KIndexParams() {
     _instance ??= KIndexParams._internal();
     return _instance!;
   }
 
+  ///ma参数
   int mainMa1 = 5;
 
+  ///ma参数
   int mainMa2 = 10;
 
+  ///ma参数
   int mainMa3 = 20;
 
   ///boll参数
   int bollN = 20;
 
+  ///boll参数
   int bollK = 2;
 
   ///cci参数
@@ -256,13 +279,16 @@ class KIndexParams {
   /// kdj参数
   int kdjN = 9;
 
+  /// kdj参数
   int kdjM1 = 3;
 
+  /// kdj参数
   int kdjM2 = 3;
 
   ///成交量ma
   int volMa1 = 5;
 
+  ///成交量ma
   int volMa2 = 10;
 
   ///wr
@@ -271,16 +297,18 @@ class KIndexParams {
   ///rsi
   int wrOne = 10;
 
-  /// kdj
   ///计算使用参数
   ///macd
   int macdS = 12;
 
+  ///macd
   int macdL = 26;
 
+  ///macd
   int macdM = 9;
 }
 
+/// Points索引
 class KMainIndex {
   static const open = 0;
   static const close = 1;
@@ -294,12 +322,14 @@ class KMainIndex {
   static const dn = 9;
 }
 
+/// Points索引
 class KVolIndex {
   static const vol = 0;
   static const volMaOne = 1;
   static const volMaTwo = 2;
 }
 
+/// Points索引
 class SenIndex {
   static const macd = 0;
   static const dif = 1;

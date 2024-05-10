@@ -384,14 +384,25 @@ class MainRender extends IRender {
 
   @override
   void calcMaxMin(KLineEntity item, int index) {
-    var tempMax = displayValueMax;
-    var tempMin = displayValueMin;
+    var tempMax = chartAsiaMax;
+    var tempMin = chartAsiaMin;
     displayValueMax = max(displayValueMax, item.high);
     displayValueMin = min(displayValueMin, item.low);
+
+    /// 因为指标计算问题可能会导致最大值最小值不准确
+    chartAsiaMax = max(chartAsiaMax, item.high);
+    chartAsiaMin = min(chartAsiaMin, item.low);
+
+    if (tempMax != chartAsiaMax) {
+      maxValueIndex = index;
+    }
+    if (tempMin != chartAsiaMin) {
+      minValueIndex = index;
+    }
     switch (config.mainDisplayType) {
       case MainDisplayType.boll:
-        displayValueMax = max(displayValueMax, item.dn ?? displayValueMax);
-        displayValueMin = min(displayValueMin, item.up ?? displayValueMin);
+        displayValueMax = max(displayValueMax, item.up ?? displayValueMax);
+        displayValueMin = min(displayValueMin, item.dn ?? displayValueMin);
         break;
       case MainDisplayType.ma:
         displayValueMax = max(displayValueMax, item.ma1 ?? displayValueMax);
@@ -404,12 +415,6 @@ class MainRender extends IRender {
         break;
       case MainDisplayType.none:
         break;
-    }
-    if (tempMax != displayValueMax) {
-      maxValueIndex = index;
-    }
-    if (tempMin != displayValueMin) {
-      minValueIndex = index;
     }
   }
 

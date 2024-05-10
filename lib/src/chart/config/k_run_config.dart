@@ -45,7 +45,7 @@ class KRunConfig {
   IRender? senRender;
   late int screenLeft, screenRight;
 
-  ChartGroupType? chartGroupType;
+  ChartGroupType? chartGroupType = ChartGroupType.withVol;
   ChartDisplayType chartDisplayType = ChartDisplayType.kline;
   MainDisplayType mainDisplayType = MainDisplayType.boll;
   ChartSenType chartSenType = ChartSenType.kdj;
@@ -219,7 +219,9 @@ class KRunConfig {
     adapter.volDisplayPoints = [];
     adapter.senDisplayPoints = [];
     mainRender.displayValueMax = double.minPositive;
+    mainRender.chartAsiaMax = double.minPositive;
     mainRender.displayValueMin = double.maxFinite;
+    mainRender.chartAsiaMin = double.maxFinite;
 
     volRender?.displayValueMax = double.minPositive;
     volRender?.displayValueMin = double.maxFinite;
@@ -237,106 +239,22 @@ class KRunConfig {
       if (mainRender.minValueIndex == i) {
         zIndex++;
       }
-      adapter.mainDisplayPoints
-        ..add(xIndex)
-        ..add(item.open)
-        ..add(zIndex)
-        ..add(0.0)
-        ..add(item.close)
-        ..add(0.0)
-        ..add(0.0)
-        ..add(item.low)
-        ..add(0.0)
-        ..add(0.0)
-        ..add(item.high)
-        ..add(0.0)
-        ..add(0.0)
-        ..add(item.ma1 ?? double.infinity)
-        ..add(0.0)
-        ..add(0.0)
-        ..add(item.ma2 ?? double.infinity)
-        ..add(0.0)
-        ..add(0.0)
-        ..add(item.ma3 ?? double.infinity)
-        ..add(0.0)
-        ..add(0.0)
-        ..add(item.mb ?? double.infinity)
-        ..add(0.0)
-        ..add(0.0)
-        ..add(item.up ?? double.infinity)
-        ..add(0.0)
-        ..add(0.0)
-        ..add(item.dn ?? double.infinity)
-        ..add(0.0);
+      addToMainPoints(adapter, xIndex, item, zIndex);
 
-      if (volRect != null) {
-        adapter.volDisplayPoints
-          ..add(xIndex)
-          ..add(item.vol)
-          ..add(0.0)
-          ..add(0.0)
-          ..add(item.maVolume1 ?? double.infinity)
-          ..add(0.0)
-          ..add(0.0)
-          ..add(item.maVolume2 ?? double.infinity)
-          ..add(0.0);
+      addToVolPoints(adapter, xIndex, item, i);
 
-        volRender?.calcMaxMin(item, i);
-      }
-
-      if (senRect != null) {
-        adapter.senDisplayPoints
-          ..add(xIndex)
-          ..add(item.macd ?? double.infinity)
-          ..add(0.0)
-          ..add(0.0)
-          ..add(item.dif ?? double.infinity)
-          ..add(0.0)
-          ..add(0.0)
-          ..add(item.dea ?? double.infinity)
-          ..add(0.0)
-          ..add(0.0)
-          ..add(item.k ?? double.infinity)
-          ..add(0.0)
-          ..add(0.0)
-          ..add(item.d ?? double.infinity)
-          ..add(0.0)
-          ..add(0.0)
-          ..add(item.j ?? double.infinity)
-          ..add(0.0)
-          ..add(0.0)
-          ..add(item.r ?? double.infinity)
-          ..add(0.0)
-          ..add(0.0)
-          ..add(item.rsi ?? double.infinity)
-          ..add(0.0)
-          ..add(0.0)
-          ..add(item.cci ?? double.infinity)
-          ..add(0.0)
-          ..add(0.0)
-          ..add(0.0)
-          ..add(0.0);
-        senRender?.calcMaxMin(item, i);
-      }
+      addToSecPoints(adapter, xIndex, item, i);
       mainRender.calcMaxMin(item, i);
     }
-    mainRender.chartAsiaMax = mainRender.displayValueMax * 1.02;
-    mainRender.chartAsiaMin = mainRender.displayValueMin * 0.98;
 
-    volRender?.chartAsiaMax = (volRender?.displayValueMax ?? 0.0) * 1.05;
-    volRender?.chartAsiaMin = (volRender?.displayValueMin ?? 0.0) * 0.95;
+    calcMaxMin(KStaticConfig().displayFactor);
 
-    if ((senRender?.displayValueMax ?? 0.0) > 0) {
-      senRender?.chartAsiaMax = (senRender?.displayValueMax ?? 0.0) * 1.2;
-    } else {
-      senRender?.chartAsiaMax = (senRender?.displayValueMax ?? 0.0) * 0.8;
-    }
-    if ((senRender?.displayValueMin ?? 0.0) > 0) {
-      senRender?.chartAsiaMin = (senRender?.displayValueMin ?? 0.0) * 0.8;
-    } else {
-      senRender?.chartAsiaMin = (senRender?.displayValueMin ?? 0.0) * 1.2;
-    }
+    mapPoints(adapter);
+  }
 
+  /// map points
+  /// [adapter] data adapter  [DataAdapter]
+  void mapPoints(DataAdapter adapter) {
     KMatrixUtils().exeMainMatrix(
         translateX,
         -mainRender.chartAsiaMax,
@@ -363,6 +281,140 @@ class KRunConfig {
           adapter.senDisplayPoints,
           preTranslateY: -senBaseY);
     }
+  }
+
+  void addToSecPoints(
+      DataAdapter adapter, double xIndex, KLineEntity item, int i) {
+    if (senRect != null) {
+      adapter.senDisplayPoints
+        ..add(xIndex)
+        ..add(item.macd ?? double.infinity)
+        ..add(0.0)
+        ..add(0.0)
+        ..add(item.dif ?? double.infinity)
+        ..add(0.0)
+        ..add(0.0)
+        ..add(item.dea ?? double.infinity)
+        ..add(0.0)
+        ..add(0.0)
+        ..add(item.k ?? double.infinity)
+        ..add(0.0)
+        ..add(0.0)
+        ..add(item.d ?? double.infinity)
+        ..add(0.0)
+        ..add(0.0)
+        ..add(item.j ?? double.infinity)
+        ..add(0.0)
+        ..add(0.0)
+        ..add(item.r ?? double.infinity)
+        ..add(0.0)
+        ..add(0.0)
+        ..add(item.rsi ?? double.infinity)
+        ..add(0.0)
+        ..add(0.0)
+        ..add(item.cci ?? double.infinity)
+        ..add(0.0)
+        ..add(0.0)
+        ..add(0.0)
+        ..add(0.0);
+      senRender?.calcMaxMin(item, i);
+    }
+  }
+
+  void addToVolPoints(
+      DataAdapter adapter, double xIndex, KLineEntity item, int i) {
+    if (volRect != null) {
+      adapter.volDisplayPoints
+        ..add(xIndex)
+        ..add(item.vol)
+        ..add(0.0)
+        ..add(0.0)
+        ..add(item.maVolume1 ?? double.infinity)
+        ..add(0.0)
+        ..add(0.0)
+        ..add(item.maVolume2 ?? double.infinity)
+        ..add(0.0);
+
+      volRender?.calcMaxMin(item, i);
+    }
+  }
+
+  void addToMainPoints(
+      DataAdapter adapter, double xIndex, KLineEntity item, double zIndex) {
+    adapter.mainDisplayPoints
+      ..add(xIndex)
+      ..add(item.open)
+      ..add(zIndex)
+      ..add(0.0)
+      ..add(item.close)
+      ..add(0.0)
+      ..add(0.0)
+      ..add(item.low)
+      ..add(0.0)
+      ..add(0.0)
+      ..add(item.high)
+      ..add(0.0)
+      ..add(0.0)
+      ..add(item.ma1 ?? double.infinity)
+      ..add(0.0)
+      ..add(0.0)
+      ..add(item.ma2 ?? double.infinity)
+      ..add(0.0)
+      ..add(0.0)
+      ..add(item.ma3 ?? double.infinity)
+      ..add(0.0)
+      ..add(0.0)
+      ..add(item.mb ?? double.infinity)
+      ..add(0.0)
+      ..add(0.0)
+      ..add(item.up ?? double.infinity)
+      ..add(0.0)
+      ..add(0.0)
+      ..add(item.dn ?? double.infinity)
+      ..add(0.0);
+  }
+
+  ///calc max & min value
+  /// [displayFactor] display factor
+  void calcMaxMin(double displayFactor) {
+    if (mainRender.displayValueMin == mainRender.displayValueMax) {
+      mainRender.chartAsiaMax =
+          mainRender.displayValueMax * (1 + displayFactor);
+      mainRender.chartAsiaMin =
+          mainRender.displayValueMin * (1 - displayFactor);
+    }
+
+    if (volRender?.displayValueMin == volRender?.displayValueMin) {
+      volRender?.chartAsiaMax =
+          (volRender?.displayValueMax ?? 0.0) * (1 + displayFactor);
+      volRender?.chartAsiaMin =
+          (volRender?.displayValueMin ?? 0.0) * (1 - displayFactor);
+    }
+
+    mainRender.chartAsiaMax = mainRender.displayValueMax +
+        (mainRender.displayValueMax - mainRender.displayValueMin) *
+            displayFactor;
+    mainRender.chartAsiaMin = mainRender.displayValueMin -
+        (mainRender.displayValueMax - mainRender.displayValueMin) *
+            displayFactor;
+
+    volRender?.chartAsiaMax = (volRender?.displayValueMax ?? 0.0) +
+        ((volRender?.displayValueMax ?? 0.0) -
+                (volRender?.displayValueMin ?? 0.0)) *
+            displayFactor;
+    volRender?.chartAsiaMin = (volRender?.displayValueMin ?? 0.0) -
+        ((volRender?.displayValueMax ?? 0.0) -
+                (volRender?.displayValueMin ?? 0.0)) *
+            displayFactor;
+
+    senRender?.chartAsiaMax = (senRender?.displayValueMax ?? 0.0) +
+        ((senRender?.displayValueMax ?? 0.0) -
+                (senRender?.displayValueMin ?? 0.0)) *
+            displayFactor;
+    senRender?.chartAsiaMin = (senRender?.displayValueMin ?? 0.0) -
+        ((senRender?.displayValueMax ?? 0.0) -
+                (senRender?.displayValueMin ?? 0.0)) *
+            displayFactor;
   }
 
   /// calc min translate
@@ -513,15 +565,12 @@ class KRunConfig {
     switch (chartSenType) {
       case ChartSenType.macd:
         return MacdRender(this, adapter);
-
       case ChartSenType.kdj:
         return KdjRender(this, adapter);
       case ChartSenType.wr:
         return WrRender(this, adapter);
-
       case ChartSenType.rsi:
         return RsiRender(this, adapter);
-
       case ChartSenType.cci:
         return CciRender(this, adapter);
     }
