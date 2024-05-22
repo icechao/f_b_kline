@@ -189,6 +189,20 @@ class MyApp extends StatelessWidget {
                     onPressed: () => adapter.changeType(XAxisType.pin),
                     child: const Text("X坐标固定")),
               ],
+            ),
+            Row(
+              children: [
+                ElevatedButton(
+                    onPressed: () => adapter.changeTranslate(0.0),
+
+                    child: const Text("0")),
+                ElevatedButton(
+                    onPressed: () => adapter.changeTranslate(-200.0),
+                    child: const Text("-200")),
+                ElevatedButton(
+                    onPressed: () => adapter.changeTranslate(double.minPositive),
+                    child: const Text("double.minPositive")),
+              ],
             )
           ],
         ),

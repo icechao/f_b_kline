@@ -33,6 +33,7 @@ class KChartWidgetState extends State<KChartWidget>
 
   ///animation Controller
   AnimationController? animationController;
+  AnimationController? translateController;
 
   @override
   void initState() {
@@ -41,6 +42,12 @@ class KChartWidgetState extends State<KChartWidget>
         value: 0,
         lowerBound: double.negativeInfinity,
         upperBound: double.infinity,
+        duration: const Duration(seconds: 1));
+    translateController = AnimationController(
+        vsync: this,
+        value: 0,
+        lowerBound: 0,
+        upperBound: 1,
         duration: const Duration(seconds: 1));
 
     bindChartTypeListener?.cancel();
@@ -85,25 +92,36 @@ class KChartWidgetState extends State<KChartWidget>
       reRender(force: true);
     });
 
-    bindTranslateListener = widget.adapter.bindTranslateListener((data) {
-      animationController?.reset();
-      Animation animate = Tween(begin: widget.config.translateX, end: data)
-          .animate(animationController!);
-      listener() {
-        widget.config.updateTranslate(animate.value, widget.adapter.dataLength);
-      }
+    bindTranslateListener = widget.adapter.bindTranslateListener((end) {
+      var begin = widget.config.translateX;
+      if (end != begin && !end.isInfinite) {
+        translateController
+          ?..stop()
+          ..reset();
 
-      stateListener(status) {
-        if (status == AnimationStatus.completed) {
-          animationController?.removeListener(listener);
-          animationController?.removeStatusListener(stateListener);
+        var diff = end - begin;
+        Animation<double> animate =
+            Tween<double>(begin: 0.0, end: 1.0).animate(translateController!);
+        listener() {
+          widget.config.updateTranslate(
+              begin + diff * animate.value, widget.adapter.dataLength);
+          reRender(force: true);
         }
+
+        stateListener(status) {
+          if (status == AnimationStatus.completed) {
+            translateController?.removeListener(listener);
+            translateController?.removeStatusListener(stateListener);
+          }
+        }
+
+        translateController
+          ?..addListener(listener)
+          ..addStatusListener(stateListener);
+        translateController?.forward(from: 0);
+      } else {
+        widget.config.updateTranslate(end, widget.adapter.dataLength);
       }
-
-      animationController
-        ?..addListener(listener)
-        ..addStatusListener(stateListener);
-
       reRender();
     });
 
@@ -116,6 +134,7 @@ class KChartWidgetState extends State<KChartWidget>
 
     return GestureDetector(
       onScaleStart: (ScaleStartDetails details) {
+        translateController?.stop();
         var dataLength = widget.adapter.dataLength;
         if (dataLength > 0) {
           if (details.pointerCount > 1) {
@@ -250,10 +269,12 @@ class KChartWidgetState extends State<KChartWidget>
   @override
   void didRegisterListener() {
     animationController?.didRegisterListener();
+    translateController?.didRegisterListener();
   }
 
   @override
   void didUnregisterListener() {
     animationController?.didUnregisterListener();
+    translateController?.didUnregisterListener();
   }
 }
