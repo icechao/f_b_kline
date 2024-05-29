@@ -4,7 +4,6 @@ import 'package:f_b_kline/src/chart/config/k_run_config.dart';
 import 'package:f_b_kline/src/chart/config/k_static_config.dart';
 import 'package:f_b_kline/src/chart/entity/k_line_entity.dart';
 import 'package:f_b_kline/src/chart/i_render.dart';
-import 'package:f_b_kline/src/chart/k_text_painter.dart';
 
 class XAxisRender extends IRender {
   XAxisRender(super.config, super.adapter, super.matrixUtils);
@@ -30,7 +29,6 @@ class XAxisRender extends IRender {
             fontSize: axisTextSize,
             color: KStaticConfig().chartColors['axisDate']),
         top: true,
-        align: KAlign.center,
       );
     }
   }

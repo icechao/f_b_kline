@@ -5,6 +5,7 @@ import 'package:f_b_kline/src/chart/config/k_run_config.dart';
 import 'package:f_b_kline/src/chart/config/k_static_config.dart';
 import 'package:f_b_kline/src/chart/entity/k_line_entity.dart';
 import 'package:f_b_kline/src/chart/i_render.dart';
+import 'package:f_b_kline/src/chart/index.dart';
 import 'package:f_b_kline/src/chart/k_text_painter.dart';
 import 'package:flutter/material.dart';
 
@@ -451,6 +452,7 @@ class MainRender extends IRender {
             paint..color = KStaticConfig().chartColors['crossHorizontal']!);
 
         selectedPriceY = dy;
+
         ///竖线
         canvas.drawLine(
             Offset(dx, 0),
@@ -485,6 +487,7 @@ class MainRender extends IRender {
           canvas.drawLine(Offset(i, config.selectedY!),
               Offset(i + 2, config.selectedY!), paint);
           selectedPriceY = config.selectedY;
+
           ///横虚线
           canvas.drawLine(Offset(i, dy), Offset(i + 2, dy), paint);
         }

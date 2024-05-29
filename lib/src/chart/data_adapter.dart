@@ -36,14 +36,14 @@ class DataAdapter {
 
   ///重置数据 当数据发生变化时调用
   ///[KLineEntity]数据模型
-  resetData(List<KLineEntity>? data, {bool resetTranslate = false}) {
+  void resetData(List<KLineEntity>? data, {bool resetTranslate = false}) {
     dataLength = data?.length ?? 0;
     this.data
       ..clear()
       ..addAll(data ?? []);
     if (resetTranslate) {
       /// 是否使用动画重置
-      changeTranslate(double.minPositive);
+      changeTranslate(double.maxFinite);
     }
     sendPort.send(data);
   }
@@ -53,12 +53,15 @@ class DataAdapter {
   /// [ChartSenType]    附图类型显示
   /// [ChartDisplayType]  K线还是折线图
   /// [MainDisplayType]  主图指标显示
-  changeType(dynamic type) {
+  /// [CrossType]  十字线显示模式
+  /// [XAxisType]  X轴滑动模式
+  /// [TapType]  选中手势点击模式
+  void changeType(dynamic type) {
     typeController.add(type);
   }
 
   ///X轴平移变化
-  changeTranslate(double translate) {
+  void changeTranslate(double translate) {
     translateController.add(translate);
   }
 

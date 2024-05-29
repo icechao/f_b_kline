@@ -211,7 +211,7 @@ class MyApp extends StatelessWidget {
   }
 
   String formatDate(DateTime value) {
-    return DateFormat('MM/dd HH:mm:ss').format(value);
+    return DateFormat('HH:mm:ss').format(value);
   }
 
   String formatDate2(DateTime value) {

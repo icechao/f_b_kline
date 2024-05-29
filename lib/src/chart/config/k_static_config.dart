@@ -43,15 +43,12 @@ class KStaticConfig {
 
   ///展示与实际值的计算因数  :
   /// max = min
-  /// max = max*(1+ displayFactor)
-  /// min = min* (1-displayFactor)
+  /// max = max *( 1+ displayFactor)
+  /// min = min * ( 1-displayFactor)
   /// max = max + (max-min) * displayFactor
   /// min = min - (max-min) * displayFactor
 
   double get displayFactor => 0.2;
-
-  /// 点击模式
-  TapType tapType = TapType.continuous;
 
   /// X坐标高
   double xAxisHeight = 20.0;
@@ -81,10 +78,10 @@ class KStaticConfig {
   double topPadding = 30.0;
 
   ///网格行数
-  int gridRowCount = 5;
+  int gridRowCount = 4;
 
   ///网络列数
-  int gridColumnCount = 5;
+  int gridColumnCount = 4;
 
   ///candle width
   double candleItemWidth = 12.0;
@@ -128,6 +125,9 @@ class KStaticConfig {
   /// x axis align
   KAlign xAxisAlign = KAlign.center;
 
+  /// X坐标适配
+  bool fitXAxis = true;
+
   ///十字线渐变色,仅在十字线竖线是宽线模式线生效
   List<Color> crossColors = [
     Colors.transparent,
@@ -136,7 +136,7 @@ class KStaticConfig {
     Colors.transparent
   ];
 
-  ///十字线纵向渐变色关键眯
+  ///十字线纵向渐变色关键点
   List<double>? colorStops = [0.1, 0.3, 0.7, 0.9];
 
   final chartColors = {
@@ -308,39 +308,4 @@ class KIndexParams {
 
   ///macd
   int macdM = 9;
-}
-
-/// Points索引
-class KMainIndex {
-  static const open = 0;
-  static const close = 1;
-  static const low = 2;
-  static const high = 3;
-  static const maOne = 4;
-  static const maTwo = 5;
-  static const maThree = 6;
-  static const mb = 7;
-  static const up = 8;
-  static const dn = 9;
-}
-
-/// Points索引
-class KVolIndex {
-  static const vol = 0;
-  static const volMaOne = 1;
-  static const volMaTwo = 2;
-}
-
-/// Points索引
-class SenIndex {
-  static const macd = 0;
-  static const dif = 1;
-  static const dea = 2;
-  static const k = 3;
-  static const d = 4;
-  static const j = 5;
-  static const wr = 6;
-  static const rsi = 7;
-  static const cci = 8;
-  static const tempZero = 9;
 }

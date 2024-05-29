@@ -52,12 +52,26 @@ class KRunConfig {
   IRender? senRender;
   late int screenLeft, screenRight;
 
+  /// K线显示类型
   ChartGroupType? chartGroupType = ChartGroupType.withVol;
+
+  /// K线显示类型
   ChartDisplayType chartDisplayType = ChartDisplayType.kline;
+
+  /// 主图指标类型
   MainDisplayType mainDisplayType = MainDisplayType.boll;
+
+  /// 附图类型
   ChartSenType chartSenType = ChartSenType.kdj;
+
+  /// 十字线显示模式
   CrossType crossType = CrossType.followAll;
-  XAxisType xAxisType = XAxisType.flow;
+
+  /// Y轴显示模式
+  XAxisType xAxisType = XAxisType.pin;
+
+  /// 点击模式
+  TapType tapType = TapType.continuous;
 
   late Color chartColor;
 
@@ -174,20 +188,34 @@ class KRunConfig {
 
     xAxisRender = XAxisRender(this, adapter, matrixUtils);
     var columnCount = kStaticConfig.xAxisCount;
-    double xSpace = width / (columnCount);
+    double xSpace = width / (columnCount + 1);
     switch (xAxisType) {
       case XAxisType.flow:
         for (int i = -rowCount ~/ 2 - 1; i <= rowCount ~/ 2 + 1; i++) {
-          xAxisRender.axisPainter.add(KTextPainter(xSpace * i, height,
-              boxHeight: kStaticConfig.xAxisHeight, xParser: (x) {
-            return translateX % width + x;
-          }));
+          xAxisRender.axisPainter.add(
+            KTextPainter(xSpace * i, height,
+                boxHeight: kStaticConfig.xAxisHeight,
+                xParser: (x) => translateX % width + x),
+          );
         }
         break;
       default:
-        for (int i = 0; i <= rowCount + 1; i++) {
-          xAxisRender.axisPainter.add(KTextPainter(xSpace * i, height,
-              boxHeight: kStaticConfig.xAxisHeight));
+        for (int i = 0; i <= rowCount; i++) {
+          if (kStaticConfig.fitXAxis) {
+            if (i == 0) {
+              xAxisRender.axisPainter.add(KTextPainter(xSpace * i, height,
+                  boxHeight: kStaticConfig.xAxisHeight, align: KAlign.right));
+            } else if (i == rowCount) {
+              xAxisRender.axisPainter.add(KTextPainter(xSpace * i, height,
+                  boxHeight: kStaticConfig.xAxisHeight, align: KAlign.left));
+            } else {
+              xAxisRender.axisPainter.add(KTextPainter(xSpace * i, height,
+                  boxHeight: kStaticConfig.xAxisHeight, align: KAlign.center));
+            }
+          } else {
+            xAxisRender.axisPainter.add(KTextPainter(xSpace * i, height,
+                boxHeight: kStaticConfig.xAxisHeight, align: KAlign.center));
+          }
         }
     }
   }

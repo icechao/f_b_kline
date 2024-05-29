@@ -5,13 +5,14 @@ import 'package:f_b_kline/src/chart/config/k_run_config.dart';
 import 'package:f_b_kline/src/chart/config/k_static_config.dart';
 import 'package:f_b_kline/src/chart/entity/k_line_entity.dart';
 import 'package:f_b_kline/src/chart/i_render.dart';
+import 'package:f_b_kline/src/chart/index.dart';
 import 'package:f_b_kline/src/chart/k_text_painter.dart';
 import 'package:flutter/material.dart';
 
 class RsiRender extends IRender {
   final Path linePath = Path();
 
-  RsiRender(super.config, super.adapter,super.matrixUtils) {
+  RsiRender(super.config, super.adapter, super.matrixUtils) {
     paint
       ..style = PaintingStyle.stroke
       ..strokeWidth = KStaticConfig().lineWidth

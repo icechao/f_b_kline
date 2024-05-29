@@ -7,6 +7,8 @@ enum KAlign { left, center, right }
 class KTextPainter {
   double Function(double)? xParser;
 
+  KAlign? align;
+
   get x {
     return xParser?.call(_x) ?? _x;
   }
@@ -18,7 +20,7 @@ class KTextPainter {
 
   /// 对文本进行二次封装方便后期使用
   KTextPainter(this._x, this.y,
-      {StrutStyle? strutStyle, this.boxHeight = 0, this.xParser}) {
+      {StrutStyle? strutStyle, this.boxHeight = 0, this.xParser, this.align}) {
     painter
       ..textDirection = TextDirection.ltr
       ..strutStyle = strutStyle;
@@ -40,7 +42,7 @@ class KTextPainter {
       ..text = span
       ..layout();
     double dx;
-    switch (align) {
+    switch (align ?? this.align) {
       case KAlign.left:
         dx = x - painter.width;
         break;

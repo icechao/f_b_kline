@@ -85,6 +85,11 @@ class KChartWidgetState extends State<KChartWidget>
           widget.config.crossType = type;
           reRender(force: true);
         }
+      } else if (type is TapType) {
+        if (type != widget.config.tapType) {
+          widget.config.tapType = type;
+          reRender(force: true);
+        }
       }
     });
 
@@ -194,7 +199,7 @@ class KChartWidgetState extends State<KChartWidget>
         var dataLength = widget.adapter.dataLength;
 
         if (dataLength > 0) {
-          if (KStaticConfig().tapType == TapType.single) {
+          if (widget.config.tapType == TapType.single) {
             if (widget.config.selectedX != null) {
               widget.config.updateSelectedX(null);
               widget.config.updateSelectedY(null);
