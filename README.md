@@ -1,6 +1,6 @@
-![Image](https://github.com/icechao/f_b_kline/blob/master/image.png)
+![Image](https://github.com/icechao/f_b_kline/blob/master/image.jpg)
 
-![Image](https://github.com/icechao/f_b_kline/blob/master/wxGroup.png)
+![Image](https://github.com/icechao/f_b_kline/blob/master/wxGroup.jpg)
 
 ## 使用
 [安卓原生K线](https://github.com/icechao/KlineChart)
