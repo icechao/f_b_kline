@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
       }
 
       adapter.resetData(data);
+
       // Timer.periodic(const Duration(seconds: 3), (timer) {
       //   KLineEntity item = data[Random().nextInt(data.length - 1)];
       //   data.add(KLineEntity()
@@ -44,20 +45,12 @@ class MyApp extends StatelessWidget {
       //     ..vol = item.vol);
       //   adapter.resetData(data, resetTranslate: true);
       // });
+
     });
 
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
@@ -194,13 +187,13 @@ class MyApp extends StatelessWidget {
               children: [
                 ElevatedButton(
                     onPressed: () => adapter.changeTranslate(0.0),
-
                     child: const Text("0")),
                 ElevatedButton(
                     onPressed: () => adapter.changeTranslate(-200.0),
                     child: const Text("-200")),
                 ElevatedButton(
-                    onPressed: () => adapter.changeTranslate(double.minPositive),
+                    onPressed: () =>
+                        adapter.changeTranslate(double.minPositive),
                     child: const Text("double.minPositive")),
               ],
             )
