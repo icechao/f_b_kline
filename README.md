@@ -1,4 +1,6 @@
-![Image](https://github.com/icechao/f_b_kline/blob/master/image.jpg)
+
+
+<img src="https://github.com/icechao/f_b_kline/blob/master/image.jpg" width = 420/>
 
 ![Image](https://github.com/icechao/f_b_kline/blob/master/wxGroup.jpg)
 
