@@ -1,17 +1,17 @@
 import 'package:f_b_kline/src/chart/config/k_static_config.dart';
 import 'package:f_b_kline/src/chart/data_adapter.dart';
 import 'package:f_b_kline/src/chart/entity/k_line_entity.dart';
-import 'package:f_b_kline/src/chart/i_render.dart';
+import 'package:f_b_kline/src/chart/i_renderer.dart';
 import 'package:f_b_kline/src/chart/k_matrix_util.dart';
 import 'package:f_b_kline/src/chart/k_text_painter.dart';
-import 'package:f_b_kline/src/chart/renders/main_render.dart';
-import 'package:f_b_kline/src/chart/renders/sen/cci_render.dart';
-import 'package:f_b_kline/src/chart/renders/sen/kdj_render.dart';
-import 'package:f_b_kline/src/chart/renders/sen/macd_render.dart';
-import 'package:f_b_kline/src/chart/renders/sen/rsi_render.dart';
-import 'package:f_b_kline/src/chart/renders/sen/wr_render.dart';
-import 'package:f_b_kline/src/chart/renders/vol_render.dart';
-import 'package:f_b_kline/src/chart/renders/x_axis_render.dart';
+import 'package:f_b_kline/src/chart/renderers/main_renderer.dart';
+import 'package:f_b_kline/src/chart/renderers/sen/cci_renderer.dart';
+import 'package:f_b_kline/src/chart/renderers/sen/kdj_renderer.dart';
+import 'package:f_b_kline/src/chart/renderers/sen/macd_renderer.dart';
+import 'package:f_b_kline/src/chart/renderers/sen/rsi_renderer.dart';
+import 'package:f_b_kline/src/chart/renderers/sen/wr_renderer.dart';
+import 'package:f_b_kline/src/chart/renderers/vol_renderer.dart';
+import 'package:f_b_kline/src/chart/renderers/x_axis_renderer.dart';
 import 'package:flutter/material.dart';
 
 ///日期格式化
@@ -47,9 +47,9 @@ class KRunConfig {
   double kRightSpace = KStaticConfig().kRightSpace;
   double chartScaleWidth = KStaticConfig().candleItemWidth;
 
-  late IRender mainRender, xAxisRender;
-  IRender? volRender;
-  IRender? senRender;
+  late IRenderer mainRenderer, xAxisRenderer;
+  IRenderer? volRenderer;
+  IRenderer? senRenderer;
   late int screenLeft, screenRight;
 
   /// K线显示类型
@@ -73,6 +73,7 @@ class KRunConfig {
   /// 点击模式
   TapType tapType = TapType.continuous;
 
+  ///主图与量图颜色同步
   late Color chartColor;
 
   /// 手势触发时按住的位置
@@ -112,19 +113,19 @@ class KRunConfig {
     chartGroupType = type;
     var rowCount = kStaticConfig.gridRowCount;
     double item = (height - padding - kStaticConfig.xAxisHeight) / rowCount;
-    mainRender = MainRender(this, adapter, matrixUtils)
+    mainRenderer = MainRenderer(this, adapter, matrixUtils)
       ..axisPainter.add(KTextPainter(width, padding));
     switch (chartGroupType!) {
       case ChartGroupType.withVolSen:
         mainRect =
             Rect.fromLTRB(0, padding, width, item * (rowCount - 2) + padding);
         for (int i = 1; i < rowCount - 1; i++) {
-          mainRender.axisPainter.add(KTextPainter(width, padding + item * i));
+          mainRenderer.axisPainter.add(KTextPainter(width, padding + item * i));
         }
         volBaseY = mainRect!.bottom;
         volRect = Rect.fromLTRB(
             0, mainRect!.bottom, width, item * (rowCount - 1) + padding);
-        volRender = VolRender(this, adapter, matrixUtils)
+        volRenderer = VolRenderer(this, adapter, matrixUtils)
           ..axisPainter.addAll([
             KTextPainter(width, padding + item * (rowCount - 2)),
             KTextPainter(width, padding + item * (rowCount - 1)),
@@ -132,7 +133,7 @@ class KRunConfig {
         senBaseY = volRect!.bottom;
         senRect =
             Rect.fromLTRB(0, volRect!.bottom, width, item * rowCount + padding);
-        senRender = getSenRender(adapter)
+        senRenderer = getSenRenderer(adapter)
           ..axisPainter.addAll([
             KTextPainter(width, padding + item * (rowCount - 1)),
             KTextPainter(width, padding + item * rowCount),
@@ -142,15 +143,15 @@ class KRunConfig {
         mainRect =
             Rect.fromLTRB(0, padding, width, item * (rowCount - 1) + padding);
         for (int i = 1; i < rowCount; i++) {
-          mainRender.axisPainter.add(KTextPainter(width, padding + item * i));
+          mainRenderer.axisPainter.add(KTextPainter(width, padding + item * i));
         }
 
         volRect = null;
-        volRender = null;
+        volRenderer = null;
         senBaseY = mainRect!.bottom;
         senRect = Rect.fromLTRB(
             0, mainRect!.bottom, width, item * rowCount + padding);
-        senRender = getSenRender(adapter)
+        senRenderer = getSenRenderer(adapter)
           ..axisPainter.addAll([
             KTextPainter(width, padding + item * (rowCount - 1)),
             KTextPainter(width, padding + item * rowCount),
@@ -159,40 +160,40 @@ class KRunConfig {
       case ChartGroupType.withNone:
         mainRect = Rect.fromLTRB(0, padding, width, item * 5 + padding);
         for (int i = 1; i < rowCount; i++) {
-          mainRender.axisPainter.add(KTextPainter(width, padding + item * i));
+          mainRenderer.axisPainter.add(KTextPainter(width, padding + item * i));
         }
         volRect = null;
-        volRender = null;
+        volRenderer = null;
         senRect = null;
-        senRender = null;
+        senRenderer = null;
         break;
       case ChartGroupType.withVol:
         mainRect =
             Rect.fromLTRB(0, padding, width, item * (rowCount - 1) + padding);
         for (int i = 1; i < rowCount; i++) {
-          mainRender.axisPainter.add(KTextPainter(width, padding + item * i));
+          mainRenderer.axisPainter.add(KTextPainter(width, padding + item * i));
         }
         volBaseY = mainRect!.bottom;
         volRect = Rect.fromLTRB(
             0, mainRect!.bottom, width, item * rowCount + padding);
-        volRender = VolRender(this, adapter, matrixUtils)
+        volRenderer = VolRenderer(this, adapter, matrixUtils)
           ..axisPainter.addAll([
             KTextPainter(width, padding + item * (rowCount - 1)),
             KTextPainter(width, padding + item * rowCount),
           ]);
 
         senRect = null;
-        senRender = null;
+        senRenderer = null;
         break;
     }
 
-    xAxisRender = XAxisRender(this, adapter, matrixUtils);
+    xAxisRenderer = XAxisRenderer(this, adapter, matrixUtils);
     var columnCount = kStaticConfig.xAxisCount;
     double xSpace = width / (columnCount + 1);
     switch (xAxisType) {
       case XAxisType.flow:
         for (int i = -rowCount ~/ 2 - 1; i <= rowCount ~/ 2 + 1; i++) {
-          xAxisRender.axisPainter.add(
+          xAxisRenderer.axisPainter.add(
             KTextPainter(xSpace * i, height,
                 boxHeight: kStaticConfig.xAxisHeight,
                 xParser: (x) => translateX % width + x),
@@ -203,17 +204,17 @@ class KRunConfig {
         for (int i = 0; i <= rowCount; i++) {
           if (kStaticConfig.fitXAxis) {
             if (i == 0) {
-              xAxisRender.axisPainter.add(KTextPainter(xSpace * i, height,
+              xAxisRenderer.axisPainter.add(KTextPainter(xSpace * i, height,
                   boxHeight: kStaticConfig.xAxisHeight, align: KAlign.right));
             } else if (i == rowCount) {
-              xAxisRender.axisPainter.add(KTextPainter(xSpace * i, height,
+              xAxisRenderer.axisPainter.add(KTextPainter(xSpace * i, height,
                   boxHeight: kStaticConfig.xAxisHeight, align: KAlign.left));
             } else {
-              xAxisRender.axisPainter.add(KTextPainter(xSpace * i, height,
+              xAxisRenderer.axisPainter.add(KTextPainter(xSpace * i, height,
                   boxHeight: kStaticConfig.xAxisHeight, align: KAlign.center));
             }
           } else {
-            xAxisRender.axisPainter.add(KTextPainter(xSpace * i, height,
+            xAxisRenderer.axisPainter.add(KTextPainter(xSpace * i, height,
                 boxHeight: kStaticConfig.xAxisHeight, align: KAlign.center));
           }
         }
@@ -254,25 +255,25 @@ class KRunConfig {
     adapter.mainDisplayPoints = [];
     adapter.volDisplayPoints = [];
     adapter.senDisplayPoints = [];
-    mainRender.displayValueMax = double.minPositive;
-    mainRender.chartAsiaMax = double.minPositive;
-    mainRender.displayValueMin = double.maxFinite;
-    mainRender.chartAsiaMin = double.maxFinite;
+    mainRenderer.displayValueMax = double.minPositive;
+    mainRenderer.chartAsiaMax = double.minPositive;
+    mainRenderer.displayValueMin = double.maxFinite;
+    mainRenderer.chartAsiaMin = double.maxFinite;
 
-    volRender?.displayValueMax = double.minPositive;
-    volRender?.displayValueMin = double.maxFinite;
+    volRenderer?.displayValueMax = double.minPositive;
+    volRenderer?.displayValueMin = double.maxFinite;
 
-    senRender?.displayValueMax = double.minPositive;
-    senRender?.displayValueMin = double.maxFinite;
+    senRenderer?.displayValueMax = double.minPositive;
+    senRenderer?.displayValueMin = double.maxFinite;
 
     for (int i = screenLeft; i <= screenRight; i++) {
       KLineEntity item = adapter.data[i];
       double xIndex = (i.toDouble());
       double zIndex = 0;
-      if (mainRender.maxValueIndex == i) {
+      if (mainRenderer.maxValueIndex == i) {
         zIndex++;
       }
-      if (mainRender.minValueIndex == i) {
+      if (mainRenderer.minValueIndex == i) {
         zIndex++;
       }
       addToMainPoints(adapter, xIndex, item, zIndex);
@@ -280,7 +281,7 @@ class KRunConfig {
       addToVolPoints(adapter, xIndex, item, i);
 
       addToSecPoints(adapter, xIndex, item, i);
-      mainRender.calcMaxMin(item, i);
+      mainRenderer.calcMaxMin(item, i);
     }
 
     calcMaxMin(KStaticConfig().displayFactor);
@@ -293,27 +294,27 @@ class KRunConfig {
   void mapPoints(DataAdapter adapter) {
     KMatrixUtils().exeMainMatrix(
         translateX,
-        -mainRender.chartAsiaMax,
+        -mainRenderer.chartAsiaMax,
         chartScaleWidth,
-        mainRect!.height / (mainRender.chartAsiaMax - mainRender.chartAsiaMin),
+        mainRect!.height / (mainRenderer.chartAsiaMax - mainRenderer.chartAsiaMin),
         adapter.mainDisplayPoints,
         preTranslateY: -KStaticConfig().topPadding);
     if (volRect != null) {
       KMatrixUtils().exeVolMatrix(
           translateX,
-          -volRender!.chartAsiaMax,
+          -volRenderer!.chartAsiaMax,
           chartScaleWidth,
           volRect!.height /
-              (volRender!.chartAsiaMax - (volRender?.chartAsiaMin)!),
+              (volRenderer!.chartAsiaMax - (volRenderer?.chartAsiaMin)!),
           adapter.volDisplayPoints,
           preTranslateY: -volBaseY);
     }
     if (senRect != null) {
       KMatrixUtils().exeSenMatrix(
           translateX,
-          -senRender!.chartAsiaMax,
+          -senRenderer!.chartAsiaMax,
           chartScaleWidth,
-          senRect!.height / (senRender!.chartAsiaMax - senRender!.chartAsiaMin),
+          senRect!.height / (senRenderer!.chartAsiaMax - senRenderer!.chartAsiaMin),
           adapter.senDisplayPoints,
           preTranslateY: -senBaseY);
     }
@@ -353,7 +354,7 @@ class KRunConfig {
         ..add(0.0)
         ..add(0.0)
         ..add(0.0);
-      senRender?.calcMaxMin(item, i);
+      senRenderer?.calcMaxMin(item, i);
     }
   }
 
@@ -371,7 +372,7 @@ class KRunConfig {
         ..add(item.maVolume2 ?? double.infinity)
         ..add(0.0);
 
-      volRender?.calcMaxMin(item, i);
+      volRenderer?.calcMaxMin(item, i);
     }
   }
 
@@ -413,43 +414,43 @@ class KRunConfig {
   ///calc max & min value
   /// [displayFactor] display factor
   void calcMaxMin(double displayFactor) {
-    if (mainRender.displayValueMin == mainRender.displayValueMax) {
-      mainRender.chartAsiaMax =
-          mainRender.displayValueMax * (1 + displayFactor);
-      mainRender.chartAsiaMin =
-          mainRender.displayValueMin * (1 - displayFactor);
+    if (mainRenderer.displayValueMin == mainRenderer.displayValueMax) {
+      mainRenderer.chartAsiaMax =
+          mainRenderer.displayValueMax * (1 + displayFactor);
+      mainRenderer.chartAsiaMin =
+          mainRenderer.displayValueMin * (1 - displayFactor);
     }
 
-    if (volRender?.displayValueMin == volRender?.displayValueMin) {
-      volRender?.chartAsiaMax =
-          (volRender?.displayValueMax ?? 0.0) * (1 + displayFactor);
-      volRender?.chartAsiaMin =
-          (volRender?.displayValueMin ?? 0.0) * (1 - displayFactor);
+    if (volRenderer?.displayValueMin == volRenderer?.displayValueMin) {
+      volRenderer?.chartAsiaMax =
+          (volRenderer?.displayValueMax ?? 0.0) * (1 + displayFactor);
+      volRenderer?.chartAsiaMin =
+          (volRenderer?.displayValueMin ?? 0.0) * (1 - displayFactor);
     }
 
-    mainRender.chartAsiaMax = mainRender.displayValueMax +
-        (mainRender.displayValueMax - mainRender.displayValueMin) *
+    mainRenderer.chartAsiaMax = mainRenderer.displayValueMax +
+        (mainRenderer.displayValueMax - mainRenderer.displayValueMin) *
             displayFactor;
-    mainRender.chartAsiaMin = mainRender.displayValueMin -
-        (mainRender.displayValueMax - mainRender.displayValueMin) *
-            displayFactor;
-
-    volRender?.chartAsiaMax = (volRender?.displayValueMax ?? 0.0) +
-        ((volRender?.displayValueMax ?? 0.0) -
-                (volRender?.displayValueMin ?? 0.0)) *
-            displayFactor;
-    volRender?.chartAsiaMin = (volRender?.displayValueMin ?? 0.0) -
-        ((volRender?.displayValueMax ?? 0.0) -
-                (volRender?.displayValueMin ?? 0.0)) *
+    mainRenderer.chartAsiaMin = mainRenderer.displayValueMin -
+        (mainRenderer.displayValueMax - mainRenderer.displayValueMin) *
             displayFactor;
 
-    senRender?.chartAsiaMax = (senRender?.displayValueMax ?? 0.0) +
-        ((senRender?.displayValueMax ?? 0.0) -
-                (senRender?.displayValueMin ?? 0.0)) *
+    volRenderer?.chartAsiaMax = (volRenderer?.displayValueMax ?? 0.0) +
+        ((volRenderer?.displayValueMax ?? 0.0) -
+                (volRenderer?.displayValueMin ?? 0.0)) *
             displayFactor;
-    senRender?.chartAsiaMin = (senRender?.displayValueMin ?? 0.0) -
-        ((senRender?.displayValueMax ?? 0.0) -
-                (senRender?.displayValueMin ?? 0.0)) *
+    volRenderer?.chartAsiaMin = (volRenderer?.displayValueMin ?? 0.0) -
+        ((volRenderer?.displayValueMax ?? 0.0) -
+                (volRenderer?.displayValueMin ?? 0.0)) *
+            displayFactor;
+
+    senRenderer?.chartAsiaMax = (senRenderer?.displayValueMax ?? 0.0) +
+        ((senRenderer?.displayValueMax ?? 0.0) -
+                (senRenderer?.displayValueMin ?? 0.0)) *
+            displayFactor;
+    senRenderer?.chartAsiaMin = (senRenderer?.displayValueMin ?? 0.0) -
+        ((senRenderer?.displayValueMax ?? 0.0) -
+                (senRenderer?.displayValueMin ?? 0.0)) *
             displayFactor;
   }
 
@@ -506,7 +507,7 @@ class KRunConfig {
   ///[canvas]
   ///[canvas]
   /// [adapter] data adapter  [DataAdapter]
-  void renderChart(Canvas canvas, DataAdapter adapter) {
+  void rendererChart(Canvas canvas, DataAdapter adapter) {
     for (int i = screenLeft; i <= screenRight; i++) {
       int startIndex = 3 * 10 * (i - screenLeft);
       int stopIndex = 3 * 10 * (i + 1 - screenLeft);
@@ -514,7 +515,7 @@ class KRunConfig {
       int lastStartIndex = 3 * 10 * (i - screenLeft - 1);
       int lastStopIndex = 3 * 10 * (i - screenLeft);
 
-      mainRender.renderChart(
+      mainRenderer.rendererChart(
           canvas,
           adapter.mainDisplayPoints.sublist(startIndex, stopIndex),
           lastStartIndex < 0
@@ -530,7 +531,7 @@ class KRunConfig {
       lastStartIndex = 3 * 3 * (i - screenLeft - 1);
       lastStopIndex = 3 * 3 * (i - screenLeft);
 
-      volRender?.renderChart(
+      volRenderer?.rendererChart(
           canvas,
           adapter.volDisplayPoints.sublist(startIndex, stopIndex),
           lastStartIndex < 0
@@ -544,7 +545,7 @@ class KRunConfig {
 
       lastStartIndex = 3 * 10 * (i - screenLeft - 1);
       lastStopIndex = 3 * 10 * (i - screenLeft);
-      senRender?.renderChart(
+      senRenderer?.rendererChart(
           canvas,
           adapter.senDisplayPoints.sublist(startIndex, stopIndex),
           lastStartIndex < 0
@@ -553,22 +554,22 @@ class KRunConfig {
           chartScaleWidth,
           i);
     }
-    xAxisRender
-      ..renderAxis(canvas)
-      ..renderLine(canvas)
-      ..renderText(canvas);
-    mainRender
-      ..renderAxis(canvas)
-      ..renderLine(canvas, builder: selectedPriceBuilder)
-      ..renderText(canvas);
-    volRender
-      ?..renderAxis(canvas)
-      ..renderLine(canvas)
-      ..renderText(canvas);
-    senRender
-      ?..renderAxis(canvas)
-      ..renderLine(canvas)
-      ..renderText(canvas);
+    xAxisRenderer
+      ..rendererAxis(canvas)
+      ..rendererLine(canvas)
+      ..rendererText(canvas);
+    mainRenderer
+      ..rendererAxis(canvas)
+      ..rendererLine(canvas, builder: selectedPriceBuilder)
+      ..rendererText(canvas);
+    volRenderer
+      ?..rendererAxis(canvas)
+      ..rendererLine(canvas)
+      ..rendererText(canvas);
+    senRenderer
+      ?..rendererAxis(canvas)
+      ..rendererLine(canvas)
+      ..rendererText(canvas);
   }
 
   /// the selected x point
@@ -595,20 +596,20 @@ class KRunConfig {
     return infoBuilder.call(data);
   }
 
-  /// second render init
+  /// second renderer init
   /// [adapter] data adapter  [DataAdapter]
-  IRender getSenRender(DataAdapter adapter) {
+  IRenderer getSenRenderer(DataAdapter adapter) {
     switch (chartSenType) {
       case ChartSenType.macd:
-        return MacdRender(this, adapter, matrixUtils);
+        return MacdRenderer(this, adapter, matrixUtils);
       case ChartSenType.kdj:
-        return KdjRender(this, adapter, matrixUtils);
+        return KdjRenderer(this, adapter, matrixUtils);
       case ChartSenType.wr:
-        return WrRender(this, adapter, matrixUtils);
+        return WrRenderer(this, adapter, matrixUtils);
       case ChartSenType.rsi:
-        return RsiRender(this, adapter, matrixUtils);
+        return RsiRenderer(this, adapter, matrixUtils);
       case ChartSenType.cci:
-        return CciRender(this, adapter, matrixUtils);
+        return CciRenderer(this, adapter, matrixUtils);
     }
   }
 }

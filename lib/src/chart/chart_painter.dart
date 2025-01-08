@@ -26,7 +26,7 @@ class ChartPainter extends CustomPainter {
       ..initRect(runConfig.chartGroupType, adapter)
       ..calcScreenIndex(adapter)
       ..calcShowValues(adapter)
-      ..renderChart(canvas, adapter);
+      ..rendererChart(canvas, adapter);
   }
 
   @override

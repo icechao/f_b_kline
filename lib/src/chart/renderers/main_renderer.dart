@@ -4,12 +4,12 @@ import 'dart:ui' as ui;
 import 'package:f_b_kline/src/chart/config/k_run_config.dart';
 import 'package:f_b_kline/src/chart/config/k_static_config.dart';
 import 'package:f_b_kline/src/chart/entity/k_line_entity.dart';
-import 'package:f_b_kline/src/chart/i_render.dart';
+import 'package:f_b_kline/src/chart/i_renderer.dart';
 import 'package:f_b_kline/src/chart/index.dart';
 import 'package:f_b_kline/src/chart/k_text_painter.dart';
 import 'package:flutter/material.dart';
 
-class MainRender extends IRender {
+class MainRenderer extends IRenderer {
   final Path linePath = Path();
   final Paint fillPaint = Paint();
 
@@ -19,7 +19,7 @@ class MainRender extends IRender {
 
   late TextSpan _textSpan;
 
-  MainRender(super.config, super.adapter, super.matrixUtils) {
+  MainRenderer(super.config, super.adapter, super.matrixUtils) {
     crossLineVerticalPaint
       ..color = Colors.white
       ..shader = ui.Gradient.linear(
@@ -30,7 +30,7 @@ class MainRender extends IRender {
   }
 
   @override
-  void renderChart(Canvas canvas, List<double> c, List<double> l,
+  void rendererChart(Canvas canvas, List<double> c, List<double> l,
       double itemWidth, int index) {
     var halfWidth = itemWidth / 2;
     double x = c[0] + halfWidth;
@@ -82,7 +82,7 @@ class MainRender extends IRender {
                 ..strokeWidth = KStaticConfig().lineWidth
                 ..color = KStaticConfig().chartColors['maxMinColor']!);
           KTextPainter(minLineStart, high - KStaticConfig().maxMinTextSize / 2)
-              .renderText(
+              .rendererText(
                   canvas,
                   buildTextSpan(
                       config.mainValueFormatter.call(adapter.data[index].high),
@@ -108,7 +108,7 @@ class MainRender extends IRender {
                 ..strokeWidth = KStaticConfig().lineWidth
                 ..color = KStaticConfig().chartColors['maxMinColor']!);
           KTextPainter(minLineStart, low - KStaticConfig().maxMinTextSize / 2)
-              .renderText(
+              .rendererText(
                   canvas,
                   buildTextSpan(
                       config.mainValueFormatter.call(adapter.data[index].low),
@@ -118,19 +118,19 @@ class MainRender extends IRender {
                   align: textAlign);
         }
 
-        switch (config.mainDisplayType) {
-          case MainDisplayType.boll:
-            renderBoll(c, l, canvas, x, open, close, itemWidth, lX);
-            break;
-          case MainDisplayType.ma:
-            renderMa(c, l, canvas, x, open, close, itemWidth, lX);
-            break;
-          case MainDisplayType.none:
-            break;
-        }
         break;
       case ChartDisplayType.timeLine:
         renderTimeLine(l, close, lX, x, canvas);
+        break;
+    }
+    switch (config.mainDisplayType) {
+      case MainDisplayType.boll:
+        rendererBoll(c, l, canvas, x, open, close, itemWidth, lX);
+        break;
+      case MainDisplayType.ma:
+        rendererMa(c, l, canvas, x, open, close, itemWidth, lX);
+        break;
+      case MainDisplayType.none:
         break;
     }
 
@@ -180,9 +180,9 @@ class MainRender extends IRender {
                 width -
                     textWidth * 2 -
                     KStaticConfig().priceLineTextBoxHPadding,
-                close - halfTextHeight,
+                close - halfTextHeight - KStaticConfig().priceLineTextBoxVPadding,
                 width - textWidth + KStaticConfig().priceLineTextBoxHPadding,
-                close + halfTextHeight,
+                close + halfTextHeight + KStaticConfig().priceLineTextBoxVPadding,
                 Radius.circular(KStaticConfig().priceLineTextBoxRadius)),
             paint
               ..color =
@@ -226,7 +226,7 @@ class MainRender extends IRender {
   }
 
   /// paint ma line
-  void renderMa(List<double> c, List<double> l, ui.Canvas canvas, double x,
+  void rendererMa(List<double> c, List<double> l, ui.Canvas canvas, double x,
       double open, double close, double itemWidth, double lX) {
     double maOne = c[KMainIndex.maOne * 3 + 1];
     double maTwo = c[KMainIndex.maTwo * 3 + 1];
@@ -252,7 +252,7 @@ class MainRender extends IRender {
   }
 
   /// paint boll line
-  void renderBoll(List<double> c, List<double> l, ui.Canvas canvas, double x,
+  void rendererBoll(List<double> c, List<double> l, ui.Canvas canvas, double x,
       double open, double close, double itemWidth, double lX) {
     double mb = c[KMainIndex.mb * 3 + 1];
     double lastMb = l[KMainIndex.mb * 3 + 1];
@@ -277,7 +277,7 @@ class MainRender extends IRender {
   }
 
   @override
-  void renderLine(Canvas canvas, {TextBuilder? builder}) {
+  void rendererLine(Canvas canvas, {TextBuilder? builder}) {
     if (config.selectedX != null) {
       config.selectedIndex =
           config.xToIndex(config.selectedX!, adapter.dataLength);
@@ -325,9 +325,9 @@ class MainRender extends IRender {
         var rowY = KStaticConfig().infoWindowItemHeight * i +
             KStaticConfig().infoWindowWidthMarginVertical;
         KTextPainter(left + KStaticConfig().infoWindowHPadding, rowY)
-            .renderText(canvas, keyList[i]);
+            .rendererText(canvas, keyList[i]);
         KTextPainter(right - KStaticConfig().infoWindowHPadding, rowY)
-            .renderText(canvas, marketInfo[keyList[i]]!, align: KAlign.left);
+            .rendererText(canvas, marketInfo[keyList[i]]!, align: KAlign.left);
       }
     } else {
       _buildInfoText(adapter.data.last);
@@ -366,16 +366,16 @@ class MainRender extends IRender {
   }
 
   @override
-  void renderText(Canvas canvas) {
-    KTextPainter(0, 10).renderText(canvas, _textSpan);
+  void rendererText(Canvas canvas) {
+    KTextPainter(0, 10).rendererText(canvas, _textSpan);
   }
 
   @override
-  void renderAxis(Canvas canvas) {
+  void rendererAxis(Canvas canvas) {
     var diff = (chartAsiaMax - chartAsiaMin) / (axisPainter.length - 1);
 
     for (int i = 0; i < axisPainter.length; i++) {
-      axisPainter[i].renderText(
+      axisPainter[i].rendererText(
           canvas,
           buildTextSpan(
               config.mainValueFormatter.call(chartAsiaMax - i * diff)),
@@ -505,7 +505,7 @@ class MainRender extends IRender {
 
     KTextPainter(selectedDisplay[0], config.height,
             boxHeight: KStaticConfig().xAxisHeight)
-        .renderText(
+        .rendererText(
             canvas,
             buildTextSpan(config.dateFormatter.call(data.time),
                 color: KStaticConfig().chartColors['selectedAxisDate'],
@@ -519,7 +519,7 @@ class MainRender extends IRender {
       var result = matrix4.applyToVector3Array([0, dy, 0]);
       var textSpan = builder.call(result[1]);
       if (textSpan != null) {
-        KTextPainter(selectedPriceX, selectedPriceY!).renderText(
+        KTextPainter(selectedPriceX, selectedPriceY!).rendererText(
             canvas, textSpan,
             fitY: true,
             align: align,

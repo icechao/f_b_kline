@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 /// [displayValueMin] the min value  witch chart display
 /// [chartAsiaMax] the max value witch chart Asia
 /// [chartAsiaMin] the min value witch chart Asia
-abstract class IRender {
+abstract class IRenderer {
   final KRunConfig config;
   final DataAdapter adapter;
   final KMatrixUtils matrixUtils;
@@ -22,7 +22,7 @@ abstract class IRender {
 
   final List<KTextPainter> valuePainter = [];
 
-  IRender(this.config, this.adapter, this.matrixUtils);
+  IRenderer(this.config, this.adapter, this.matrixUtils);
 
   ///paint chart
   ///[canvas] canvas
@@ -30,26 +30,26 @@ abstract class IRender {
   ///[l] last index data
   ///[itemWidth] itemWidth
   ///[index] index
-  void renderChart(Canvas canvas, List<double> c, List<double> l,
+  void rendererChart(Canvas canvas, List<double> c, List<double> l,
       double itemWidth, int index);
 
   /// paint text
   /// [canvas]
-  void renderText(Canvas canvas);
+  void rendererText(Canvas canvas);
 
   ///paint lines
   /// [canvas]
-  void renderLine(Canvas canvas, {TextBuilder? builder});
+  void rendererLine(Canvas canvas, {TextBuilder? builder});
 
   ///paint Axis
   /// [canvas]
-  void renderAxis(Canvas canvas) {
+  void rendererAxis(Canvas canvas) {
     if (axisPainter.isNotEmpty) {
-      axisPainter.first.renderText(
+      axisPainter.first.rendererText(
           canvas, buildTextSpan(getFormatter().call(chartAsiaMax)),
           top: false, align: KAlign.left);
 
-      axisPainter.last.renderText(
+      axisPainter.last.rendererText(
           canvas, buildTextSpan(getFormatter().call(chartAsiaMin)),
           top: true, align: KAlign.left);
     }

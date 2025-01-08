@@ -3,27 +3,27 @@ import 'dart:ui';
 import 'package:f_b_kline/src/chart/config/k_run_config.dart';
 import 'package:f_b_kline/src/chart/config/k_static_config.dart';
 import 'package:f_b_kline/src/chart/entity/k_line_entity.dart';
-import 'package:f_b_kline/src/chart/i_render.dart';
+import 'package:f_b_kline/src/chart/i_renderer.dart';
 
-class XAxisRender extends IRender {
-  XAxisRender(super.config, super.adapter, super.matrixUtils);
-
-  @override
-  void renderAxis(Canvas canvas) {}
+class XAxisRenderer extends IRenderer {
+  XAxisRenderer(super.config, super.adapter, super.matrixUtils);
 
   @override
-  void renderChart(Canvas canvas, List<double> c, List<double> l,
+  void rendererAxis(Canvas canvas) {}
+
+  @override
+  void rendererChart(Canvas canvas, List<double> c, List<double> l,
       double itemWidth, int index) {}
 
   @override
-  void renderLine(Canvas canvas, {TextBuilder? builder}) {}
+  void rendererLine(Canvas canvas, {TextBuilder? builder}) {}
 
   @override
-  void renderText(Canvas canvas) {
+  void rendererText(Canvas canvas) {
     for (var element in axisPainter) {
       int? index = config.xToIndex(element.x, adapter.dataLength);
       var data = adapter.data[index];
-      element.renderText(
+      element.rendererText(
         canvas,
         buildTextSpan(config.dateFormatter.call(data.time),
             fontSize: axisTextSize,

@@ -58,43 +58,43 @@ class KChartWidgetState extends State<KChartWidget>
       if (type is ChartGroupType) {
         if (type != widget.config.chartGroupType) {
           widget.config.chartGroupType = type;
-          reRender(force: true);
+          reRenderer(force: true);
         }
       } else if (type is MainDisplayType) {
         if (type != widget.config.mainDisplayType) {
           widget.config.mainDisplayType = type;
-          reRender(force: true);
+          reRenderer(force: true);
         }
       } else if (type is ChartSenType) {
         if (type != widget.config.chartSenType) {
           widget.config.chartSenType = type;
-          reRender(force: true);
+          reRenderer(force: true);
         }
       } else if (type is ChartDisplayType) {
         if (type != widget.config.chartDisplayType) {
           widget.config.chartDisplayType = type;
-          reRender(force: true);
+          reRenderer(force: true);
         }
       } else if (type is XAxisType) {
         if (type != widget.config.xAxisType) {
           widget.config.xAxisType = type;
-          reRender(force: true);
+          reRenderer(force: true);
         }
       } else if (type is CrossType) {
         if (type != widget.config.crossType) {
           widget.config.crossType = type;
-          reRender(force: true);
+          reRenderer(force: true);
         }
       } else if (type is TapType) {
         if (type != widget.config.tapType) {
           widget.config.tapType = type;
-          reRender(force: true);
+          reRenderer(force: true);
         }
       }
     });
 
     bindDataListener = widget.adapter.bindDataListener((data) {
-      reRender(force: true);
+      reRenderer(force: true);
     });
 
     bindTranslateListener = widget.adapter.bindTranslateListener((end) {
@@ -110,7 +110,7 @@ class KChartWidgetState extends State<KChartWidget>
         listener() {
           widget.config.updateTranslate(
               begin + diff * animate.value, widget.adapter.dataLength);
-          reRender(force: true);
+          reRenderer(force: true);
         }
 
         stateListener(status) {
@@ -127,7 +127,7 @@ class KChartWidgetState extends State<KChartWidget>
       } else {
         widget.config.updateTranslate(end, widget.adapter.dataLength);
       }
-      reRender();
+      reRenderer();
     });
 
     super.initState();
@@ -144,7 +144,7 @@ class KChartWidgetState extends State<KChartWidget>
         if (dataLength > 0) {
           if (details.pointerCount > 1) {
             tempScale = widget.config.scaleX;
-            reRender();
+            reRenderer();
           } else {
             widget.config.updateSelectedX(details.focalPoint.dx);
             widget.config.updateSelectedY(details.localFocalPoint.dy);
@@ -163,7 +163,7 @@ class KChartWidgetState extends State<KChartWidget>
             widget.config
                 .updateTranslateWithDx(details.focalPointDelta.dx, dataLength);
           }
-          reRender();
+          reRenderer();
         }
       },
       onScaleEnd: (ScaleEndDetails details) {
@@ -179,7 +179,7 @@ class KChartWidgetState extends State<KChartWidget>
             if (!tempValue.isInfinite &&
                 tempValue != widget.config.translateX) {
               widget.config.updateTranslate(tempValue, dataLength);
-              reRender();
+              reRenderer();
             }
           }
 
@@ -192,7 +192,7 @@ class KChartWidgetState extends State<KChartWidget>
 
           animationController?.addStatusListener(stateListener);
           animationController?.animateWith(clampingScrollSimulation);
-          reRender();
+          reRenderer();
         }
       },
       onTapUp: (TapUpDetails details) {
@@ -211,7 +211,7 @@ class KChartWidgetState extends State<KChartWidget>
             widget.config.updateSelectedX(details.globalPosition.dx);
             widget.config.updateSelectedY(details.localPosition.dy);
           }
-          reRender();
+          reRenderer();
         }
       },
       onLongPressStart: (LongPressStartDetails details) {
@@ -220,7 +220,7 @@ class KChartWidgetState extends State<KChartWidget>
         if (dataLength > 0) {
           widget.config.updateSelectedX(details.globalPosition.dx);
           widget.config.updateSelectedY(details.localPosition.dy);
-          reRender();
+          reRenderer();
         }
       },
       onLongPressMoveUpdate: (LongPressMoveUpdateDetails details) {
@@ -229,7 +229,7 @@ class KChartWidgetState extends State<KChartWidget>
         if (dataLength > 0) {
           widget.config.updateSelectedX(details.globalPosition.dx);
           widget.config.updateSelectedY(details.localPosition.dy);
-          reRender();
+          reRenderer();
         }
       },
       onTapDown: (TapDownDetails details) {
@@ -239,7 +239,7 @@ class KChartWidgetState extends State<KChartWidget>
           animationController?.clearListeners();
           animationController?.clearStatusListeners();
           animationController?.reset();
-          reRender();
+          reRenderer();
         }
       },
       child: CustomPaint(
@@ -250,7 +250,7 @@ class KChartWidgetState extends State<KChartWidget>
   }
 
   /// next frame repaint
-  void reRender({bool force = false}) {
+  void reRenderer({bool force = false}) {
     if (widget.adapter.dataLength != 0) {
       if (force) {
         repaint.value = DateTime.now().millisecondsSinceEpoch;

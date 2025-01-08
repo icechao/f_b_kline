@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 /// 文本位置枚举
 enum KAlign { left, center, right }
 
-/// text render
+/// text renderer
 class KTextPainter {
   double Function(double)? xParser;
 
@@ -15,11 +15,11 @@ class KTextPainter {
 
   final Paint paint = Paint();
 
-  final double _x, y, boxHeight;
+  final double _x, _y, boxHeight;
   final TextPainter painter = TextPainter();
 
   /// 对文本进行二次封装方便后期使用
-  KTextPainter(this._x, this.y,
+  KTextPainter(this._x, this._y,
       {StrutStyle? strutStyle, this.boxHeight = 0, this.xParser, this.align}) {
     painter
       ..textDirection = TextDirection.ltr
@@ -32,7 +32,7 @@ class KTextPainter {
   /// [top] text 是否向上
   /// [align] align [KAlign]
   /// [backGroundColor] backGroundColor
-  renderText(Canvas canvas, InlineSpan span,
+  rendererText(Canvas canvas, InlineSpan span,
       {bool top = false,
       KAlign? align,
       Color? backGroundColor,
@@ -57,9 +57,9 @@ class KTextPainter {
     }
     double tempY;
     if (boxHeight > painter.height) {
-      tempY = y - ((boxHeight - painter.height) / 2);
+      tempY = _y - ((boxHeight - painter.height) / 2);
     } else {
-      tempY = y;
+      tempY = _y;
     }
 
     var dy = top ? tempY - painter.height : tempY;

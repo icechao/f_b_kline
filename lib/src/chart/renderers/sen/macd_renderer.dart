@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:f_b_kline/src/chart/config/k_run_config.dart';
 import 'package:f_b_kline/src/chart/config/k_static_config.dart';
 import 'package:f_b_kline/src/chart/entity/k_line_entity.dart';
-import 'package:f_b_kline/src/chart/i_render.dart';
+import 'package:f_b_kline/src/chart/i_renderer.dart';
 import 'package:f_b_kline/src/chart/index.dart';
 import 'package:f_b_kline/src/chart/k_text_painter.dart';
 import 'package:flutter/material.dart';
@@ -11,14 +11,14 @@ import 'package:flutter/material.dart';
 /// macd painter
 /// [difPath] dif line path
 /// [deaPath] dea line path
-class MacdRender extends IRender {
-  MacdRender(super.config, super.adapter, super.matrixUtils);
+class MacdRenderer extends IRenderer {
+  MacdRenderer(super.config, super.adapter, super.matrixUtils);
 
   final Path difPath = Path();
   final Path deaPath = Path();
 
   @override
-  void renderChart(Canvas canvas, List<double> c, List<double> l,
+  void rendererChart(Canvas canvas, List<double> c, List<double> l,
       double itemWidth, int index) {
     double halfWidth = itemWidth / 2;
     double x = c[0];
@@ -30,11 +30,11 @@ class MacdRender extends IRender {
 
     if (macd > zero) {
       paint
-        ..color = config.chartColor = KStaticConfig().chartColors['decrease']!
+        ..color = KStaticConfig().chartColors['decrease']!
         ..strokeWidth = itemWidth - KStaticConfig().candleItemSpace * 2;
     } else if (macd > 0) {
       paint
-        ..color = config.chartColor = KStaticConfig().chartColors['increase']!
+        ..color = KStaticConfig().chartColors['increase']!
         ..strokeWidth = itemWidth - KStaticConfig().candleItemSpace * 2;
     } else {
       macd += 1;
@@ -57,7 +57,7 @@ class MacdRender extends IRender {
   }
 
   @override
-  void renderLine(Canvas canvas, {TextBuilder? builder}) {
+  void rendererLine(Canvas canvas, {TextBuilder? builder}) {
     canvas
       ..drawPath(
           difPath,
@@ -69,14 +69,14 @@ class MacdRender extends IRender {
   }
 
   @override
-  void renderText(Canvas canvas) {
+  void rendererText(Canvas canvas) {
     KLineEntity data =
         adapter.data[config.selectedIndex ?? adapter.dataLength - 1];
 
     List<InlineSpan> text = [
       buildTextSpan(
           'MACD(${KIndexParams().macdS},${KIndexParams().macdL},${KIndexParams().macdL}):${data.macd?.toStringAsFixed(2)}',
-          color: KStaticConfig().chartColors['text'])
+          color: KStaticConfig().colorConfig.text)
     ];
 
     if (data.dif != null) {
@@ -89,7 +89,7 @@ class MacdRender extends IRender {
           color: KStaticConfig().chartColors['dea']));
     }
     KTextPainter(config.senRect!.left, config.senRect!.top)
-        .renderText(canvas, TextSpan(children: text), align: KAlign.right);
+        .rendererText(canvas, TextSpan(children: text), align: KAlign.right);
   }
 
   @override

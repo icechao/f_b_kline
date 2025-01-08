@@ -41,6 +41,8 @@ class KStaticConfig {
     return _instance!;
   }
 
+  ColorConfig colorConfig = ColorConfig();
+
   ///展示与实际值的计算因数  :
   /// max = min
   /// max = max *( 1+ displayFactor)
@@ -111,10 +113,13 @@ class KStaticConfig {
   double lineWidth = 0.6;
 
   ///最新价格线文字框左右间距
-  double priceLineTextBoxHPadding = 4.0;
+  double priceLineTextBoxHPadding = 4;
+
+  ///最新价格线文字框上下间距
+  double priceLineTextBoxVPadding = 4;
 
   ///最新价格线文字框圆角
-  double priceLineTextBoxRadius = 2;
+  double priceLineTextBoxRadius = 3;
 
   ///主图显示图表
   ChartGroupType defaultChartType = ChartGroupType.withVol;
@@ -308,4 +313,47 @@ class KIndexParams {
 
   ///macd
   int macdM = 9;
+}
+
+class ColorConfig {
+  ///十字线渐变色,仅在十字线竖线是宽线模式线生效
+  List<Color> crossColors = [
+    Colors.transparent,
+    Colors.white30,
+    Colors.white30,
+    Colors.transparent
+  ];
+
+  ///十字线纵向渐变色关键点
+  List<double>? colorStops = [0.1, 0.3, 0.7, 0.9];
+
+  ///默认文本颜色
+  Color? _text;
+
+  ///分时线
+  Color? _timeLine;
+
+  ///背景色
+  Color? _background;
+
+  Color get text => _text ?? Colors.blue;
+
+  set text(Color color) {
+    _text = color;
+  }
+
+  Color get timeLine => _timeLine ?? Colors.blue;
+
+  set timeLine(Color value) {
+    _timeLine = value;
+  }
+
+  Color get background => _background ?? Colors.black;
+
+  set background(Color value) {
+    _background = value;
+  }
+
+
+
 }

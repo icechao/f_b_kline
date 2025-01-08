@@ -3,13 +3,13 @@ import 'dart:math';
 import 'package:f_b_kline/src/chart/config/k_run_config.dart';
 import 'package:f_b_kline/src/chart/config/k_static_config.dart';
 import 'package:f_b_kline/src/chart/entity/k_line_entity.dart';
-import 'package:f_b_kline/src/chart/i_render.dart';
+import 'package:f_b_kline/src/chart/i_renderer.dart';
 import 'package:f_b_kline/src/chart/index.dart';
 import 'package:f_b_kline/src/chart/k_text_painter.dart';
 import 'package:flutter/material.dart';
 
-class KdjRender extends IRender {
-  KdjRender(super.config, super.adapter, super.matrixUtils) {
+class KdjRenderer extends IRenderer {
+  KdjRenderer(super.config, super.adapter, super.matrixUtils) {
     paint
       ..strokeWidth = KStaticConfig().lineWidth
       ..style = PaintingStyle.stroke;
@@ -20,7 +20,7 @@ class KdjRender extends IRender {
   final Path jPath = Path();
 
   @override
-  void renderChart(Canvas canvas, List<double> c, List<double> l,
+  void rendererChart(Canvas canvas, List<double> c, List<double> l,
       double itemWidth, int index) {
     double lX = l[0];
 
@@ -47,7 +47,7 @@ class KdjRender extends IRender {
   }
 
   @override
-  void renderLine(Canvas canvas, {TextBuilder? builder}) {
+  void rendererLine(Canvas canvas, {TextBuilder? builder}) {
     canvas
       ..drawPath(kPath, paint..color = KStaticConfig().chartColors['k']!)
       ..drawPath(dPath, paint..color = KStaticConfig().chartColors['d']!)
@@ -55,7 +55,7 @@ class KdjRender extends IRender {
   }
 
   @override
-  void renderText(Canvas canvas) {
+  void rendererText(Canvas canvas) {
     KLineEntity data =
         adapter.data[config.selectedIndex ?? adapter.dataLength - 1];
 
@@ -75,7 +75,7 @@ class KdjRender extends IRender {
         color: KStaticConfig().chartColors['j']));
 
     KTextPainter(config.senRect!.left, config.senRect!.top)
-        .renderText(canvas, TextSpan(children: text), align: KAlign.right);
+        .rendererText(canvas, TextSpan(children: text), align: KAlign.right);
   }
 
   @override

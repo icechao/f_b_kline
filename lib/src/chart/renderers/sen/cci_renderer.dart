@@ -3,27 +3,32 @@ import 'dart:ui';
 
 import 'package:f_b_kline/src/chart/config/k_run_config.dart';
 import 'package:f_b_kline/src/chart/config/k_static_config.dart';
-import 'package:f_b_kline/src/chart/entity/k_line_entity.dart';
-import 'package:f_b_kline/src/chart/i_render.dart';
+import 'package:f_b_kline/src/chart/i_renderer.dart';
 import 'package:f_b_kline/src/chart/index.dart';
 import 'package:f_b_kline/src/chart/k_text_painter.dart';
 import 'package:flutter/material.dart';
 
-class RsiRender extends IRender {
+import '../../entity/k_line_entity.dart';
+
+/// cci painter
+/// [linePath]
+/// [rendererChart] add point into linePath
+/// [rendererLine] draw path
+class CciRenderer extends IRenderer {
   final Path linePath = Path();
 
-  RsiRender(super.config, super.adapter, super.matrixUtils) {
+  CciRenderer(super.config, super.adapter, super.matrixUtils) {
     paint
       ..style = PaintingStyle.stroke
       ..strokeWidth = KStaticConfig().lineWidth
-      ..color = KStaticConfig().chartColors['rsi']!;
+      ..color = KStaticConfig().chartColors['cci']!;
   }
 
   @override
-  void renderChart(Canvas canvas, List<double> c, List<double> l,
+  void rendererChart(Canvas canvas, List<double> c, List<double> l,
       double itemWidth, int index) {
     double x = c[0] + itemWidth / 2;
-    double y = c[SenIndex.rsi * 3 + 1];
+    double y = c[SenIndex.cci * 3 + 1];
     double lastY = l[SenIndex.rsi * 3 + 1];
     if (lastY.isInfinite) {
       linePath
@@ -35,29 +40,29 @@ class RsiRender extends IRender {
   }
 
   @override
-  void renderLine(Canvas canvas, {TextBuilder? builder}) {
+  void rendererLine(Canvas canvas, {TextBuilder? builder}) {
     canvas.drawPath(linePath, paint);
   }
 
   @override
-  void renderText(Canvas canvas) {
+  void rendererText(Canvas canvas) {
     KLineEntity data =
         adapter.data[config.selectedIndex ?? adapter.dataLength - 1];
 
     if (data.rsi != null) {
       var text = buildTextSpan(
-          'RSI(${KIndexParams().rsiOne}):${data.rsi!.toStringAsFixed(2)}',
-          color: KStaticConfig().chartColors['rsi']);
-      KTextPainter(config.volRect!.left, config.senRect!.top)
-          .renderText(canvas, text);
+          'CCI(${KIndexParams().cciCount}):${data.cci!.toStringAsFixed(2)}',
+          color: KStaticConfig().chartColors['cci']);
+      KTextPainter(config.volRect?.left??0, config.senRect?.top??0)
+          .rendererText(canvas, text);
     }
   }
 
   @override
   void calcMaxMin(KLineEntity item, int index) {
     if (null != item.rsi) {
-      displayValueMax = max(displayValueMax, item.rsi!);
-      displayValueMin = min(displayValueMin, item.rsi!);
+      displayValueMax = max(displayValueMax, item.cci!);
+      displayValueMin = min(displayValueMin, item.cci!);
     }
   }
 
