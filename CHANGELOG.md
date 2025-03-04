@@ -1,3 +1,7 @@
+## 0.0.3+9
+
+* change translate method
+
 ## 0.0.3+8
 
 * fix bug

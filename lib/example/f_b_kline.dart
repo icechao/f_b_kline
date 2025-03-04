@@ -45,7 +45,6 @@ class MyApp extends StatelessWidget {
       //     ..vol = item.vol);
       //   adapter.resetData(data, resetTranslate: true);
       // });
-
     });
 
     return MaterialApp(
@@ -186,15 +185,14 @@ class MyApp extends StatelessWidget {
             Row(
               children: [
                 ElevatedButton(
-                    onPressed: () => adapter.changeTranslate(0.0),
-                    child: const Text("0")),
+                    onPressed: () => adapter.changeTranslate(double.maxFinite),
+                    child: const Text("start")),
                 ElevatedButton(
-                    onPressed: () => adapter.changeTranslate(-200.0),
-                    child: const Text("-200")),
+                    onPressed: () => adapter.changeTranslate(-500.0),
+                    child: const Text("-500")),
                 ElevatedButton(
-                    onPressed: () =>
-                        adapter.changeTranslate(double.minPositive),
-                    child: const Text("double.minPositive")),
+                    onPressed: () => adapter.changeTranslate(-double.maxFinite),
+                    child: const Text("end")),
               ],
             )
           ],

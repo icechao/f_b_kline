@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:f_b_kline/src/chart/background_painter.dart';
 import 'package:f_b_kline/src/chart/chart_painter.dart';
@@ -104,12 +105,16 @@ class KChartWidgetState extends State<KChartWidget>
           ?..stop()
           ..reset();
 
-        var diff = end - begin;
-        Animation<double> animate =
-            Tween<double>(begin: 0.0, end: 1.0).animate(translateController!);
+        // var diff = end - begin;
+        var target = min(
+            max(widget.config.calcMinTranslateX(widget.adapter.dataLength),
+                end),
+            0.0);
+        Animation<double> animate = Tween<double>(begin: begin, end: target)
+            .animate(translateController!);
         listener() {
-          widget.config.updateTranslate(
-              begin + diff * animate.value, widget.adapter.dataLength);
+          widget.config
+              .updateTranslate(animate.value, widget.adapter.dataLength);
           reRenderer(force: true);
         }
 
