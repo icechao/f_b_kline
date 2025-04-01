@@ -296,7 +296,8 @@ class KRunConfig {
         translateX,
         -mainRenderer.chartAsiaMax,
         chartScaleWidth,
-        mainRect!.height / (mainRenderer.chartAsiaMax - mainRenderer.chartAsiaMin),
+        mainRect!.height /
+            (mainRenderer.chartAsiaMax - mainRenderer.chartAsiaMin),
         adapter.mainDisplayPoints,
         preTranslateY: -KStaticConfig().topPadding);
     if (volRect != null) {
@@ -314,7 +315,8 @@ class KRunConfig {
           translateX,
           -senRenderer!.chartAsiaMax,
           chartScaleWidth,
-          senRect!.height / (senRenderer!.chartAsiaMax - senRenderer!.chartAsiaMin),
+          senRect!.height /
+              (senRenderer!.chartAsiaMax - senRenderer!.chartAsiaMin),
           adapter.senDisplayPoints,
           preTranslateY: -senBaseY);
     }
@@ -415,17 +417,24 @@ class KRunConfig {
   /// [displayFactor] display factor
   void calcMaxMin(double displayFactor) {
     if (mainRenderer.displayValueMin == mainRenderer.displayValueMax) {
-      mainRenderer.chartAsiaMax =
+      mainRenderer.displayValueMax =
           mainRenderer.displayValueMax * (1 + displayFactor);
-      mainRenderer.chartAsiaMin =
+      mainRenderer.displayValueMin =
           mainRenderer.displayValueMin * (1 - displayFactor);
     }
 
     if (volRenderer?.displayValueMin == volRenderer?.displayValueMin) {
-      volRenderer?.chartAsiaMax =
+      volRenderer?.displayValueMax =
           (volRenderer?.displayValueMax ?? 0.0) * (1 + displayFactor);
-      volRenderer?.chartAsiaMin =
+      volRenderer?.displayValueMin =
           (volRenderer?.displayValueMin ?? 0.0) * (1 - displayFactor);
+    }
+
+    if (senRenderer?.displayValueMin == senRenderer?.displayValueMin) {
+      senRenderer?.displayValueMax =
+          (senRenderer?.displayValueMax ?? 0.0) * (1 + displayFactor);
+      senRenderer?.displayValueMin =
+          (senRenderer?.displayValueMin ?? 0.0) * (1 - displayFactor);
     }
 
     mainRenderer.chartAsiaMax = mainRenderer.displayValueMax +

@@ -1,3 +1,11 @@
+## 0.0.5
+
+* fix one line calc issue
+
+## 0.0.4
+
+* fix one line calc issue
+
 ## 0.0.3+9
 
 * change translate method

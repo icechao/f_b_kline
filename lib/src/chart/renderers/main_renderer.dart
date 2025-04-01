@@ -180,9 +180,13 @@ class MainRenderer extends IRenderer {
                 width -
                     textWidth * 2 -
                     KStaticConfig().priceLineTextBoxHPadding,
-                close - halfTextHeight - KStaticConfig().priceLineTextBoxVPadding,
+                close -
+                    halfTextHeight -
+                    KStaticConfig().priceLineTextBoxVPadding,
                 width - textWidth + KStaticConfig().priceLineTextBoxHPadding,
-                close + halfTextHeight + KStaticConfig().priceLineTextBoxVPadding,
+                close +
+                    halfTextHeight +
+                    KStaticConfig().priceLineTextBoxVPadding,
                 Radius.circular(KStaticConfig().priceLineTextBoxRadius)),
             paint
               ..color =
